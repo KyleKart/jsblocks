@@ -56,7 +56,7 @@ function runUserCode(userCode) {
   const stage = canvas.getContext('2d');
 
   function clear() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    stage.clearRect(0, 0, canvas.width, canvas.height);
   }
 
   const api = {
@@ -69,7 +69,7 @@ function runUserCode(userCode) {
   const fn = new Function(
     'api',
     `
-      const { canvas, stage, width, height, clear } = api;
+      const { stage, width, height, clear } = api;
       ${userCode}
     `
   );
