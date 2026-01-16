@@ -64,18 +64,23 @@ function runUserCode(userCode) {
     window.addEventListener('keydown', e => keys[e.key] = true);
     window.addEventListener('keyup', e => keys[e.key] = false);
 
+    function keyDown(key) {
+        return !!keys[key];
+    }
+
     const api = {
         stage,
         width: canvas.width,
         height: canvas.height,
         clear,
-        keys
+        keys,
+        keyDown
     };
 
     const fn = new Function(
         'api',
         `
-      const { stage, width, height, clear, keys } = api;
+      const { stage, width, height, clear, keys, keyDown } = api;
       ${userCode}
     `
     );
