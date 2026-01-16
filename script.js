@@ -53,15 +53,14 @@ const workspace = Blockly.inject('blocklyDiv', {
 
 function runUserCode(userCode) {
   const canvas = document.getElementById('stage');
-  const ctx = canvas.getContext('2d');
+  const stage = canvas.getContext('2d');
 
   function clear() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
   }
 
   const api = {
-    canvas,
-    ctx,
+    stage,
     width: canvas.width,
     height: canvas.height,
     clear,
@@ -70,7 +69,7 @@ function runUserCode(userCode) {
   const fn = new Function(
     'api',
     `
-      const { canvas, ctx, width, height, clear } = api;
+      const { canvas, stage, width, height, clear } = api;
       ${userCode}
     `
   );
