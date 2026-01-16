@@ -48,7 +48,24 @@ jsGen.forBlock['js_hat'] = (block, generator) => {
 const workspace = Blockly.inject('blocklyDiv', {
     toolbox: document.getElementById('toolbox'),
     trashcan: true,
-    renderer: 'geras',
+    zoom: {
+        controls: true,
+        wheel: true,
+        startScale: 1,
+        maxScale: 3,
+        minScale: 0.4
+    },
+    move: {
+        scrollbars: true,
+        drag: true,
+        wheel: true
+    },
+    grid: {
+        spacing: 20,
+        length: 3,
+        colour: '#ccc',
+        snap: true
+    }, renderer: 'geras',
 });
 
 function runUserCode(userCode) {
