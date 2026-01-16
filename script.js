@@ -75,7 +75,7 @@ function runUserCode(userCode) {
     const fn = new Function(
         'api',
         `
-      const { stage, width, height, clear } = api;
+      const { stage, width, height, clear, keys } = api;
       ${userCode}
     `
     );
