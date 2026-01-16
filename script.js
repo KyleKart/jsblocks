@@ -51,6 +51,26 @@ const workspace = Blockly.inject('blocklyDiv', {
     renderer: 'geras',
 });
 
+function runUserCode(userCode) {
+  const api = {
+    canvas,
+    ctx,
+    width,
+    height,
+    clearStage,
+  };
+
+  const fn = new Function(
+    'api',
+    `
+      const { canvas, ctx, width, height, clearStage } = api;
+      ${userCode}
+    `
+  );
+
+  fn(api);
+}
+
 document.getElementById('menuRun').addEventListener('click', () => {
     let code = '';
     workspace.getTopBlocks(true).forEach(block => {
@@ -59,7 +79,7 @@ document.getElementById('menuRun').addEventListener('click', () => {
         }
     });
     console.log('Generated JS:\n' + code);
-    try { eval(code); } catch (e) { alert(e.message); }
+    try { runUserCode(code); } catch (e) { alert(e.message); }
 });
 
 document.getElementById('menuSave').addEventListener('click', () => {
