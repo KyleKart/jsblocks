@@ -52,18 +52,25 @@ const workspace = Blockly.inject('blocklyDiv', {
 });
 
 function runUserCode(userCode) {
+  const canvas = document.getElementById('stage');
+  const ctx = canvas.getContext('2d');
+
+  function clear() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+  }
+
   const api = {
     canvas,
     ctx,
-    width,
-    height,
-    clearStage,
+    width: canvas.width,
+    height: canvas.height,
+    clear,
   };
 
   const fn = new Function(
     'api',
     `
-      const { canvas, ctx, width, height, clearStage } = api;
+      const { canvas, ctx, width, height, clear } = api;
       ${userCode}
     `
   );
