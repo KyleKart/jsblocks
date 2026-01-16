@@ -52,29 +52,35 @@ const workspace = Blockly.inject('blocklyDiv', {
 });
 
 function runUserCode(userCode) {
-  const canvas = document.getElementById('stage');
-  const stage = canvas.getContext('2d');
+    const canvas = document.getElementById('stage');
+    const stage = canvas.getContext('2d');
 
-  function clear() {
-    stage.clearRect(0, 0, canvas.width, canvas.height);
-  }
+    function clear() {
+        stage.clearRect(0, 0, canvas.width, canvas.height);
+    }
 
-  const api = {
-    stage,
-    width: canvas.width,
-    height: canvas.height,
-    clear,
-  };
+    const keys = {};
 
-  const fn = new Function(
-    'api',
-    `
+    window.addEventListener('keydown', e => keys[e.key] = true);
+    window.addEventListener('keyup', e => keys[e.key] = false);
+
+    const api = {
+        stage,
+        width: canvas.width,
+        height: canvas.height,
+        clear,
+        keys
+    };
+
+    const fn = new Function(
+        'api',
+        `
       const { stage, width, height, clear } = api;
       ${userCode}
     `
-  );
+    );
 
-  fn(api);
+    fn(api);
 }
 
 document.getElementById('menuRun').addEventListener('click', () => {
