@@ -55,9 +55,6 @@ function runUserCode(userCode) {
     const canvas = document.getElementById('stage');
     const stage = canvas.getContext('2d');
 
-    canvas.tabIndex = 0;
-    canvas.focus();
-
     function clear() {
         stage.clearRect(0, 0, canvas.width, canvas.height);
     }
@@ -65,12 +62,10 @@ function runUserCode(userCode) {
     const keys = {};
 
     window.addEventListener('keydown', e => {
-        e.preventDefault();
         keys[e.key] = true;
     });
 
     window.addEventListener('keyup', e => {
-        e.preventDefault();
         keys[e.key] = false;
     });
 
