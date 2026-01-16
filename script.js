@@ -65,7 +65,11 @@ const workspace = Blockly.inject('blocklyDiv', {
         length: 3,
         colour: '#ccc',
         snap: true
-    }, renderer: 'geras',
+    },
+    renderer: 'geras',
+    plugins: {
+        backpack: Blockly.WorkspaceBackpack
+    }
 });
 
 function runUserCode(userCode) {
