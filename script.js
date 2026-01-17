@@ -114,6 +114,89 @@ function runUserCode(userCode) {
     fn(api);
 }
 
+function loadJSIntoBlocks(jsCode) {
+  workspace.clear();
+
+  jsCode = jsCode
+    .replace(/\r\n/g, '\n')
+    .trim();
+
+  const hat = workspace.newBlock('js_hat');
+  hat.initSvg();
+  hat.render();
+
+  let currentParent = hat;
+  let lastBlock = null;
+
+  const lines = jsCode.split('\n');
+  let i = 0;
+
+  while (i < lines.length) {
+    let line = lines[i].trim();
+    if (!line) { i++; continue; }
+
+    if (line.endsWith('{')) {
+      const header = line.slice(0, -1).trim();
+
+      const cblock = workspace.newBlock('js_cblock');
+      cblock.setFieldValue(header, 'HEADER');
+      cblock.initSvg();
+      cblock.render();
+
+      if (!lastBlock) {
+        currentParent.getInput('DO').connection.connect(cblock.previousConnection);
+      } else {
+        lastBlock.nextConnection.connect(cblock.previousConnection);
+      }
+
+      i++;
+      let depth = 1;
+      let bodyLines = [];
+
+      while (i < lines.length && depth > 0) {
+        let l = lines[i];
+        if (l.includes('{')) depth++;
+        if (l.includes('}')) depth--;
+        if (depth > 0) bodyLines.push(l.trim());
+        i++;
+      }
+
+      let prev = null;
+      bodyLines.forEach(bl => {
+        if (!bl) return;
+        const g = workspace.newBlock('js_generic');
+        g.setFieldValue(bl.replace(/;$/, ''), 'CODE');
+        g.initSvg();
+        g.render();
+
+        if (!prev) {
+          cblock.getInput('DO').connection.connect(g.previousConnection);
+        } else {
+          prev.nextConnection.connect(g.previousConnection);
+        }
+        prev = g;
+      });
+
+      lastBlock = cblock;
+      continue;
+    }
+
+    const g = workspace.newBlock('js_generic');
+    g.setFieldValue(line.replace(/;$/, ''), 'CODE');
+    g.initSvg();
+    g.render();
+
+    if (!lastBlock) {
+      currentParent.getInput('DO').connection.connect(g.previousConnection);
+    } else {
+      lastBlock.nextConnection.connect(g.previousConnection);
+    }
+
+    lastBlock = g;
+    i++;
+  }
+}
+
 document.getElementById('menuRun').addEventListener('click', () => {
     let code = '';
     workspace.getTopBlocks(true).forEach(block => {
