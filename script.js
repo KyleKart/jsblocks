@@ -15,7 +15,7 @@ Blockly.Blocks['js_cblock'] = {
         this.appendStatementInput("DO");
         this.setPreviousStatement(true);
         this.setNextStatement(true);
-        this.setColour(60);
+        this.setColour(300);
     }
 };
 
@@ -23,7 +23,7 @@ Blockly.Blocks['js_hat'] = {
     init() {
         this.appendDummyInput().appendField("Run");
         this.appendStatementInput("DO");
-        this.setColour(300);
+        this.setColour(60);
     }
 };
 
