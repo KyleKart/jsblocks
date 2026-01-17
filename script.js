@@ -114,24 +114,24 @@ function runUserCode(userCode) {
     fn(api);
 }
 
-function loadJSIntoBlocks(jsCode) {
+function loadJS(JS) {
   workspace.clear();
 
-  jsCode = jsCode
-    .replace(/\r\n/g, '\n')
-    .trim();
+  JS = JS.replace(/\r\n/g, '\n').trim();
+  const lines = JS.split('\n');
 
   const hat = workspace.newBlock('js_hat');
   hat.initSvg();
   hat.render();
 
-  let currentParent = hat;
+  parseBlock(lines, 0, lines.length, hat);
+}
+
+function parseBlock(lines, start, end, parentBlock) {
   let lastBlock = null;
+  let i = start;
 
-  const lines = jsCode.split('\n');
-  let i = 0;
-
-  while (i < lines.length) {
+  while (i < end) {
     let line = lines[i].trim();
     if (!line) { i++; continue; }
 
@@ -144,41 +144,32 @@ function loadJSIntoBlocks(jsCode) {
       cblock.render();
 
       if (!lastBlock) {
-        currentParent.getInput('DO').connection.connect(cblock.previousConnection);
+        parentBlock.getInput('DO').connection
+          .connect(cblock.previousConnection);
       } else {
-        lastBlock.nextConnection.connect(cblock.previousConnection);
+        lastBlock.nextConnection
+          .connect(cblock.previousConnection);
       }
 
-      i++;
       let depth = 1;
-      let bodyLines = [];
+      let bodyStart = i + 1;
+      let j = bodyStart;
 
-      while (i < lines.length && depth > 0) {
-        let l = lines[i];
-        if (l.includes('{')) depth++;
-        if (l.includes('}')) depth--;
-        if (depth > 0) bodyLines.push(l.trim());
-        i++;
+      while (j < end && depth > 0) {
+        if (lines[j].includes('{')) depth++;
+        if (lines[j].includes('}')) depth--;
+        j++;
       }
 
-      let prev = null;
-      bodyLines.forEach(bl => {
-        if (!bl) return;
-        const g = workspace.newBlock('js_generic');
-        g.setFieldValue(bl.replace(/;$/, ''), 'CODE');
-        g.initSvg();
-        g.render();
-
-        if (!prev) {
-          cblock.getInput('DO').connection.connect(g.previousConnection);
-        } else {
-          prev.nextConnection.connect(g.previousConnection);
-        }
-        prev = g;
-      });
+      parseBlock(lines, bodyStart, j - 1, cblock);
 
       lastBlock = cblock;
+      i = j;
       continue;
+    }
+
+    if (line === '}') {
+      return;
     }
 
     const g = workspace.newBlock('js_generic');
@@ -187,9 +178,11 @@ function loadJSIntoBlocks(jsCode) {
     g.render();
 
     if (!lastBlock) {
-      currentParent.getInput('DO').connection.connect(g.previousConnection);
+      parentBlock.getInput('DO').connection
+        .connect(g.previousConnection);
     } else {
-      lastBlock.nextConnection.connect(g.previousConnection);
+      lastBlock.nextConnection
+        .connect(g.previousConnection);
     }
 
     lastBlock = g;
