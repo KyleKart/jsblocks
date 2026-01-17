@@ -240,3 +240,28 @@ document.getElementById('menuLoad').addEventListener('click', () => {
     };
     input.click();
 });
+
+document.getElementById('menuImportJS').addEventListener('click', () => {
+  const input = document.createElement('input');
+  input.type = 'file';
+  input.accept = '.js';
+
+  input.onchange = e => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = event => {
+      try {
+        loadJS(event.target.result);
+      } catch (err) {
+        alert('Error importing JS:\n' + err.message);
+        console.error(err);
+      }
+    };
+
+    reader.readAsText(file);
+  };
+
+  input.click();
+});
