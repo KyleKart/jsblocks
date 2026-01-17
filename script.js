@@ -23,7 +23,7 @@ Blockly.Blocks['js_hat'] = {
     init() {
         this.appendDummyInput().appendField("Run");
         this.appendStatementInput("DO");
-        this.setColour(60);
+        this.setColour(50);
     }
 };
 
