@@ -15,7 +15,7 @@ Blockly.Blocks['js_cblock'] = {
         this.appendStatementInput("DO");
         this.setPreviousStatement(true);
         this.setNextStatement(true);
-        this.setColour(80);
+        this.setColour(60);
     }
 };
 
