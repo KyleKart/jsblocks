@@ -1,51 +1,75 @@
 Blockly.Blocks['js_generic'] = {
-    init() {
-        this._defaultColour = 230;
+  init() {
+    this._defaultColour = 230;
 
-        this.appendDummyInput()
-            .appendField(new Blockly.FieldTextInput("console.log('Hello World!')"), "CODE");
-        this.setPreviousStatement(true);
-        this.setNextStatement(true);
-        this.setColour(this._defaultColour);
-        this.serialization = {
-            'js_block_colour': true
-        };
+    this.appendDummyInput()
+      .appendField(new Blockly.FieldTextInput("console.log('Hello World!')"), "CODE");
+    this.setPreviousStatement(true);
+    this.setNextStatement(true);
+    this.setColour(this._defaultColour);
 
-        addColourContextMenu(this);
+    addColourContextMenu(this);
+  },
+
+  saveExtraState() {
+    return this._userColour ? { colour: this._userColour } : null;
+  },
+
+  loadExtraState(state) {
+    if (state && state.colour) {
+      this._userColour = state.colour;
+      this.setColour(state.colour);
     }
+  }
 };
 
 Blockly.Blocks['js_cblock'] = {
-    init() {
-        this._defaultColour = 300;
+  init() {
+    this._defaultColour = 300;
 
-        this.appendDummyInput()
-            .appendField(new Blockly.FieldTextInput("if (true)"), "HEADER");
-        this.appendStatementInput("DO");
-        this.setPreviousStatement(true);
-        this.setNextStatement(true);
-        this.setColour(this._defaultColour);
-        this.serialization = {
-            'js_block_colour': true
-        };
+    this.appendDummyInput()
+      .appendField(new Blockly.FieldTextInput("if (true)"), "HEADER");
+    this.appendStatementInput("DO");
+    this.setPreviousStatement(true);
+    this.setNextStatement(true);
+    this.setColour(this._defaultColour);
 
-        addColourContextMenu(this);
+    addColourContextMenu(this);
+  },
+
+  saveExtraState() {
+    return this._userColour ? { colour: this._userColour } : null;
+  },
+
+  loadExtraState(state) {
+    if (state && state.colour) {
+      this._userColour = state.colour;
+      this.setColour(state.colour);
     }
+  }
 };
 
 Blockly.Blocks['js_hat'] = {
-    init() {
-        this._defaultColour = 190;
+  init() {
+    this._defaultColour = 190;
 
-        this.appendDummyInput().appendField("Run");
-        this.appendStatementInput("DO");
-        this.setColour(this._defaultColour);
-        this.serialization = {
-            'js_block_colour': true
-        };
+    this.appendDummyInput().appendField("Run");
+    this.appendStatementInput("DO");
+    this.setColour(this._defaultColour);
 
-        addColourContextMenu(this);
+    addColourContextMenu(this);
+  },
+
+  saveExtraState() {
+    return this._userColour ? { colour: this._userColour } : null;
+  },
+
+  loadExtraState(state) {
+    if (state && state.colour) {
+      this._userColour = state.colour;
+      this.setColour(state.colour);
     }
+  }
 };
 
 const jsGen = Blockly.JavaScript;
@@ -110,38 +134,38 @@ const workspace = Blockly.inject('blocklyDiv', {
 });
 
 function addColourContextMenu(block) {
-    block.customContextMenu = function (options) {
-        options.push({
-            text: 'Set block colour…',
-            enabled: true,
-            callback: () => {
-                const input = document.createElement('input');
-                input.type = 'color';
+  block.customContextMenu = function (options) {
+    options.push({
+      text: 'Set block colour…',
+      enabled: true,
+      callback: () => {
+        const input = document.createElement('input');
+        input.type = 'color';
 
-                try {
-                    input.value = Blockly.utils.colour.rgbToHex(block.getColour());
-                } catch { }
+        try {
+          input.value = Blockly.utils.colour.rgbToHex(block.getColour());
+        } catch {}
 
-                input.oninput = () => {
-                    block._userColour = input.value;
-                    block.setColour(input.value);
-                };
+        input.oninput = () => {
+          block._userColour = input.value;
+          block.setColour(input.value);
+        };
 
-                input.click();
-            }
-        });
+        input.click();
+      }
+    });
 
-        if (block._userColour) {
-            options.push({
-                text: 'Reset block colour',
-                enabled: true,
-                callback: () => {
-                    delete block._userColour;
-                    block.setColour(block._defaultColour);
-                }
-            });
+    if (block._userColour) {
+      options.push({
+        text: 'Reset block colour',
+        enabled: true,
+        callback: () => {
+          delete block._userColour;
+          block.setColour(block._defaultColour);
         }
-    };
+      });
+    }
+  };
 }
 
 function runUserCode(userCode) {
