@@ -141,7 +141,7 @@ function addColourContextMenu(block) {
 
     if (block._userColour) {
       options.push({
-        text: 'Reset block colour',
+        text: 'Reset Colour',
         enabled: true,
         callback: () => {
           delete block._userColour;
