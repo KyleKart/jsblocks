@@ -1,29 +1,50 @@
 Blockly.Blocks['js_generic'] = {
     init() {
+        this._defaultColour = 230;
+
         this.appendDummyInput()
             .appendField(new Blockly.FieldTextInput("console.log('Hello World!')"), "CODE");
         this.setPreviousStatement(true);
         this.setNextStatement(true);
-        this.setColour(230);
+        this.setColour(this._defaultColour);
+        this.serialization = {
+            'js_block_colour': true
+        };
+
+        addColourContextMenu(this);
     }
 };
 
 Blockly.Blocks['js_cblock'] = {
     init() {
+        this._defaultColour = 300;
+
         this.appendDummyInput()
             .appendField(new Blockly.FieldTextInput("if (true)"), "HEADER");
         this.appendStatementInput("DO");
         this.setPreviousStatement(true);
         this.setNextStatement(true);
-        this.setColour(300);
+        this.setColour(this._defaultColour);
+        this.serialization = {
+            'js_block_colour': true
+        };
+
+        addColourContextMenu(this);
     }
 };
 
 Blockly.Blocks['js_hat'] = {
     init() {
+        this._defaultColour = 190;
+
         this.appendDummyInput().appendField("Run");
         this.appendStatementInput("DO");
-        this.setColour(190);
+        this.setColour(this._defaultColour);
+        this.serialization = {
+            'js_block_colour': true
+        };
+
+        addColourContextMenu(this);
     }
 };
 
@@ -44,6 +65,22 @@ jsGen.forBlock['js_cblock'] = (block, generator) => {
 jsGen.forBlock['js_hat'] = (block, generator) => {
     return generator.statementToCode(block, 'DO');
 };
+
+Blockly.serialization.blocks.register('js_block_colour', {
+    save(block) {
+        if (block._userColour) {
+            return { colour: block._userColour };
+        }
+        return null;
+    },
+
+    load(block, state) {
+        if (state.colour) {
+            block._userColour = state.colour;
+            block.setColour(state.colour);
+        }
+    }
+});
 
 const workspace = Blockly.inject('blocklyDiv', {
     toolbox: document.getElementById('toolbox'),
@@ -71,6 +108,41 @@ const workspace = Blockly.inject('blocklyDiv', {
         backpack: Blockly.WorkspaceBackpack
     }
 });
+
+function addColourContextMenu(block) {
+    block.customContextMenu = function (options) {
+        options.push({
+            text: 'Set block colour…',
+            enabled: true,
+            callback: () => {
+                const input = document.createElement('input');
+                input.type = 'color';
+
+                try {
+                    input.value = Blockly.utils.colour.rgbToHex(block.getColour());
+                } catch { }
+
+                input.oninput = () => {
+                    block._userColour = input.value;
+                    block.setColour(input.value);
+                };
+
+                input.click();
+            }
+        });
+
+        if (block._userColour) {
+            options.push({
+                text: 'Reset block colour',
+                enabled: true,
+                callback: () => {
+                    delete block._userColour;
+                    block.setColour(block._defaultColour);
+                }
+            });
+        }
+    };
+}
 
 function runUserCode(userCode) {
     const canvas = document.getElementById('stage');
@@ -115,79 +187,79 @@ function runUserCode(userCode) {
 }
 
 function loadJS(JS) {
-  workspace.clear();
+    workspace.clear();
 
-  JS = JS.replace(/\r\n/g, '\n').trim();
-  const lines = JS.split('\n');
+    JS = JS.replace(/\r\n/g, '\n').trim();
+    const lines = JS.split('\n');
 
-  const hat = workspace.newBlock('js_hat');
-  hat.initSvg();
-  hat.render();
+    const hat = workspace.newBlock('js_hat');
+    hat.initSvg();
+    hat.render();
 
-  parseBlock(lines, 0, lines.length, hat);
+    parseBlock(lines, 0, lines.length, hat);
 }
 
 function parseBlock(lines, start, end, parentBlock) {
-  let lastBlock = null;
-  let i = start;
+    let lastBlock = null;
+    let i = start;
 
-  while (i < end) {
-    let line = lines[i].trim();
-    if (!line) { i++; continue; }
+    while (i < end) {
+        let line = lines[i].trim();
+        if (!line) { i++; continue; }
 
-    if (line.endsWith('{')) {
-      const header = line.slice(0, -1).trim();
+        if (line.endsWith('{')) {
+            const header = line.slice(0, -1).trim();
 
-      const cblock = workspace.newBlock('js_cblock');
-      cblock.setFieldValue(header, 'HEADER');
-      cblock.initSvg();
-      cblock.render();
+            const cblock = workspace.newBlock('js_cblock');
+            cblock.setFieldValue(header, 'HEADER');
+            cblock.initSvg();
+            cblock.render();
 
-      if (!lastBlock) {
-        parentBlock.getInput('DO').connection
-          .connect(cblock.previousConnection);
-      } else {
-        lastBlock.nextConnection
-          .connect(cblock.previousConnection);
-      }
+            if (!lastBlock) {
+                parentBlock.getInput('DO').connection
+                    .connect(cblock.previousConnection);
+            } else {
+                lastBlock.nextConnection
+                    .connect(cblock.previousConnection);
+            }
 
-      let depth = 1;
-      let bodyStart = i + 1;
-      let j = bodyStart;
+            let depth = 1;
+            let bodyStart = i + 1;
+            let j = bodyStart;
 
-      while (j < end && depth > 0) {
-        if (lines[j].includes('{')) depth++;
-        if (lines[j].includes('}')) depth--;
-        j++;
-      }
+            while (j < end && depth > 0) {
+                if (lines[j].includes('{')) depth++;
+                if (lines[j].includes('}')) depth--;
+                j++;
+            }
 
-      parseBlock(lines, bodyStart, j - 1, cblock);
+            parseBlock(lines, bodyStart, j - 1, cblock);
 
-      lastBlock = cblock;
-      i = j;
-      continue;
+            lastBlock = cblock;
+            i = j;
+            continue;
+        }
+
+        if (line === '}') {
+            return;
+        }
+
+        const g = workspace.newBlock('js_generic');
+        g.setFieldValue(line.replace(/;$/, ''), 'CODE');
+        g.initSvg();
+        g.render();
+
+        if (!lastBlock) {
+            parentBlock.getInput('DO').connection
+                .connect(g.previousConnection);
+        } else {
+            lastBlock.nextConnection
+                .connect(g.previousConnection);
+        }
+
+        lastBlock = g;
+        i++;
     }
-
-    if (line === '}') {
-      return;
-    }
-
-    const g = workspace.newBlock('js_generic');
-    g.setFieldValue(line.replace(/;$/, ''), 'CODE');
-    g.initSvg();
-    g.render();
-
-    if (!lastBlock) {
-      parentBlock.getInput('DO').connection
-        .connect(g.previousConnection);
-    } else {
-      lastBlock.nextConnection
-        .connect(g.previousConnection);
-    }
-
-    lastBlock = g;
-    i++;
-  }
 }
 
 document.getElementById('menuRun').addEventListener('click', () => {
@@ -242,26 +314,26 @@ document.getElementById('menuLoad').addEventListener('click', () => {
 });
 
 document.getElementById('menuImportJS').addEventListener('click', () => {
-  const input = document.createElement('input');
-  input.type = 'file';
-  input.accept = '.js';
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = '.js';
 
-  input.onchange = e => {
-    const file = e.target.files[0];
-    if (!file) return;
+    input.onchange = e => {
+        const file = e.target.files[0];
+        if (!file) return;
 
-    const reader = new FileReader();
-    reader.onload = event => {
-      try {
-        loadJS(event.target.result);
-      } catch (err) {
-        alert('Error importing JS:\n' + err.message);
-        console.error(err);
-      }
+        const reader = new FileReader();
+        reader.onload = event => {
+            try {
+                loadJS(event.target.result);
+            } catch (err) {
+                alert('Error importing JS:\n' + err.message);
+                console.error(err);
+            }
+        };
+
+        reader.readAsText(file);
     };
 
-    reader.readAsText(file);
-  };
-
-  input.click();
+    input.click();
 });
