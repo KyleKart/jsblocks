@@ -90,22 +90,6 @@ jsGen.forBlock['js_hat'] = (block, generator) => {
     return generator.statementToCode(block, 'DO');
 };
 
-Blockly.serialization.blocks.register('js_block_colour', {
-    save(block) {
-        if (block._userColour) {
-            return { colour: block._userColour };
-        }
-        return null;
-    },
-
-    load(block, state) {
-        if (state.colour) {
-            block._userColour = state.colour;
-            block.setColour(state.colour);
-        }
-    }
-});
-
 const workspace = Blockly.inject('blocklyDiv', {
     toolbox: document.getElementById('toolbox'),
     trashcan: true,
