@@ -120,7 +120,7 @@ const workspace = Blockly.inject('blocklyDiv', {
 function addColourContextMenu(block) {
   block.customContextMenu = function (options) {
     options.push({
-      text: 'Set Block Colour',
+      text: 'Set Colour',
       enabled: true,
       callback: () => {
         const input = document.createElement('input');
