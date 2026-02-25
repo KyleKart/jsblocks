@@ -75,7 +75,7 @@ Blockly.Blocks['js_hat'] = {
 Blockly.Blocks['scratch_to_js'] = {
   init() {
     this.appendDummyInput()
-      .appendField("Scratch → JS")
+      .appendField("SB")
       .appendField(
         new Blockly.FieldTextInput("move (10) steps"),
         "SCRATCH"
