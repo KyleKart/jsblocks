@@ -72,8 +72,54 @@ Blockly.Blocks['js_hat'] = {
   }
 };
 
+Blockly.Blocks['scratch_to_js'] = {
+  init() {
+    this.appendDummyInput()
+      .appendField("Scratch → JS")
+      .appendField(
+        new Blockly.FieldTextInput("move (10) steps"),
+        "SCRATCH"
+      );
+
+    this.setPreviousStatement(true);
+    this.setNextStatement(true);
+    this.setColour(110);
+  }
+};
+
+function scratchCommandToJS(command) {
+  command = command.trim();
+
+  const move = command.match(/^move \((.*?)\) steps$/);
+  if (move) {
+    return `api.stage.translate(${move[1]}, 0);\n`;
+  }
+
+  const turnRight = command.match(/^turn right \((.*?)\) degrees$/);
+  if (turnRight) {
+    return `console.log("turn right", ${turnRight[1]});\n`;
+  }
+
+  const say = command.match(/^say \[(.*?)\]$/);
+  if (say) {
+    return `console.log(${JSON.stringify(say[1])});\n`;
+  }
+
+  const wait = command.match(/^wait \((.*?)\) seconds$/);
+  if (wait) {
+    return `await new Promise(r => setTimeout(r, ${wait[1]} * 1000));\n`;
+  }
+
+  return `// Unknown or unsupported Scratch command: ${command}\n`;
+}
+
 const jsGen = Blockly.JavaScript;
 jsGen.forBlock = jsGen.forBlock || {};
+
+jsGen.forBlock['scratch_to_js'] = (block) => {
+  const scratch = block.getFieldValue('SCRATCH') || '';
+  return scratchCommandToJS(scratch);
+};
 
 jsGen.forBlock['js_generic'] = (block) => {
     const code = block.getFieldValue('CODE') || '';
