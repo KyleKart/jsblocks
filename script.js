@@ -87,6 +87,33 @@ Blockly.Blocks['scratch_to_js'] = {
   }
 };
 
+Blockly.Blocks['hta_generic'] = {
+  init() {
+    this._defaultColour = 20;
+
+    this.appendDummyInput()
+      .appendField("HTA")
+      .appendField(new Blockly.FieldTextInput("MsgBox \"Hello!\""), "CODE");
+
+    this.setPreviousStatement(true);
+    this.setNextStatement(true);
+    this.setColour(this._defaultColour);
+
+    addColourContextMenu(this);
+  },
+
+  saveExtraState() {
+    return this._userColour ? { colour: this._userColour } : null;
+  },
+
+  loadExtraState(state) {
+    if (state && state.colour) {
+      this._userColour = state.colour;
+      this.setColour(state.colour);
+    }
+  }
+};
+
 function scratchCommandToJS(command) {
   command = command.trim();
 
@@ -134,6 +161,14 @@ jsGen.forBlock['js_cblock'] = (block, generator) => {
 
 jsGen.forBlock['js_hat'] = (block, generator) => {
     return generator.statementToCode(block, 'DO');
+};
+
+jsGen.forBlock['hta_generic'] = (block) => {
+  let code = block.getFieldValue('CODE') || '';
+
+  code = code.replace(/\\/g, "\\\\").replace(/"/g, '\\"');
+
+  return `__HTA__("${code}");\n`;
 };
 
 const workspace = Blockly.inject('blocklyDiv', {
@@ -282,11 +317,24 @@ window.addEventListener('keydown', e => keys[e.key] = true);
 window.addEventListener('keyup', e => keys[e.key] = false);
 function keyDown(key) { return !!keys[key]; }
 
-const api = { stage, width: canvas.width, height: canvas.height, clear, keys, keyDown };
+function __HTA__(code) {
+  var vb = document.createElement("script");
+  vb.language = "VBScript";
+
+  vb.text =
+    "Sub __run()\n" +
+    code + "\n" +
+    "End Sub\n" +
+    "__run";
+
+  document.body.appendChild(vb);
+}
+
+const api = { stage, width: canvas.width, height: canvas.height, clear, keys, keyDown, __HTA__ };
 
 try {
   const fn = new Function('api', \`
-    const { stage, width, height, clear, keys, keyDown } = api;
+    const { stage, width, height, clear, keys, keyDown, __HTA__ } = api;
     ${code}
   \`);
   fn(api);
