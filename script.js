@@ -87,33 +87,6 @@ Blockly.Blocks['scratch_to_js'] = {
   }
 };
 
-Blockly.Blocks['hta_generic'] = {
-  init() {
-    this._defaultColour = 20;
-
-    this.appendDummyInput()
-      .appendField("HTA")
-      .appendField(new Blockly.FieldTextInput("MsgBox \"Hello!\""), "CODE");
-
-    this.setPreviousStatement(true);
-    this.setNextStatement(true);
-    this.setColour(this._defaultColour);
-
-    addColourContextMenu(this);
-  },
-
-  saveExtraState() {
-    return this._userColour ? { colour: this._userColour } : null;
-  },
-
-  loadExtraState(state) {
-    if (state && state.colour) {
-      this._userColour = state.colour;
-      this.setColour(state.colour);
-    }
-  }
-};
-
 function scratchCommandToJS(command) {
   command = command.trim();
 
@@ -161,14 +134,6 @@ jsGen.forBlock['js_cblock'] = (block, generator) => {
 
 jsGen.forBlock['js_hat'] = (block, generator) => {
     return generator.statementToCode(block, 'DO');
-};
-
-jsGen.forBlock['hta_generic'] = (block) => {
-  let code = block.getFieldValue('CODE') || '';
-
-  code = code.replace(/\\/g, "\\\\").replace(/"/g, '\\"');
-
-  return `__HTA__("${code}");\n`;
 };
 
 const workspace = Blockly.inject('blocklyDiv', {
@@ -308,42 +273,33 @@ document.getElementById('menuExportHTML').addEventListener('click', () => {
 <body>
 <canvas id="stage" width="480" height="360"></canvas>
 <script>
-var canvas = document.getElementById('stage');
-var stage = canvas.getContext('2d');
+const canvas = document.getElementById('stage');
+const stage = canvas.getContext('2d');
 
 function clear() { stage.clearRect(0, 0, canvas.width, canvas.height); }
-var keys = {};
-document.attachEvent('onkeydown', function(e) {
-    e = e || window.event;
-    keys[e.keyCode] = true;
-});
-document.attachEvent('onkeyup', function(e) {
-    e = e || window.event;
-    keys[e.keyCode] = false;
-});
+const keys = {};
+window.addEventListener('keydown', e => keys[e.key] = true);
+window.addEventListener('keyup', e => keys[e.key] = false);
 function keyDown(key) { return !!keys[key]; }
 
 function __HTA__(code) {
   var vb = document.createElement("script");
   vb.language = "VBScript";
 
-var vbCode = [
-  "Sub __run()",
-  code,
-  "End Sub",
-  "__run"
-].join("\r\n");
-
-vb.text = vbCode;
+  vb.text =
+    "Sub __run()\n" +
+    code + "\n" +
+    "End Sub\n" +
+    "__run";
 
   document.body.appendChild(vb);
 }
 
-var api = { stage, width: canvas.width, height: canvas.height, clear, keys, keyDown, __HTA__ };
+const api = { stage, width: canvas.width, height: canvas.height, clear, keys, keyDown, __HTA__ };
 
 try {
-  var fn = new Function('api', \`
-    var { stage, width, height, clear, keys, keyDown, __HTA__ } = api;
+  const fn = new Function('api', \`
+    const { stage, width, height, clear, keys, keyDown, __HTA__ } = api;
     ${code}
   \`);
   fn(api);
