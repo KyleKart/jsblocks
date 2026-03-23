@@ -308,13 +308,19 @@ document.getElementById('menuExportHTML').addEventListener('click', () => {
 <body>
 <canvas id="stage" width="480" height="360"></canvas>
 <script>
-const canvas = document.getElementById('stage');
-const stage = canvas.getContext('2d');
+var canvas = document.getElementById('stage');
+var stage = canvas.getContext('2d');
 
 function clear() { stage.clearRect(0, 0, canvas.width, canvas.height); }
-const keys = {};
-window.addEventListener('keydown', e => keys[e.key] = true);
-window.addEventListener('keyup', e => keys[e.key] = false);
+var keys = {};
+document.attachEvent('onkeydown', function(e) {
+    e = e || window.event;
+    keys[e.keyCode] = true;
+});
+document.attachEvent('onkeyup', function(e) {
+    e = e || window.event;
+    keys[e.keyCode] = false;
+});
 function keyDown(key) { return !!keys[key]; }
 
 function __HTA__(code) {
@@ -330,11 +336,11 @@ function __HTA__(code) {
   document.body.appendChild(vb);
 }
 
-const api = { stage, width: canvas.width, height: canvas.height, clear, keys, keyDown, __HTA__ };
+var api = { stage, width: canvas.width, height: canvas.height, clear, keys, keyDown, __HTA__ };
 
 try {
-  const fn = new Function('api', \`
-    const { stage, width, height, clear, keys, keyDown, __HTA__ } = api;
+  var fn = new Function('api', \`
+    var { stage, width, height, clear, keys, keyDown, __HTA__ } = api;
     ${code}
   \`);
   fn(api);
