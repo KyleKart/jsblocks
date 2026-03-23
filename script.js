@@ -253,6 +253,59 @@ function loadJS(JS) {
     parseBlock(lines, 0, lines.length, hat);
 }
 
+document.getElementById('menuExportHTML').addEventListener('click', () => {
+    let code = '';
+    workspace.getTopBlocks(true).forEach(block => {
+        if (block.type === 'js_hat') {
+            code += jsGen.forBlock['js_hat'](block, jsGen);
+        }
+    });
+
+    const html = `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>JS Blocks Project</title>
+<style>
+  canvas { border: 1px solid #ccc; display: block; margin: 10px 0; }
+</style>
+</head>
+<body>
+<canvas id="stage" width="480" height="360"></canvas>
+<script>
+const canvas = document.getElementById('stage');
+const stage = canvas.getContext('2d');
+
+function clear() { stage.clearRect(0, 0, canvas.width, canvas.height); }
+const keys = {};
+window.addEventListener('keydown', e => keys[e.key] = true);
+window.addEventListener('keyup', e => keys[e.key] = false);
+function keyDown(key) { return !!keys[key]; }
+
+const api = { stage, width: canvas.width, height: canvas.height, clear, keys, keyDown };
+
+try {
+  const fn = new Function('api', \`
+    const { stage, width, height, clear, keys, keyDown } = api;
+    ${code}
+  \`);
+  fn(api);
+} catch(e) {
+  alert('Error running project: ' + e.message);
+}
+</script>
+</body>
+</html>`;
+
+    const blob = new Blob([html], { type: 'text/html' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'project.html';
+    a.click();
+    URL.revokeObjectURL(url);
+});
+
 function parseBlock(lines, start, end, parentBlock) {
     let lastBlock = null;
     let i = start;
