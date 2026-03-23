@@ -327,11 +327,14 @@ function __HTA__(code) {
   var vb = document.createElement("script");
   vb.language = "VBScript";
 
-vb.text =
-  "Sub __run()\r\n" +
-  code + "\r\n" +
-  "End Sub\r\n" +
-  "__run";
+var vbCode = [
+  "Sub __run()",
+  code,
+  "End Sub",
+  "__run"
+].join("\r\n");
+
+vb.text = vbCode;
 
   document.body.appendChild(vb);
 }
