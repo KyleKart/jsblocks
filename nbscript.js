@@ -17,6 +17,7 @@ Blockly.Blocks['js_generic'] = {
   }
 };
 
+
 Blockly.Blocks['js_cblock'] = {
   init() {
     this._defaultColour = 300;
