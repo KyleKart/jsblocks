@@ -119,7 +119,7 @@ function runUserCode(userCode) {
             code: userCode
         }, "*");
     } else {
-        alert("VM Frame not loaded.");
+        alert("VM Frame not found.");
     }
 }
 
@@ -135,14 +135,8 @@ document.getElementById('menuExportHTML').addEventListener('click', () => {
 <iframe id="stage" src="https://kylekart.github.io/ScratchExtensions/projects/VM.html" width="480" height="360"></iframe>
 <script>
 window.addEventListener("message", (e) => {
-  if (e.data.type === "eval") {
-    // VM handles evaluation
-  }
+  if (e.data.type === "eval") { /* VM handles internal eval */ }
 });
-const frame = document.getElementById('stage');
-frame.onload = () => {
-  frame.contentWindow.postMessage({ type: "eval", code: \`${code.replace(/`/g, '\\`')}\` }, "*");
-};
 </script>
 </body>
 </html>`;
