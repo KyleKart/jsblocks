@@ -72,54 +72,8 @@ Blockly.Blocks['js_hat'] = {
   }
 };
 
-Blockly.Blocks['scratch_to_js'] = {
-  init() {
-    this.appendDummyInput()
-      .appendField("SB")
-      .appendField(
-        new Blockly.FieldTextInput("move (10) steps"),
-        "SCRATCH"
-      );
-
-    this.setPreviousStatement(true);
-    this.setNextStatement(true);
-    this.setColour(110);
-  }
-};
-
-function scratchCommandToJS(command) {
-  command = command.trim();
-
-  const move = command.match(/^move \((.*?)\) steps$/);
-  if (move) {
-    return `api.stage.translate(${move[1]}, 0);\n`;
-  }
-
-  const turnRight = command.match(/^turn right \((.*?)\) degrees$/);
-  if (turnRight) {
-    return `console.log("turn right", ${turnRight[1]});\n`;
-  }
-
-  const say = command.match(/^say \[(.*?)\]$/);
-  if (say) {
-    return `console.log(${JSON.stringify(say[1])});\n`;
-  }
-
-  const wait = command.match(/^wait \((.*?)\) seconds$/);
-  if (wait) {
-    return `await new Promise(r => setTimeout(r, ${wait[1]} * 1000));\n`;
-  }
-
-  return `// Unknown or unsupported Scratch command: ${command}\n`;
-}
-
 const jsGen = Blockly.JavaScript;
 jsGen.forBlock = jsGen.forBlock || {};
-
-jsGen.forBlock['scratch_to_js'] = (block) => {
-  const scratch = block.getFieldValue('SCRATCH') || '';
-  return scratchCommandToJS(scratch);
-};
 
 jsGen.forBlock['js_generic'] = (block) => {
     const code = block.getFieldValue('CODE') || '';
@@ -238,19 +192,6 @@ function runUserCode(userCode) {
     );
 
     fn(api);
-}
-
-function loadJS(JS) {
-    workspace.clear();
-
-    JS = JS.replace(/\r\n/g, '\n').trim();
-    const lines = JS.split('\n');
-
-    const hat = workspace.newBlock('js_hat');
-    hat.initSvg();
-    hat.render();
-
-    parseBlock(lines, 0, lines.length, hat);
 }
 
 document.getElementById('menuExportHTML').addEventListener('click', () => {
@@ -430,30 +371,5 @@ document.getElementById('menuLoad').addEventListener('click', () => {
 
         reader.readAsText(file);
     };
-    input.click();
-});
-
-document.getElementById('menuImportJS').addEventListener('click', () => {
-    const input = document.createElement('input');
-    input.type = 'file';
-    input.accept = '.js';
-
-    input.onchange = e => {
-        const file = e.target.files[0];
-        if (!file) return;
-
-        const reader = new FileReader();
-        reader.onload = event => {
-            try {
-                loadJS(event.target.result);
-            } catch (err) {
-                alert('Error importing JS:\n' + err.message);
-                console.error(err);
-            }
-        };
-
-        reader.readAsText(file);
-    };
-
     input.click();
 });
