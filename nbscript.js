@@ -1,10 +1,8 @@
-Blockly.Blocks['js_generic'] = {
+Blockly.Blocks['js_expr'] = {
   init() {
-    this._defaultColour = 230;
-    this.appendDummyInput()
-      .appendField(new Blockly.FieldTextInput("console.log('Hello World!')"), "CODE");
-    this.setPreviousStatement(true);
-    this.setNextStatement(true);
+    this._defaultColour = 120;
+    this.appendDummyInput().appendField(new Blockly.FieldTextInput("1 + 1"), "EXPR");
+    this.setOutput(true, null);
     this.setColour(this._defaultColour);
     addColourContextMenu(this);
   },
@@ -14,6 +12,101 @@ Blockly.Blocks['js_generic'] = {
       this._userColour = state.colour;
       this.setColour(state.colour);
     }
+  }
+};
+
+Blockly.Blocks['js_generic'] = {
+  init() {
+    this._defaultColour = 230;
+    this.itemCount_ = 1;
+    this.updateShape_();
+    this.setPreviousStatement(true);
+    this.setNextStatement(true);
+    this.setInputsInline(true);
+    this.setColour(this._defaultColour);
+    this.setMutator(new Blockly.icons.MutatorIcon(['js_generic_item'], this));
+    addColourContextMenu(this);
+  },
+  saveExtraState() {
+    return {
+      'itemCount': this.itemCount_,
+      ...(this._userColour ? { colour: this._userColour } : {})
+    };
+  },
+  loadExtraState(state) {
+    if (state) {
+      this.itemCount_ = state.itemCount || 1;
+      this.updateShape_();
+      if (state.colour) {
+        this._userColour = state.colour;
+        this.setColour(state.colour);
+      }
+    }
+  },
+  decompose(workspace) {
+    const containerBlock = workspace.newBlock('js_generic_container');
+    containerBlock.initSvg();
+    let connection = containerBlock.getInput('STACK').connection;
+    for (let i = 0; i < this.itemCount_; i++) {
+      const itemBlock = workspace.newBlock('js_generic_item');
+      itemBlock.initSvg();
+      connection.connect(itemBlock.previousConnection);
+      connection = itemBlock.nextConnection;
+    }
+    return containerBlock;
+  },
+  compose(containerBlock) {
+    let itemBlock = containerBlock.getInput('STACK').connection.targetBlock();
+    const connections = [];
+    while (itemBlock && !itemBlock.isInsertionMarker()) {
+      connections.push(itemBlock.valueConnection_);
+      itemBlock = itemBlock.nextConnection && itemBlock.nextConnection.targetBlock();
+    }
+    this.itemCount_ = connections.length || 1;
+    this.updateShape_();
+    for (let i = 0; i < this.itemCount_; i++) {
+      if (connections[i]) {
+        this.getInput('ADD' + i).connection.connect(connections[i]);
+      }
+    }
+  },
+  saveConnections(containerBlock) {
+    let itemBlock = containerBlock.getInput('STACK').connection.targetBlock();
+    let i = 0;
+    while (itemBlock) {
+      const input = this.getInput('ADD' + i);
+      itemBlock.valueConnection_ = input && input.connection.targetConnection;
+      itemBlock = itemBlock.nextConnection && itemBlock.nextConnection.targetBlock();
+      i++;
+    }
+  },
+  updateShape_() {
+    let i = 0;
+    while (this.getInput('ADD' + i)) {
+      this.removeInput('ADD' + i);
+      i++;
+    }
+    for (i = 0; i < this.itemCount_; i++) {
+      this.appendValueInput('ADD' + i).setCheck(null);
+    }
+  }
+};
+
+Blockly.Blocks['js_generic_container'] = {
+  init() {
+    this.setStyle('list_blocks');
+    this.appendDummyInput().appendField("Inputs");
+    this.appendStatementInput('STACK');
+    this.contextMenu = false;
+  }
+};
+Blockly.Blocks['js_generic_item'] = {
+  init() {
+    this.setStyle('list_blocks');
+    this.appendDummyInput().appendField("Input");
+    this.setPreviousStatement(true);
+    this.setNextStatement(true);
+    this.contextMenu = false;
   }
 };
 
@@ -21,22 +114,174 @@ Blockly.Blocks['js_generic'] = {
 Blockly.Blocks['js_cblock'] = {
   init() {
     this._defaultColour = 300;
-    this.appendDummyInput()
-      .appendField(new Blockly.FieldTextInput("if (true)"), "HEADER");
-    this.appendStatementInput("DO");
+    this.branchHeaders_ = [1]; 
+    this.updateShape_();
     this.setPreviousStatement(true);
     this.setNextStatement(true);
+    this.setInputsInline(true);
     this.setColour(this._defaultColour);
+    this.setMutator(new Blockly.icons.MutatorIcon(['js_cblock_branch', 'js_cblock_item'], this));
     addColourContextMenu(this);
   },
-  saveExtraState() { return this._userColour ? { colour: this._userColour } : null; },
+  saveExtraState() {
+    return {
+      'branchHeaders': this.branchHeaders_,
+      ...(this._userColour ? { colour: this._userColour } : {})
+    };
+  },
   loadExtraState(state) {
-    if (state && state.colour) {
-      this._userColour = state.colour;
-      this.setColour(state.colour);
+    if (state) {
+      this.branchHeaders_ = state.branchHeaders || [1];
+      this.updateShape_();
+      if (state.colour) {
+        this._userColour = state.colour;
+        this.setColour(state.colour);
+      }
+    }
+  },
+  decompose(workspace) {
+    const containerBlock = workspace.newBlock('js_cblock_container');
+    containerBlock.initSvg();
+    let connection = containerBlock.getInput('STACK').connection;
+    
+    for (let j = 1; j < this.branchHeaders_[0]; j++) {
+      const itemBlock = workspace.newBlock('js_cblock_item');
+      itemBlock.initSvg();
+      connection.connect(itemBlock.previousConnection);
+      connection = itemBlock.nextConnection;
+    }
+    
+    for (let i = 1; i < this.branchHeaders_.length; i++) {
+      const branchBlock = workspace.newBlock('js_cblock_branch');
+      branchBlock.initSvg();
+      connection.connect(branchBlock.previousConnection);
+      connection = branchBlock.nextConnection;
+      
+      for (let j = 1; j < this.branchHeaders_[i]; j++) {
+        const itemBlock = workspace.newBlock('js_cblock_item');
+        itemBlock.initSvg();
+        connection.connect(itemBlock.previousConnection);
+        connection = itemBlock.nextConnection;
+      }
+    }
+    return containerBlock;
+  },
+  compose(containerBlock) {
+    let currentBlock = containerBlock.getInput('STACK').connection.targetBlock();
+    
+    const newHeaders = [1];
+    const connections = [[]];
+    let branchIndex = 0;
+
+    while (currentBlock && !currentBlock.isInsertionMarker()) {
+      if (currentBlock.type === 'js_cblock_item') {
+        newHeaders[branchIndex]++;
+        connections[branchIndex].push(currentBlock.valueConnection_);
+      } else if (currentBlock.type === 'js_cblock_branch') {
+        branchIndex++;
+        newHeaders.push(1);
+        connections.push([currentBlock.valueConnection_]);
+      }
+      currentBlock = currentBlock.nextConnection && currentBlock.nextConnection.targetBlock();
+    }
+
+    this.branchHeaders_ = newHeaders;
+    this.updateShape_();
+
+    for (let b = 0; b < this.branchHeaders_.length; b++) {
+      if (b > 0 && this.branchConnections_[b]) {
+        const doInput = this.getInput('DO' + b);
+        if (doInput && this.branchConnections_[b]) doInput.connection.connect(this.branchConnections_[b]);
+      } else if (b === 0 && this.branchConnections_[0]) {
+        const doInput = this.getInput('DO0');
+        if (doInput) doInput.connection.connect(this.branchConnections_[0]);
+      }
+
+      for (let i = 0; i < this.branchHeaders_[b]; i++) {
+        const conn = (i === 0) ? this.baseConnections_[b] : connections[b][i - 1];
+        const input = this.getInput(`B${b}_ADD${i}`);
+        if (input && conn) input.connection.connect(conn);
+      }
+    }
+  },
+  saveConnections(containerBlock) {
+    this.baseConnections_ = [];
+    this.branchConnections_ = [];
+    
+    for (let b = 0; b < this.branchHeaders_.length; b++) {
+      const baseIn = this.getInput(`B${b}_ADD0`);
+      this.baseConnections_.push(baseIn ? baseIn.connection.targetConnection : null);
+      
+      const doIn = this.getInput('DO' + b);
+      this.branchConnections_.push(doIn ? doIn.connection.targetConnection : null);
+    }
+
+    let currentBlock = containerBlock.getInput('STACK').connection.targetBlock();
+    let branchIndex = 0;
+    let itemIndex = 0;
+
+    while (currentBlock) {
+      if (currentBlock.type === 'js_cblock_item') {
+        itemIndex++;
+        const input = this.getInput(`B${branchIndex}_ADD${itemIndex}`);
+        currentBlock.valueConnection_ = input ? input.connection.targetConnection : null;
+      } else if (currentBlock.type === 'js_cblock_branch') {
+        branchIndex++;
+        itemIndex = 0;
+        const input = this.getInput(`B${branchIndex}_ADD0`);
+        currentBlock.valueConnection_ = input ? input.connection.targetConnection : null;
+      }
+      currentBlock = currentBlock.nextConnection && currentBlock.nextConnection.targetBlock();
+    }
+  },
+  updateShape_() {
+    let b = 0;
+    while (this.getInput('DO' + b) || this.getInput(`B${b}_ADD0`)) {
+      if (this.getInput('DO' + b)) this.removeInput('DO' + b);
+      let i = 0;
+      while (this.getInput(`B${b}_ADD${i}`)) {
+        this.removeInput(`B${b}_ADD${i}`);
+        i++;
+      }
+      b++;
+    }
+
+    for (b = 0; b < this.branchHeaders_.length; b++) {
+      for (let i = 0; i < this.branchHeaders_[b]; i++) {
+        this.appendValueInput(`B${b}_ADD${i}`).setCheck(null);
+      }
+      this.appendStatementInput('DO' + b);
     }
   }
 };
+
+Blockly.Blocks['js_cblock_container'] = {
+  init() {
+    this.setStyle('logic_blocks');
+    this.appendDummyInput().appendField("Inputs");
+    this.appendStatementInput('STACK');
+    this.contextMenu = false;
+  }
+};
+Blockly.Blocks['js_cblock_branch'] = {
+  init() {
+    this.setStyle('logic_blocks');
+    this.appendDummyInput().appendField("Branch");
+    this.setPreviousStatement(true);
+    this.setNextStatement(true);
+    this.contextMenu = false;
+  }
+};
+Blockly.Blocks['js_cblock_item'] = {
+  init() {
+    this.setStyle('logic_blocks');
+    this.appendDummyInput().appendField("Input");
+    this.setPreviousStatement(true);
+    this.setNextStatement(true);
+    this.contextMenu = false;
+  }
+};
+
 
 Blockly.Blocks['js_hat'] = {
   init() {
@@ -58,15 +303,42 @@ Blockly.Blocks['js_hat'] = {
 const jsGen = Blockly.JavaScript;
 jsGen.forBlock = jsGen.forBlock || {};
 
-jsGen.forBlock['js_generic'] = (block) => {
-    const code = block.getFieldValue('CODE') || '';
-    return code ? code + ';\n' : '';
+jsGen.forBlock['js_expr'] = (block) => {
+    const expr = block.getFieldValue('EXPR') || '';
+    return [expr, jsGen.ORDER_ATOMIC];
+};
+
+jsGen.forBlock['js_generic'] = (block, generator) => {
+    const elements = [];
+    for (let i = 0; i < block.itemCount_; i++) {
+      const codePart = generator.valueToCode(block, 'ADD' + i, jsGen.ORDER_ATOMIC);
+      if (codePart) elements.push(codePart);
+    }
+    const combinedCode = elements.join(' ');
+    return combinedCode ? combinedCode + ';\n' : '';
 };
 
 jsGen.forBlock['js_cblock'] = (block, generator) => {
-    const header = block.getFieldValue('HEADER') || '';
-    const body = generator.statementToCode(block, 'DO');
-    return `${header} {\n${body}}\n`;
+    let code = '';
+    
+    for (let b = 0; b < block.branchHeaders_.length; b++) {
+      const headerElements = [];
+      for (let i = 0; i < block.branchHeaders_[b]; i++) {
+        const codePart = generator.valueToCode(block, `B${b}_ADD${i}`, jsGen.ORDER_ATOMIC);
+        if (codePart) headerElements.push(codePart);
+      }
+      
+      const combinedHeader = headerElements.join(' ');
+      const branchBody = generator.statementToCode(block, 'DO' + b);
+      
+      if (b === 0) {
+        code += `${combinedHeader} {\n${branchBody}}`;
+      } else {
+        code += ` ${combinedHeader} {\n${branchBody}}`;
+      }
+    }
+    
+    return code + '\n';
 };
 
 jsGen.forBlock['js_hat'] = (block, generator) => {
@@ -133,7 +405,7 @@ document.getElementById('menuExportHTML').addEventListener('click', () => {
     const html = `<!DOCTYPE html>
 <html>
 <body>
-<iframe id="stage" src="https://kylekart.github.io/ScratchExtensions/projects/VM.html" width="480" height="360"></iframe>
+<iframe id="stage" src="https://kylekart.github.io/jsblocks/vm.html" width="480" height="360"></iframe>
 <script>
 window.addEventListener("message", (e) => {
   if (e.data.type === "eval") { /* VM handles internal eval */ }
@@ -156,11 +428,17 @@ function parseBlock(lines, start, end, parentBlock) {
         let line = lines[i].trim();
         if (!line) { i++; continue; }
         if (line.endsWith('{')) {
-            const header = line.slice(0, -1).trim();
+            const headerText = line.slice(0, -1).trim();
             const cblock = workspace.newBlock('js_cblock');
-            cblock.setFieldValue(header, 'HEADER');
             cblock.initSvg();
             cblock.render();
+            
+            const exprBlock = workspace.newBlock('js_expr');
+            exprBlock.setFieldValue(headerText, 'EXPR');
+            exprBlock.initSvg();
+            exprBlock.render();
+            cblock.getInput('B0_ADD0').connection.connect(exprBlock.outputConnection);
+
             if (!lastBlock) parentBlock.getInput('DO').connection.connect(cblock.previousConnection);
             else lastBlock.nextConnection.connect(cblock.previousConnection);
             
@@ -177,10 +455,17 @@ function parseBlock(lines, start, end, parentBlock) {
             continue;
         }
         if (line === '}') return;
+        
         const g = workspace.newBlock('js_generic');
-        g.setFieldValue(line.replace(/;$/, ''), 'CODE');
         g.initSvg();
         g.render();
+        
+        const exprBlock = workspace.newBlock('js_expr');
+        exprBlock.setFieldValue(line.replace(/;$/, ''), 'EXPR');
+        exprBlock.initSvg();
+        exprBlock.render();
+        g.getInput('ADD0').connection.connect(exprBlock.outputConnection);
+
         if (!lastBlock) parentBlock.getInput('DO').connection.connect(g.previousConnection);
         else lastBlock.nextConnection.connect(g.previousConnection);
         lastBlock = g;
