@@ -438,12 +438,72 @@ function getMouseDown() {
     return run.ext_scratch3_sensing.getMouseDown({}, {target}); 
 }
 
+function getVariable(VARIABLE) {
+    return run.ext_scratch3_data.getVariable({VARIABLE}, {target});
+}
+
 function setVariable(VARIABLE, VALUE) {
-    return run.ext_scratch3_data.setVariable({VARIABLE}, {target});
+    return run.ext_scratch3_data.setVariable({VARIABLE, VALUE}, {target});
 }
 
 function changeVariableBy(VARIABLE, VALUE) {
     return run.ext_scratch3_data.changeVariableBy({VARIABLE, VALUE}, {target});
+}
+
+function showVariable(VARIABLE) {
+    return run.ext_scratch3_data.showVariable({VARIABLE}, {target});
+}
+
+function hideVariable(VARIABLE) {
+    return run.ext_scratch3_data.hideVariable({VARIABLE}, {target});
+}
+
+function getList(LIST) {
+    return run.ext_scratch3_lists.getList({LIST}, {target});
+}
+
+function addToList(ITEM, LIST) {
+    return run.ext_scratch3_lists.addToList({ITEM, LIST}, {target});
+}
+
+function deleteOfList(INDEX, LIST) {
+    return run.ext_scratch3_lists.deleteOfList({INDEX, LIST}, {target});
+}
+
+function deleteAllOfList(LIST) {
+    return run.ext_scratch3_lists.deleteAllOfList({LIST}, {target});
+}
+
+function insertToList(INDEX, ITEM, LIST) {
+    return run.ext_scratch3_lists.insertToList({INDEX, ITEM, LIST}, {target});
+}
+
+function replaceItemOfList(INDEX, ITEM, LIST) {
+    return run.ext_scratch3_lists.replaceItemOfList({INDEX, ITEM, LIST}, {target});
+}
+
+function itemOfList(INDEX, LIST) {
+    return run.ext_scratch3_lists.getItemOfList({INDEX, LIST}, {target});
+}
+
+function itemNumOfList(ITEM, LIST) {
+    return run.ext_scratch3_lists.getItemNumOfList({ITEM, LIST}, {target});
+}
+
+function lengthOfList(LIST) {
+    return run.ext_scratch3_lists.getLengthOfList({LIST}, {target});
+}
+
+function listContainsItem(LIST, ITEM) {
+    return run.ext_scratch3_lists.listContainsItem({LIST, ITEM}, {target});
+}
+
+function showList(LIST) {
+    return run.ext_scratch3_lists.showList({LIST}, {target});
+}
+
+function hideList(LIST) {
+    return run.ext_scratch3_lists.hideList({LIST}, {target});
 }
 
 function add(NUM1, NUM2) { return run.ext_scratch3_operators.add({NUM1, NUM2}); }
