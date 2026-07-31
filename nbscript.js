@@ -403,13 +403,16 @@ function changeYby(DY) { run.ext_scratch3_motion.changeYby({DY}, {target}); }
 function setY(Y) { run.ext_scratch3_motion.setY({Y}, {target}); }
 
 function say(MESSAGE) { run.ext_scratch3_looks.say({MESSAGE}, {target}); }
-function sayForSecs(MESSAGE, SECS) { run.ext_scratch3_looks.sayForSecs({MESSAGE, SECS}, {target}); }
+function sayForSecs(MESSAGE, SECS) { run.ext_scratch3_looks.sayforsecs({MESSAGE, SECS}, {target}); }
 function think(MESSAGE) { run.ext_scratch3_looks.think({MESSAGE}, {target}); }
-function thinkForSecs(MESSAGE, SECS) { run.ext_scratch3_looks.thinkForSecs({MESSAGE, SECS}, {target}); }
+function thinkForSecs(MESSAGE, SECS) { run.ext_scratch3_looks.thinkforsecs({MESSAGE, SECS}, {target}); }
 function switchCostume(COSTUME) { run.ext_scratch3_looks.switchCostume({COSTUME}, {target}); }
+function switchBackdrop(BACKDROP) { run.ext_scratch3_looks.switchBackdrop({BACKDROP}, {target}); }
 function nextCostume() { run.ext_scratch3_looks.nextCostume({}, {target}); }
-function changeSizeBy(CHANGE) { run.ext_scratch3_looks.changeSizeBy({CHANGE}, {target}); }
-function setSizeTo(SIZE) { run.ext_scratch3_looks.setSizeTo({SIZE}, {target}); }
+function nextBackdrop() { run.ext_scratch3_looks.nextBackdrop({}, {target}); }
+function changeSize(CHANGE) { run.ext_scratch3_looks.changeSize({CHANGE}, {target}); }
+function setSize(SIZE) { run.ext_scratch3_looks.setSize({SIZE}, {target}); }
+function getSize() { return run.ext_scratch3_looks.getSize({}, {target}); }
 
 function playSound(SOUND_MENU) { run.ext_scratch3_sound.playSound({SOUND_MENU}, {target}); }
 function stopAllSounds() { run.ext_scratch3_sound.stopAllSounds({}, {target}); }
@@ -437,73 +440,72 @@ function getMouseY() {
 function getMouseDown() { 
     return run.ext_scratch3_sensing.getMouseDown({}, {target}); 
 }
-
-function variable(VARIABLE) {
-    return run.ext_scratch3_data.variable({VARIABLE}, {target});
+function getVariable(VARIABLE) {
+    return run.ext_scratch3_data.getVariable({VARIABLE}, {target});
 }
 
-function setvariableto(VARIABLE, VALUE) {
-    return run.ext_scratch3_data.setvariableto({VARIABLE, VALUE}, {target});
+function setVariableTo(VARIABLE, VALUE) {
+    return run.ext_scratch3_data.setVariableTo({VARIABLE, VALUE}, {target});
 }
 
-function changevariableby(VARIABLE, VALUE) {
-    return run.ext_scratch3_data.changevariableby({VARIABLE, VALUE}, {target});
+function changeVariableBy(VARIABLE, VALUE) {
+    return run.ext_scratch3_data.changeVariableBy({VARIABLE, VALUE}, {target});
 }
 
-function showvariable(VARIABLE) {
-    return run.ext_scratch3_data.showvariable({VARIABLE}, {target});
+function showVariable(VARIABLE) {
+    return run.ext_scratch3_data.showVariable({VARIABLE}, {target});
 }
 
-function hidevariable(VARIABLE) {
-    return run.ext_scratch3_data.hidevariable({VARIABLE}, {target});
+function hideVariable(VARIABLE) {
+    return run.ext_scratch3_data.hideVariable({VARIABLE}, {target});
 }
 
-function listcontents(LIST) {
-    return run.ext_scratch3_data.listcontents({LIST}, {target});
+function getListContents(LIST) {
+    return run.ext_scratch3_data.getListContents({LIST}, {target});
 }
 
-function addtolist(ITEM, LIST) {
-    return run.ext_scratch3_data.addtolist({ITEM, LIST}, {target});
+function addToList(ITEM, LIST) {
+    return run.ext_scratch3_data.addToList({ITEM, LIST}, {target});
 }
 
-function deleteoflist(INDEX, LIST) {
-    return run.ext_scratch3_data.deleteoflist({INDEX, LIST}, {target});
+function deleteOfList(INDEX, LIST) {
+    return run.ext_scratch3_data.deleteOfList({INDEX, LIST}, {target});
 }
 
-function deletealloflist(LIST) {
-    return run.ext_scratch3_data.deletealloflist({LIST}, {target});
+function deleteAllOfList(LIST) {
+    return run.ext_scratch3_data.deleteAllOfList({LIST}, {target});
 }
 
-function insertatlist(INDEX, ITEM, LIST) {
-    return run.ext_scratch3_data.insertatlist({INDEX, ITEM, LIST}, {target});
+function insertAtList(INDEX, ITEM, LIST) {
+    return run.ext_scratch3_data.insertAtList({INDEX, ITEM, LIST}, {target});
 }
 
-function replaceitemoflist(INDEX, ITEM, LIST) {
-    return run.ext_scratch3_data.replaceitemoflist({INDEX, ITEM, LIST}, {target});
+function replaceItemOfList(INDEX, ITEM, LIST) {
+    return run.ext_scratch3_data.replaceItemOfList({INDEX, ITEM, LIST}, {target});
 }
 
-function itemoflist(INDEX, LIST) {
-    return run.ext_scratch3_data.itemoflist({INDEX, LIST}, {target});
+function getItemOfList(INDEX, LIST) {
+    return run.ext_scratch3_data.getItemOfList({INDEX, LIST}, {target});
 }
 
-function itemnumoflist(ITEM, LIST) {
-    return run.ext_scratch3_data.itemnumoflist({ITEM, LIST}, {target});
+function getItemNumOfList(ITEM, LIST) {
+    return run.ext_scratch3_data.getItemNumOfList({ITEM, LIST}, {target});
 }
 
-function lengthoflist(LIST) {
-    return run.ext_scratch3_data.lengthoflist({LIST}, {target});
+function lengthOfList(LIST) {
+    return run.ext_scratch3_data.lengthOfList({LIST}, {target});
 }
 
-function listcontainsitem(LIST, ITEM) {
-    return run.ext_scratch3_data.listcontainsitem({LIST, ITEM}, {target});
+function listContainsItem(LIST, ITEM) {
+    return run.ext_scratch3_data.listContainsItem({LIST, ITEM}, {target});
 }
 
-function showlist(LIST) {
-    return run.ext_scratch3_data.showlist({LIST}, {target});
+function showList(LIST) {
+    return run.ext_scratch3_data.showList({LIST}, {target});
 }
 
-function hidelist(LIST) {
-    return run.ext_scratch3_data.hidelist({LIST}, {target});
+function hideList(LIST) {
+    return run.ext_scratch3_data.hideList({LIST}, {target});
 }
 
 function add(NUM1, NUM2) { return run.ext_scratch3_operators.add({NUM1, NUM2}); }
@@ -529,47 +531,27 @@ function wait(DURATION) {
     return run.ext_scratch3_control.wait({DURATION});
 }
 
-function repeat(TIMES, SUBSTACK) {
-    return run.ext_scratch3_control.repeat({TIMES, SUBSTACK}, {target});
-}
-
-function forever(SUBSTACK) {
-    return run.ext_scratch3_control.forever({SUBSTACK}, {target});
-}
-
-function if(CONDITION, SUBSTACK) {
-    return run.ext_scratch3_control.if({CONDITION, SUBSTACK}, {target});
-}
-
-function if_else(CONDITION, SUBSTACK, SUBSTACK2) {
-    return run.ext_scratch3_control.if_else({CONDITION, SUBSTACK, SUBSTACK2}, {target});
-}
-
-function wait_until(CONDITION) {
-    return run.ext_scratch3_control.wait_until({CONDITION}, {target});
-}
-
-function repeat_until(CONDITION, SUBSTACK) {
-    return run.ext_scratch3_control.repeat_until({CONDITION, SUBSTACK}, {target});
+function waitUntil(CONDITION) {
+    return run.ext_scratch3_control.waitUntil({CONDITION}, {target});
 }
 
 function stop(STOP_OPTION) {
     return run.ext_scratch3_control.stop({STOP_OPTION}, {target});
 }
 
-function start_as_clone() {
-    return run.ext_scratch3_control.start_as_clone({}, {target});
+function createClone(CLONE_OPTION) {
+    return run.ext_scratch3_control.createClone({CLONE_OPTION}, {target});
 }
 
-function create_clone_of(CLONE_OPTION) {
-    return run.ext_scratch3_control.create_clone_of({CLONE_OPTION}, {target});
+function deleteClone() {
+    return run.ext_scratch3_control.deleteClone({}, {target});
 }
 
-function delete_this_clone() {
-    return run.ext_scratch3_control.delete_this_clone({}, {target});
+try {
+    ${userCode}
+} catch (error) {
+    console.error("User Code Execution Error:", error);
 }
-
-            ${userCode}
         `;
 
         vmFrame.contentWindow.postMessage({
