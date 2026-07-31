@@ -428,25 +428,22 @@ function askAndWait(QUESTION) {
 function getAnswer() { 
     return run.ext_scratch3_sensing._answer; 
 }
-function mouseX() { 
+function getMouseX() { 
     return run.ext_scratch3_sensing.getMouseX({}, {target}); 
 }
-function mouseY() { 
+function getMouseY() { 
     return run.ext_scratch3_sensing.getMouseY({}, {target}); 
 }
-function mouseDown() { 
+function getMouseDown() { 
     return run.ext_scratch3_sensing.getMouseDown({}, {target}); 
 }
 
-function setVar(VARIABLE, VALUE) {
-    if (!target) return;
-    const varObj = target.lookupVariableById(VARIABLE) || target.lookupVariableByNameAndType(VARIABLE, '');
-    if (varObj) varObj.value = VALUE;
+function setVariable(VARIABLE, VALUE) {
+    return run.ext_scratch3_data.setVariable({VARIABLE}, {target});
 }
-function changeVar(VARIABLE, VALUE) {
-    if (!target) return;
-    const varObj = target.lookupVariableById(VARIABLE) || target.lookupVariableByNameAndType(VARIABLE, '');
-    if (varObj) varObj.value = Number(varObj.value) + Number(VALUE);
+
+function changeVariableBy(VARIABLE, VALUE) {
+    return run.ext_scratch3_data.changeVariableBy({VARIABLE, VALUE}, {target});
 }
 
 function add(NUM1, NUM2) { return run.ext_scratch3_operators.add({NUM1, NUM2}); }
@@ -466,7 +463,7 @@ function stringLength(STRING) { return run.ext_scratch3_operators.length({STRING
 function contains(STRING1, STRING2) { return run.ext_scratch3_operators.contains({STRING1, STRING2}); }
 function mod(NUM1, NUM2) { return run.ext_scratch3_operators.mod({NUM1, NUM2}); }
 function round(NUM) { return run.ext_scratch3_operators.round({NUM}); }
-function mathOp(OPERATOR, NUM) { return run.ext_scratch3_operators.mathop({OPERATOR, NUM}); }
+function mathop(OPERATOR, NUM) { return run.ext_scratch3_operators.mathop({OPERATOR, NUM}); }
 
             ${userCode}
         `;
