@@ -428,7 +428,7 @@ function touchingColor(COLOR) {
 function askAndWait(QUESTION) { 
     return run.ext_scratch3_sensing.askAndWait({QUESTION}, {target}); 
 }
-function getAnswer() { 
+function answer() { 
     return run.ext_scratch3_sensing._answer; 
 }
 function getMouseX() { 
