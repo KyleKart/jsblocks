@@ -438,72 +438,72 @@ function getMouseDown() {
     return run.ext_scratch3_sensing.getMouseDown({}, {target}); 
 }
 
-function getVariable(VARIABLE) {
-    return run.ext_scratch3_data.getVariable({VARIABLE}, {target});
+function variable(VARIABLE) {
+    return run.ext_scratch3_data.variable({VARIABLE}, {target});
 }
 
-function setVariable(VARIABLE, VALUE) {
-    return run.ext_scratch3_data.setVariable({VARIABLE, VALUE}, {target});
+function setvariableto(VARIABLE, VALUE) {
+    return run.ext_scratch3_data.setvariableto({VARIABLE, VALUE}, {target});
 }
 
-function changeVariableBy(VARIABLE, VALUE) {
-    return run.ext_scratch3_data.changeVariableBy({VARIABLE, VALUE}, {target});
+function changevariableby(VARIABLE, VALUE) {
+    return run.ext_scratch3_data.changevariableby({VARIABLE, VALUE}, {target});
 }
 
-function showVariable(VARIABLE) {
-    return run.ext_scratch3_data.showVariable({VARIABLE}, {target});
+function showvariable(VARIABLE) {
+    return run.ext_scratch3_data.showvariable({VARIABLE}, {target});
 }
 
-function hideVariable(VARIABLE) {
-    return run.ext_scratch3_data.hideVariable({VARIABLE}, {target});
+function hidevariable(VARIABLE) {
+    return run.ext_scratch3_data.hidevariable({VARIABLE}, {target});
 }
 
-function getList(LIST) {
-    return run.ext_scratch3_data.getList({LIST}, {target});
+function listcontents(LIST) {
+    return run.ext_scratch3_data.listcontents({LIST}, {target});
 }
 
-function addToList(ITEM, LIST) {
-    return run.ext_scratch3_data.addToList({ITEM, LIST}, {target});
+function addtolist(ITEM, LIST) {
+    return run.ext_scratch3_data.addtolist({ITEM, LIST}, {target});
 }
 
-function deleteOfList(INDEX, LIST) {
-    return run.ext_scratch3_data.deleteOfList({INDEX, LIST}, {target});
+function deleteoflist(INDEX, LIST) {
+    return run.ext_scratch3_data.deleteoflist({INDEX, LIST}, {target});
 }
 
-function deleteAllOfList(LIST) {
-    return run.ext_scratch3_data.deleteAllOfList({LIST}, {target});
+function deletealloflist(LIST) {
+    return run.ext_scratch3_data.deletealloflist({LIST}, {target});
 }
 
-function insertToList(INDEX, ITEM, LIST) {
-    return run.ext_scratch3_data.insertToList({INDEX, ITEM, LIST}, {target});
+function insertatlist(INDEX, ITEM, LIST) {
+    return run.ext_scratch3_data.insertatlist({INDEX, ITEM, LIST}, {target});
 }
 
-function replaceItemOfList(INDEX, ITEM, LIST) {
-    return run.ext_scratch3_data.replaceItemOfList({INDEX, ITEM, LIST}, {target});
+function replaceitemoflist(INDEX, ITEM, LIST) {
+    return run.ext_scratch3_data.replaceitemoflist({INDEX, ITEM, LIST}, {target});
 }
 
-function itemOfList(INDEX, LIST) {
-    return run.ext_scratch3_data.getItemOfList({INDEX, LIST}, {target});
+function itemoflist(INDEX, LIST) {
+    return run.ext_scratch3_data.itemoflist({INDEX, LIST}, {target});
 }
 
-function itemNumOfList(ITEM, LIST) {
-    return run.ext_scratch3_data.getItemNumOfList({ITEM, LIST}, {target});
+function itemnumoflist(ITEM, LIST) {
+    return run.ext_scratch3_data.itemnumoflist({ITEM, LIST}, {target});
 }
 
-function lengthOfList(LIST) {
-    return run.ext_scratch3_data.getLengthOfList({LIST}, {target});
+function lengthoflist(LIST) {
+    return run.ext_scratch3_data.lengthoflist({LIST}, {target});
 }
 
-function listContainsItem(LIST, ITEM) {
-    return run.ext_scratch3_data.listContainsItem({LIST, ITEM}, {target});
+function listcontainsitem(LIST, ITEM) {
+    return run.ext_scratch3_data.listcontainsitem({LIST, ITEM}, {target});
 }
 
-function showList(LIST) {
-    return run.ext_scratch3_data.showList({LIST}, {target});
+function showlist(LIST) {
+    return run.ext_scratch3_data.showlist({LIST}, {target});
 }
 
-function hideList(LIST) {
-    return run.ext_scratch3_data.hideList({LIST}, {target});
+function hidelist(LIST) {
+    return run.ext_scratch3_data.hidelist({LIST}, {target});
 }
 
 function add(NUM1, NUM2) { return run.ext_scratch3_operators.add({NUM1, NUM2}); }
