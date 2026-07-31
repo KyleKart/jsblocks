@@ -459,51 +459,51 @@ function hideVariable(VARIABLE) {
 }
 
 function getList(LIST) {
-    return run.ext_scratch3_lists.getList({LIST}, {target});
+    return run.ext_scratch3_data.getList({LIST}, {target});
 }
 
 function addToList(ITEM, LIST) {
-    return run.ext_scratch3_lists.addToList({ITEM, LIST}, {target});
+    return run.ext_scratch3_data.addToList({ITEM, LIST}, {target});
 }
 
 function deleteOfList(INDEX, LIST) {
-    return run.ext_scratch3_lists.deleteOfList({INDEX, LIST}, {target});
+    return run.ext_scratch3_data.deleteOfList({INDEX, LIST}, {target});
 }
 
 function deleteAllOfList(LIST) {
-    return run.ext_scratch3_lists.deleteAllOfList({LIST}, {target});
+    return run.ext_scratch3_data.deleteAllOfList({LIST}, {target});
 }
 
 function insertToList(INDEX, ITEM, LIST) {
-    return run.ext_scratch3_lists.insertToList({INDEX, ITEM, LIST}, {target});
+    return run.ext_scratch3_data.insertToList({INDEX, ITEM, LIST}, {target});
 }
 
 function replaceItemOfList(INDEX, ITEM, LIST) {
-    return run.ext_scratch3_lists.replaceItemOfList({INDEX, ITEM, LIST}, {target});
+    return run.ext_scratch3_data.replaceItemOfList({INDEX, ITEM, LIST}, {target});
 }
 
 function itemOfList(INDEX, LIST) {
-    return run.ext_scratch3_lists.getItemOfList({INDEX, LIST}, {target});
+    return run.ext_scratch3_data.getItemOfList({INDEX, LIST}, {target});
 }
 
 function itemNumOfList(ITEM, LIST) {
-    return run.ext_scratch3_lists.getItemNumOfList({ITEM, LIST}, {target});
+    return run.ext_scratch3_data.getItemNumOfList({ITEM, LIST}, {target});
 }
 
 function lengthOfList(LIST) {
-    return run.ext_scratch3_lists.getLengthOfList({LIST}, {target});
+    return run.ext_scratch3_data.getLengthOfList({LIST}, {target});
 }
 
 function listContainsItem(LIST, ITEM) {
-    return run.ext_scratch3_lists.listContainsItem({LIST, ITEM}, {target});
+    return run.ext_scratch3_data.listContainsItem({LIST, ITEM}, {target});
 }
 
 function showList(LIST) {
-    return run.ext_scratch3_lists.showList({LIST}, {target});
+    return run.ext_scratch3_data.showList({LIST}, {target});
 }
 
 function hideList(LIST) {
-    return run.ext_scratch3_lists.hideList({LIST}, {target});
+    return run.ext_scratch3_data.hideList({LIST}, {target});
 }
 
 function add(NUM1, NUM2) { return run.ext_scratch3_operators.add({NUM1, NUM2}); }
@@ -524,6 +524,50 @@ function contains(STRING1, STRING2) { return run.ext_scratch3_operators.contains
 function mod(NUM1, NUM2) { return run.ext_scratch3_operators.mod({NUM1, NUM2}); }
 function round(NUM) { return run.ext_scratch3_operators.round({NUM}); }
 function mathop(OPERATOR, NUM) { return run.ext_scratch3_operators.mathop({OPERATOR, NUM}); }
+
+function wait(DURATION) {
+    return run.ext_scratch3_control.wait({DURATION});
+}
+
+function repeat(TIMES, SUBSTACK) {
+    return run.ext_scratch3_control.repeat({TIMES, SUBSTACK}, {target});
+}
+
+function forever(SUBSTACK) {
+    return run.ext_scratch3_control.forever({SUBSTACK}, {target});
+}
+
+function if(CONDITION, SUBSTACK) {
+    return run.ext_scratch3_control.if({CONDITION, SUBSTACK}, {target});
+}
+
+function if_else(CONDITION, SUBSTACK, SUBSTACK2) {
+    return run.ext_scratch3_control.if_else({CONDITION, SUBSTACK, SUBSTACK2}, {target});
+}
+
+function wait_until(CONDITION) {
+    return run.ext_scratch3_control.wait_until({CONDITION}, {target});
+}
+
+function repeat_until(CONDITION, SUBSTACK) {
+    return run.ext_scratch3_control.repeat_until({CONDITION, SUBSTACK}, {target});
+}
+
+function stop(STOP_OPTION) {
+    return run.ext_scratch3_control.stop({STOP_OPTION}, {target});
+}
+
+function start_as_clone() {
+    return run.ext_scratch3_control.start_as_clone({}, {target});
+}
+
+function create_clone_of(CLONE_OPTION) {
+    return run.ext_scratch3_control.create_clone_of({CLONE_OPTION}, {target});
+}
+
+function delete_this_clone() {
+    return run.ext_scratch3_control.delete_this_clone({}, {target});
+}
 
             ${userCode}
         `;
