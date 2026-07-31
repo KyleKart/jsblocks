@@ -635,7 +635,9 @@ function parseBlock(lines, start, end, parentBlock) {
     }
 }
 
-document.getElementById('menuRun').addEventListener('click', () => {
+workspace.addChangeListener((event) => {
+    if (event.type === Blockly.Events.UI) return;
+
     let code = '';
     workspace.getTopBlocks(true).forEach(block => {
         if (block.type === 'js_hat') code += jsGen.forBlock['js_hat'](block, jsGen);
