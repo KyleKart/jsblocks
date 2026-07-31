@@ -395,12 +395,21 @@ function moveSteps(STEPS) { run.ext_scratch3_motion.moveSteps({STEPS}, {target})
 function turnRight(DEGREES) { run.ext_scratch3_motion.turnRight({DEGREES}, {target}); }
 function turnLeft(DEGREES) { run.ext_scratch3_motion.turnLeft({DEGREES}, {target}); }
 function goToXY(X, Y) { run.ext_scratch3_motion.goToXY({X, Y}, {target}); }
-function glideSecsToXY(SECS, X, Y) { run.ext_scratch3_motion.glideSecsToXY({SECS, X, Y}, {target}); }
+function goTo(TO) { run.ext_scratch3_motion.goTo({TO}, {target}); }
+function glide(SECS, X, Y) { run.ext_scratch3_motion.glide({SECS, X, Y}, {target}); }
+function glideTo(SECS, TO) { run.ext_scratch3_motion.glideTo({SECS, TO}, {target}); }
 function pointInDirection(DIRECTION) { run.ext_scratch3_motion.pointInDirection({DIRECTION}, {target}); }
-function changeXby(DX) { run.ext_scratch3_motion.changeXby({DX}, {target}); }
+function pointTowards(TOWARDS) { run.ext_scratch3_motion.pointTowards({TOWARDS}, {target}); }
+function ifOnEdgeBounce() { run.ext_scratch3_motion.ifOnEdgeBounce({}, {target}); }
+function setRotationStyle(STYLE) { run.ext_scratch3_motion.setRotationStyle({STYLE}, {target}); }
+function changeX(DX) { run.ext_scratch3_motion.changeXby({DX}, {target}); }
 function setX(X) { run.ext_scratch3_motion.setX({X}, {target}); }
-function changeYby(DY) { run.ext_scratch3_motion.changeYby({DY}, {target}); }
+function changeY(DY) { run.ext_scratch3_motion.changeYby({DY}, {target}); }
 function setY(Y) { run.ext_scratch3_motion.setY({Y}, {target}); }
+
+function getX() { return run.ext_scratch3_motion.getX({}, {target}); }
+function getY() { return run.ext_scratch3_motion.getY({}, {target}); }
+function getDirection() { return run.ext_scratch3_motion.getDirection({}, {target}); }
 
 function say(MESSAGE) { run.ext_scratch3_looks.say({MESSAGE}, {target}); }
 function sayForSecs(MESSAGE, SECS) { run.ext_scratch3_looks.sayforsecs({MESSAGE, SECS}, {target}); }
