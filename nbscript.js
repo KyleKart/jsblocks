@@ -389,52 +389,53 @@ function runUserCode(userCode) {
     if (vmFrame && vmFrame.contentWindow) {
         const wrappedCode = `
 const target = util.target;
+const run = Scratch.vm.runtime;
 
-function moveSteps(STEPS) { vm.runtime.ext_scratch3_motion.moveSteps({STEPS}, {target}); }
-function turnRight(DEGREES) { vm.runtime.ext_scratch3_motion.turnRight({DEGREES}, {target}); }
-function turnLeft(DEGREES) { vm.runtime.ext_scratch3_motion.turnLeft({DEGREES}, {target}); }
-function goToXY(X, Y) { vm.runtime.ext_scratch3_motion.goToXY({X, Y}, {target}); }
-function glideSecsToXY(SECS, X, Y) { vm.runtime.ext_scratch3_motion.glideSecsToXY({SECS, X, Y}, {target}); }
-function pointInDirection(DIRECTION) { vm.runtime.ext_scratch3_motion.pointInDirection({DIRECTION}, {target}); }
-function changeXby(DX) { vm.runtime.ext_scratch3_motion.changeXby({DX}, {target}); }
-function setX(X) { vm.runtime.ext_scratch3_motion.setX({X}, {target}); }
-function changeYby(DY) { vm.runtime.ext_scratch3_motion.changeYby({DY}, {target}); }
-function setY(Y) { vm.runtime.ext_scratch3_motion.setY({Y}, {target}); }
+function moveSteps(STEPS) { run.ext_scratch3_motion.moveSteps({STEPS}, {target}); }
+function turnRight(DEGREES) { run.ext_scratch3_motion.turnRight({DEGREES}, {target}); }
+function turnLeft(DEGREES) { run.ext_scratch3_motion.turnLeft({DEGREES}, {target}); }
+function goToXY(X, Y) { run.ext_scratch3_motion.goToXY({X, Y}, {target}); }
+function glideSecsToXY(SECS, X, Y) { run.ext_scratch3_motion.glideSecsToXY({SECS, X, Y}, {target}); }
+function pointInDirection(DIRECTION) { run.ext_scratch3_motion.pointInDirection({DIRECTION}, {target}); }
+function changeXby(DX) { run.ext_scratch3_motion.changeXby({DX}, {target}); }
+function setX(X) { run.ext_scratch3_motion.setX({X}, {target}); }
+function changeYby(DY) { run.ext_scratch3_motion.changeYby({DY}, {target}); }
+function setY(Y) { run.ext_scratch3_motion.setY({Y}, {target}); }
 
-function say(MESSAGE) { vm.runtime.ext_scratch3_looks.say({MESSAGE}, {target}); }
-function sayForSecs(MESSAGE, SECS) { vm.runtime.ext_scratch3_looks.sayForSecs({MESSAGE, SECS}, {target}); }
-function think(MESSAGE) { vm.runtime.ext_scratch3_looks.think({MESSAGE}, {target}); }
-function thinkForSecs(MESSAGE, SECS) { vm.runtime.ext_scratch3_looks.thinkForSecs({MESSAGE, SECS}, {target}); }
-function switchCostume(COSTUME) { vm.runtime.ext_scratch3_looks.switchCostume({COSTUME}, {target}); }
-function nextCostume() { vm.runtime.ext_scratch3_looks.nextCostume({}, {target}); }
-function changeSizeBy(CHANGE) { vm.runtime.ext_scratch3_looks.changeSizeBy({CHANGE}, {target}); }
-function setSizeTo(SIZE) { vm.runtime.ext_scratch3_looks.setSizeTo({SIZE}, {target}); }
+function say(MESSAGE) { run.ext_scratch3_looks.say({MESSAGE}, {target}); }
+function sayForSecs(MESSAGE, SECS) { run.ext_scratch3_looks.sayForSecs({MESSAGE, SECS}, {target}); }
+function think(MESSAGE) { run.ext_scratch3_looks.think({MESSAGE}, {target}); }
+function thinkForSecs(MESSAGE, SECS) { run.ext_scratch3_looks.thinkForSecs({MESSAGE, SECS}, {target}); }
+function switchCostume(COSTUME) { run.ext_scratch3_looks.switchCostume({COSTUME}, {target}); }
+function nextCostume() { run.ext_scratch3_looks.nextCostume({}, {target}); }
+function changeSizeBy(CHANGE) { run.ext_scratch3_looks.changeSizeBy({CHANGE}, {target}); }
+function setSizeTo(SIZE) { run.ext_scratch3_looks.setSizeTo({SIZE}, {target}); }
 
-function playSound(SOUND_MENU) { vm.runtime.ext_scratch3_sound.playSound({SOUND_MENU}, {target}); }
-function stopAllSounds() { vm.runtime.ext_scratch3_sound.stopAllSounds({}, {target}); }
-function changeVolume(VOLUME) { vm.runtime.ext_scratch3_sound.changeVolume({VOLUME}, {target}); }
-function setVolume(VOLUME) { vm.runtime.ext_scratch3_sound.setVolume({VOLUME}, {target}); }
+function playSound(SOUND_MENU) { run.ext_scratch3_sound.playSound({SOUND_MENU}, {target}); }
+function stopAllSounds() { run.ext_scratch3_sound.stopAllSounds({}, {target}); }
+function changeVolume(VOLUME) { run.ext_scratch3_sound.changeVolume({VOLUME}, {target}); }
+function setVolume(VOLUME) { run.ext_scratch3_sound.setVolume({VOLUME}, {target}); }
 
 function touchingObject(TOUCHINGOBJECTMENU) { 
-    return vm.runtime.ext_scratch3_sensing.touchingObject({TOUCHINGOBJECTMENU}, {target}); 
+    return run.ext_scratch3_sensing.touchingObject({TOUCHINGOBJECTMENU}, {target}); 
 }
 function touchingColor(COLOR) { 
-    return vm.runtime.ext_scratch3_sensing.touchingColor({COLOR}, {target}); 
+    return run.ext_scratch3_sensing.touchingColor({COLOR}, {target}); 
 }
 function askAndWait(QUESTION) { 
-    return vm.runtime.ext_scratch3_sensing.askAndWait({QUESTION}, {target}); 
+    return run.ext_scratch3_sensing.askAndWait({QUESTION}, {target}); 
 }
 function getAnswer() { 
-    return vm.runtime.ext_scratch3_sensing._answer; 
+    return run.ext_scratch3_sensing._answer; 
 }
 function mouseX() { 
-    return vm.runtime.ext_scratch3_sensing.getMouseX({}, {target}); 
+    return run.ext_scratch3_sensing.getMouseX({}, {target}); 
 }
 function mouseY() { 
-    return vm.runtime.ext_scratch3_sensing.getMouseY({}, {target}); 
+    return run.ext_scratch3_sensing.getMouseY({}, {target}); 
 }
 function mouseDown() { 
-    return vm.runtime.ext_scratch3_sensing.getMouseDown({}, {target}); 
+    return run.ext_scratch3_sensing.getMouseDown({}, {target}); 
 }
 
 function setVar(VARIABLE, VALUE) {
@@ -448,24 +449,24 @@ function changeVar(VARIABLE, VALUE) {
     if (varObj) varObj.value = Number(varObj.value) + Number(VALUE);
 }
 
-function add(NUM1, NUM2) { return vm.runtime.ext_scratch3_operators.add({NUM1, NUM2}); }
-function subtract(NUM1, NUM2) { return vm.runtime.ext_scratch3_operators.subtract({NUM1, NUM2}); }
-function multiply(NUM1, NUM2) { return vm.runtime.ext_scratch3_operators.multiply({NUM1, NUM2}); }
-function divide(NUM1, NUM2) { return vm.runtime.ext_scratch3_operators.divide({NUM1, NUM2}); }
-function random(FROM, TO) { return vm.runtime.ext_scratch3_operators.random({FROM, TO}); }
-function greaterThan(OPERAND1, OPERAND2) { return vm.runtime.ext_scratch3_operators.greaterThan({OPERAND1, OPERAND2}); }
-function lessThan(OPERAND1, OPERAND2) { return vm.runtime.ext_scratch3_operators.lessThan({OPERAND1, OPERAND2}); }
-function equals(OPERAND1, OPERAND2) { return vm.runtime.ext_scratch3_operators.equals({OPERAND1, OPERAND2}); }
-function and(OPERAND1, OPERAND2) { return vm.runtime.ext_scratch3_operators.and({OPERAND1, OPERAND2}); }
-function or(OPERAND1, OPERAND2) { return vm.runtime.ext_scratch3_operators.or({OPERAND1, OPERAND2}); }
-function not(OPERAND) { return vm.runtime.ext_scratch3_operators.not({OPERAND}); }
-function join(STRING1, STRING2) { return vm.runtime.ext_scratch3_operators.join({STRING1, STRING2}); }
-function letterOf(STRING, LETTER) { return vm.runtime.ext_scratch3_operators.letterOf({STRING, LETTER}); }
-function stringLength(STRING) { return vm.runtime.ext_scratch3_operators.length({STRING}); }
-function contains(STRING1, STRING2) { return vm.runtime.ext_scratch3_operators.contains({STRING1, STRING2}); }
-function mod(NUM1, NUM2) { return vm.runtime.ext_scratch3_operators.mod({NUM1, NUM2}); }
-function round(NUM) { return vm.runtime.ext_scratch3_operators.round({NUM}); }
-function mathOp(OPERATOR, NUM) { return vm.runtime.ext_scratch3_operators.mathop({OPERATOR, NUM}); }
+function add(NUM1, NUM2) { return run.ext_scratch3_operators.add({NUM1, NUM2}); }
+function subtract(NUM1, NUM2) { return run.ext_scratch3_operators.subtract({NUM1, NUM2}); }
+function multiply(NUM1, NUM2) { return run.ext_scratch3_operators.multiply({NUM1, NUM2}); }
+function divide(NUM1, NUM2) { return run.ext_scratch3_operators.divide({NUM1, NUM2}); }
+function random(FROM, TO) { return run.ext_scratch3_operators.random({FROM, TO}); }
+function greaterThan(OPERAND1, OPERAND2) { return run.ext_scratch3_operators.greaterThan({OPERAND1, OPERAND2}); }
+function lessThan(OPERAND1, OPERAND2) { return run.ext_scratch3_operators.lessThan({OPERAND1, OPERAND2}); }
+function equals(OPERAND1, OPERAND2) { return run.ext_scratch3_operators.equals({OPERAND1, OPERAND2}); }
+function and(OPERAND1, OPERAND2) { return run.ext_scratch3_operators.and({OPERAND1, OPERAND2}); }
+function or(OPERAND1, OPERAND2) { return run.ext_scratch3_operators.or({OPERAND1, OPERAND2}); }
+function not(OPERAND) { return run.ext_scratch3_operators.not({OPERAND}); }
+function join(STRING1, STRING2) { return run.ext_scratch3_operators.join({STRING1, STRING2}); }
+function letterOf(STRING, LETTER) { return run.ext_scratch3_operators.letterOf({STRING, LETTER}); }
+function stringLength(STRING) { return run.ext_scratch3_operators.length({STRING}); }
+function contains(STRING1, STRING2) { return run.ext_scratch3_operators.contains({STRING1, STRING2}); }
+function mod(NUM1, NUM2) { return run.ext_scratch3_operators.mod({NUM1, NUM2}); }
+function round(NUM) { return run.ext_scratch3_operators.round({NUM}); }
+function mathOp(OPERATOR, NUM) { return run.ext_scratch3_operators.mathop({OPERATOR, NUM}); }
 
             ${userCode}
         `;
