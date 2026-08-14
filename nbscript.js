@@ -355,6 +355,134 @@ const workspace = Blockly.inject('blocklyDiv', {
     plugins: { backpack: Blockly.WorkspaceBackpack }
 });
 
+let currentFontFamily = null;
+let currentFontSize = null;
+
+function updateBlocklyTypography(fontFamily, fontSize) {
+  currentFontFamily = fontFamily;
+  currentFontSize = fontSize ? Number(fontSize) : null;
+
+  if (!currentFontFamily && !currentFontSize) {
+    resetBlocklyTypography();
+    return;
+  }
+
+  const dynamicTheme = Blockly.Theme.defineTheme('dynamicFontTheme', {
+    'base': Blockly.Themes.Classic,
+    'fontStyle': {
+      ...(currentFontFamily ? { 'family': currentFontFamily } : {}),
+      'weight': 'normal',
+      ...(currentFontSize ? { 'size': currentFontSize } : {})
+    }
+  });
+
+  workspace.setTheme(dynamicTheme);
+
+  let styleEl = document.getElementById('blockly-dynamic-font-style');
+  if (!styleEl) {
+    styleEl = document.createElement('style');
+    styleEl.id = 'blockly-dynamic-font-style';
+    document.head.appendChild(styleEl);
+  }
+
+  let cssRules = '';
+  if (currentFontFamily || currentFontSize) {
+    cssRules = `
+      .blocklyText, .blocklyEditableText, .blocklyHtmlInput {
+        ${currentFontFamily ? `font-family: ${currentFontFamily} !important;` : ''}
+        ${currentFontSize ? `font-size: ${currentFontSize}px !important;` : ''}
+        font-variant-ligatures: common-ligatures contextual !important;
+        -webkit-font-feature-settings: "liga" 1, "calt" 1 !important;
+        font-feature-settings: "liga" 1, "calt" 1 !important;
+      }
+    `;
+  }
+  styleEl.innerHTML = cssRules;
+}
+
+function resetBlocklyTypography() {
+  currentFontFamily = null;
+  currentFontSize = null;
+
+  workspace.setTheme(Blockly.Themes.Classic);
+
+  const styleEl = document.getElementById('blockly-dynamic-font-style');
+  if (styleEl) {
+    styleEl.innerHTML = '';
+  }
+}
+
+document.querySelectorAll('.font-select:not(.font-default)').forEach(el => {
+  el.addEventListener('click', (e) => {
+    updateBlocklyTypography(e.target.getAttribute('data-font'), currentFontSize);
+  });
+});
+
+document.querySelector('.font-default').addEventListener('click', () => {
+  if (currentFontSize) {
+    updateBlocklyTypography(null, currentFontSize);
+  } else {
+    resetBlocklyTypography();
+  }
+});
+
+document.querySelectorAll('.size-select').forEach(el => {
+  el.addEventListener('click', (e) => {
+    updateBlocklyTypography(currentFontFamily, e.target.getAttribute('data-size'));
+  });
+});
+
+document.getElementById('menuResetTheme').addEventListener('click', () => {
+  resetBlocklyTypography();
+  setBlocklyRenderer("geras");
+});
+
+document.querySelectorAll('.size-select:not(.size-default)').forEach(el => {
+  el.addEventListener('click', (e) => {
+    updateBlocklyTypography(currentFontFamily, e.target.getAttribute('data-size'));
+  });
+});
+
+document.querySelector('.size-default').addEventListener('click', () => {
+  if (currentFontFamily) {
+    updateBlocklyTypography(currentFontFamily, null);
+  } else {
+    resetBlocklyTypography();
+  }
+});
+
+let currentRenderer = 'geras';
+
+function setBlocklyRenderer(rendererName) {
+  currentRenderer = rendererName;
+
+  const xmlDom = Blockly.Xml.workspaceToDom(workspace);
+
+  const blocklyDiv = document.getElementById('blocklyDiv');
+  blocklyDiv.innerHTML = '';
+
+  workspace = Blockly.inject(blocklyDiv, {
+    toolbox: document.getElementById('toolbox'),
+    renderer: currentRenderer,
+  });
+
+  Blockly.Xml.domToWorkspace(xmlDom, workspace);
+
+  if (currentFontFamily || currentFontSize) {
+    updateBlocklyTypography(currentFontFamily, currentFontSize);
+  }
+}
+
+document.querySelectorAll('.renderer-select').forEach(el => {
+  el.addEventListener('click', (e) => {
+    setBlocklyRenderer(e.target.getAttribute('data-renderer'));
+  });
+});
+
+document.querySelector('.renderer-default').addEventListener('click', () => {
+    setBlocklyRenderer("geras");
+});
+
 function addColourContextMenu(block) {
   block.customContextMenu = function (options) {
     options.push({
@@ -406,7 +534,6 @@ function changeX(DX) { run.ext_scratch3_motion.changeXby({DX}, {target}); }
 function setX(X) { run.ext_scratch3_motion.setX({X}, {target}); }
 function changeY(DY) { run.ext_scratch3_motion.changeYby({DY}, {target}); }
 function setY(Y) { run.ext_scratch3_motion.setY({Y}, {target}); }
-
 function getX() { return run.ext_scratch3_motion.getX({}, {target}); }
 function getY() { return run.ext_scratch3_motion.getY({}, {target}); }
 function getDirection() { return run.ext_scratch3_motion.getDirection({}, {target}); }

@@ -6,16 +6,55 @@
   <title>JS Blocks</title>
   <script src="https://unpkg.com/blockly/blockly.min.js"></script>
   <script src="https://unpkg.com/@blockly/workspace-backpack/dist/index.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code&family=JetBrains+Mono&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="nbstyle.css">
 </head>
 
 <body>
 
   <div id="menuBar">
-    <div id="menuSave">Save</div>
-    <div id="menuLoad">Load</div>
-    <div id="menuImportJS">Import JS</div>
-    <div id="menuExportHTML" style="display:none;">Export HTML</div>
+    <div class="menu-item">
+      <span>File</span>
+      <div class="dropdown-content">
+        <div id="menuSave">Save Project</div>
+        <div id="menuLoad">Load Project</div>
+        <div id="menuImportJS">Import JS</div>
+        <div id="menuExportHTML" style="display:none;">Export HTML</div>
+      </div>
+    </div>
+
+    <div class="menu-item">
+      <span>View</span>
+      <div class="dropdown-content submenu-container">
+        <div class="submenu-label">Font Family</div>
+        <div class="menu-option font-select font-default">Default</div>
+        <div class="menu-option font-select" data-font="Arial, sans-serif">Arial</div>
+        <div class="menu-option font-select" data-font='"Fira Code", monospace'>Fira Code</div>
+        <div class="menu-option font-select" data-font='"JetBrains Mono", monospace'>JetBrains Mono</div>   
+        <div class="menu-option font-select" data-font='"Miracode", monospace'>Miracode</div>             
+        <div class="submenu-divider"></div>
+        
+        <div class="submenu-label">Font Size</div>
+        <div class="menu-option size-select size-default">Default</div>
+        <div class="menu-option size-select" data-size="10">10px</div>
+        <div class="menu-option size-select" data-size="12">12px</div>
+        <div class="menu-option size-select" data-size="14">14px</div>
+        <div class="menu-option size-select" data-size="16">16px</div>
+
+        <div class="submenu-divider"></div>
+
+        <div class="submenu-label">Renderer</div>
+        <div class="menu-option renderer-select renderer-default">Default</div>
+        <div class="menu-option renderer-select" data-renderer="geras">Geras</div>
+        <div class="menu-option renderer-select" data-renderer="thrasos">Thrasos</div>
+        <div class="menu-option renderer-select" data-renderer="zelos">Zelos</div>
+
+        <div class="submenu-divider"></div>
+
+
+        <div id="menuResetTheme" class="menu-option">Reset All</div>
+      </div>
+    </div>
   </div>
 
 <div id="main">
