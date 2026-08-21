@@ -21,7 +21,12 @@
         <div id="menuLoad">Load Project</div>
         <div id="menuImportJS">Import JS</div>
         <div id="menuExportHTML" style="display:none;">Export HTML</div>
-        <div id="menuExportSB3">Export SB3 (indev)</div>
+        <div id="menuExportSB3" style="display: none;">Export SB3</div>
+        <script>
+          if (location.hash === '#dev') {
+            document.getElementById('menuExportSB3').style.display = '';
+          }
+        </script>
       </div>
     </div>
 
@@ -32,10 +37,10 @@
         <div class="menu-option font-select font-default">Default</div>
         <div class="menu-option font-select" data-font="Arial, sans-serif">Arial</div>
         <div class="menu-option font-select" data-font='"Fira Code", monospace'>Fira Code</div>
-        <div class="menu-option font-select" data-font='"JetBrains Mono", monospace'>JetBrains Mono</div>   
-        <div class="menu-option font-select" data-font='"Miracode", monospace'>Miracode</div>             
+        <div class="menu-option font-select" data-font='"JetBrains Mono", monospace'>JetBrains Mono</div>
+        <div class="menu-option font-select" data-font='"Miracode", monospace'>Miracode</div>
         <div class="submenu-divider"></div>
-        
+
         <div class="submenu-label">Font Size</div>
         <div class="menu-option size-select size-default">Default</div>
         <div class="menu-option size-select" data-size="10">10px</div>
@@ -59,19 +64,17 @@
     </div>
   </div>
 
-<div id="main">
+  <div id="main">
     <div id="blocklyDiv"></div>
-    <iframe id="stage" 
-            src="https://kylekart.github.io/jsblocks/vm.html" 
-            width="480" height="360">
+    <iframe id="stage" src="https://kylekart.github.io/jsblocks/vm.html" width="480" height="360">
     </iframe>
-</div>
+  </div>
 
   <xml id="toolbox" style="display: none">
-  <block type="js_hat"></block>
-  <block type="js_cblock"></block>
-  <block type="js_generic"></block>
-  <block type="js_expr"></block>
+    <block type="js_hat"></block>
+    <block type="js_cblock"></block>
+    <block type="js_generic"></block>
+    <block type="js_expr"></block>
   </xml>
 
   <script src="nbscript.js"></script>
