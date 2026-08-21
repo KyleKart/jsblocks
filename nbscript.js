@@ -900,7 +900,6 @@ document.getElementById('menuExportSB3').addEventListener('click', async () => {
 
         monitors: [],
 
-        // Scratch stores extension IDs here.
     extensions: [
         "js"
     ],
@@ -921,30 +920,16 @@ document.getElementById('menuExportSB3').addEventListener('click', async () => {
 
     const spriteBlocks = projectJson.targets[1].blocks;
 
-    /*
-     * Get all top-level Blockly blocks.
-     */
     const topBlocks = workspace.getTopBlocks(true);
 
-    /*
-     * Scratch block IDs.
-     */
     let idCounter = 0;
 
     const generateId = () => {
         return `jsb${idCounter++}`;
     };
 
-    /*
-     * Maps:
-     *
-     * Blockly ID -> Scratch ID
-     */
     const idMap = new Map();
 
-    /*
-     * Convert Blockly block types to Scratch opcodes.
-     */
     const OPCODE_MAP = {
         js_hat: 'event_whenflagclicked'
     };
@@ -953,16 +938,9 @@ document.getElementById('menuExportSB3').addEventListener('click', async () => {
         return OPCODE_MAP[block.type] ?? block.type;
     };
 
-    /*
-     * Register every Blockly block.
-     *
-     * This pass only creates the Scratch blocks.
-     * Connections are handled afterward.
-     */
     const registerBlocks = (block) => {
         if (!block) return;
 
-        // Don't register the same Blockly block twice.
         if (idMap.has(block.id)) return;
 
         const scratchId = generateId();
@@ -998,15 +976,9 @@ document.getElementById('menuExportSB3').addEventListener('click', async () => {
             y
         };
 
-        /*
-         * Register children recursively.
-         */
         block.getChildren(false).forEach(registerBlocks);
     };
 
-    /*
-     * Link all Scratch block relationships.
-     */
     const linkBlockStructure = (block) => {
         if (!block) return;
 
@@ -1018,9 +990,6 @@ document.getElementById('menuExportSB3').addEventListener('click', async () => {
 
         const scratchBlock = spriteBlocks[scratchId];
 
-        /*
-         * NEXT connection.
-         */
         const nextBlock = block.getNextBlock();
 
         if (nextBlock) {
@@ -1032,14 +1001,8 @@ document.getElementById('menuExportSB3').addEventListener('click', async () => {
             }
         }
 
-        /*
-         * Inputs and fields.
-         */
         block.inputList.forEach(input => {
 
-            /*
-             * Fields.
-             */
             if (input.fieldRow && input.fieldRow.length > 0) {
                 input.fieldRow.forEach(field => {
 
@@ -1062,73 +1025,49 @@ document.getElementById('menuExportSB3').addEventListener('click', async () => {
                 });
             }
 
-            /*
-             * Connected blocks.
-             */
-            if (input.connection) {
-                const targetBlock = input.connection.targetBlock();
+if (input.connection) {
+    const targetBlock = input.connection.targetBlock();
 
-                if (!targetBlock) {
-                    return;
-                }
+    if (!targetBlock) {
+        return;
+    }
 
-                const targetScratchId = idMap.get(targetBlock.id);
+    const targetScratchId = idMap.get(targetBlock.id);
 
-                if (!targetScratchId) {
-                    return;
-                }
+    if (!targetScratchId) {
+        return;
+    }
 
-                /*
-                 * The target block belongs to this block.
-                 */
-                spriteBlocks[targetScratchId].parent = scratchId;
+    const nextBlock = block.getNextBlock();
 
-                /*
-                 * Scratch input types:
-                 *
-                 * 1 = value input
-                 * 2 = statement input
-                 */
-                if (input.type === Blockly.INPUT_VALUE) {
+    if (targetBlock === nextBlock) {
+        spriteBlocks[targetScratchId].parent = scratchId;
+        return;
+    }
 
-                    scratchBlock.inputs[input.name] = [
-                        1,
-                        targetScratchId
-                    ];
+    spriteBlocks[targetScratchId].parent = scratchId;
 
-                } else if (input.type === Blockly.NEXT_STATEMENT) {
-
-                    scratchBlock.inputs[input.name] = [
-                        2,
-                        targetScratchId
-                    ];
-                }
-            }
+    if (input.type === Blockly.INPUT_VALUE) {
+        scratchBlock.inputs[input.name] = [
+            1,
+            targetScratchId
+        ];
+    } else if (input.type === Blockly.NEXT_STATEMENT) {
+        scratchBlock.inputs[input.name] = [
+            2,
+            targetScratchId
+        ];
+    }
+}
         });
 
-        /*
-         * Continue recursively.
-         */
         block.getChildren(false).forEach(linkBlockStructure);
     };
 
-    /*
-     * PASS 1
-     *
-     * Create every Scratch block and its ID.
-     */
     topBlocks.forEach(registerBlocks);
 
-    /*
-     * PASS 2
-     *
-     * Link next/parent/input/field information.
-     */
     topBlocks.forEach(linkBlockStructure);
 
-    /*
-     * Default Stage SVG.
-     */
     const defaultStageSvg = `
 <svg version="1.1"
      width="480"
@@ -1137,9 +1076,6 @@ document.getElementById('menuExportSB3').addEventListener('click', async () => {
 </svg>
 `.trim();
 
-    /*
-     * Default Sprite SVG.
-     */
     const defaultSpriteSvg = `
 <svg version="1.1"
      width="480"
@@ -1148,17 +1084,11 @@ document.getElementById('menuExportSB3').addEventListener('click', async () => {
 </svg>
 `.trim();
 
-    /*
-     * Add project.json.
-     */
     zip.file(
         "project.json",
         JSON.stringify(projectJson, null, 2)
     );
 
-    /*
-     * Add assets.
-     */
     zip.file(
         "cd21514d0531fdffb22204e0ec5ed84a.svg",
         defaultStageSvg
@@ -1169,9 +1099,6 @@ document.getElementById('menuExportSB3').addEventListener('click', async () => {
         defaultSpriteSvg
     );
 
-    /*
-     * Generate the SB3.
-     */
     try {
         const content = await zip.generateAsync({
             type: "blob"
@@ -1188,10 +1115,6 @@ document.getElementById('menuExportSB3').addEventListener('click', async () => {
         a.click();
         a.remove();
 
-        /*
-         * Give the browser a moment before revoking
-         * the object URL.
-         */
         setTimeout(() => {
             URL.revokeObjectURL(url);
         }, 1000);
