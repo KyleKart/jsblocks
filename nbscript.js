@@ -837,15 +837,12 @@ document.getElementById('menuExportSB3').addEventListener('click', async () => {
             {
                 isStage: true,
                 name: "Stage",
-
                 variables: {},
                 lists: {},
                 broadcasts: {},
                 blocks: {},
                 comments: {},
-
                 currentCostume: 0,
-
                 costumes: [{
                     name: "backdrop1",
                     dataFormat: "svg",
@@ -854,40 +851,31 @@ document.getElementById('menuExportSB3').addEventListener('click', async () => {
                     rotationCenterX: 240,
                     rotationCenterY: 180
                 }],
-
                 sounds: [],
-
                 volume: 100,
                 layerOrder: 0
             },
-
             {
                 isStage: false,
                 name: "Sprite1",
-
                 variables: {},
                 lists: {},
                 broadcasts: {},
                 blocks: {},
                 comments: {},
-
                 currentCostume: 0,
-
                 costumes: [{
                     name: "costume1",
                     bitmapResolution: 1,
                     dataFormat: "svg",
                     assetId: "4d45a484633a5369e85831f9cb9c7a4e",
                     md5ext: "4d45a484633a5369e85831f9cb9c7a4e.svg",
-                    rotationCenterX: 22.6,
-                    rotationCenterY: 56.7
+                    rotationCenterX: 22.61983,
+                    rotationCenterY: 56.691514
                 }],
-
                 sounds: [],
-
                 volume: 100,
                 layerOrder: 1,
-
                 visible: true,
                 x: 0,
                 y: 0,
@@ -900,10 +888,9 @@ document.getElementById('menuExportSB3').addEventListener('click', async () => {
 
         monitors: [],
 
-        extensions: [
-            "js"
-        ],
+        extensions: ["js"],
 
+        // KEEP YOUR EXISTING extensionURLs HERE
         extensionURLs: {
             "js": "data:text/javascript;base64,KGZ1bmN0aW9uIChTY3JhdGNoKSB7DQogICAgJ3VzZSBzdHJpY3QnOw0KDQogICAgY29uc3QgY29udGV4dCA9IHt9Ow0KDQogICAgY2xhc3MgSlNCbG9ja3NFeHRlbnNpb24gew0KICAgICAgICBjb25zdHJ1Y3RvcihydW50aW1lKSB7DQogICAgICAgICAgICB0aGlzLnJ1bnRpbWUgPSBydW50aW1lOw0KICAgICAgICAgICAgdGhpcy5nbG9iYWxDb2RlQnVmZmVyID0gIiI7DQogICAgICAgIH0NCg0KICAgICAgICBnZXRJbmZvKCkgew0KICAgICAgICAgICAgcmV0dXJuIHsNCiAgICAgICAgICAgICAgICBpZDogJ2pzJywNCiAgICAgICAgICAgICAgICBuYW1lOiAnSlNCbG9ja3MnLA0KICAgICAgICAgICAgICAgIGJsb2NrczogWw0KICAgICAgICAgICAgICAgICAgICB7DQogICAgICAgICAgICAgICAgICAgICAgICBibG9ja1R5cGU6IFNjcmF0Y2guQmxvY2tUeXBlLlhNTCwNCiAgICAgICAgICAgICAgICAgICAgICAgIHhtbDogYDxibG9jayB0eXBlPSJldmVudF93aGVuZmxhZ2NsaWNrZWQiPjwvYmxvY2s+YA0KICAgICAgICAgICAgICAgICAgICB9LA0KICAgICAgICAgICAgICAgICAgICB7DQogICAgICAgICAgICAgICAgICAgICAgICBvcGNvZGU6ICdjYmxvY2snLA0KICAgICAgICAgICAgICAgICAgICAgICAgYmxvY2tUeXBlOiBTY3JhdGNoLkJsb2NrVHlwZS5DT05ESVRJT05BTCwNCiAgICAgICAgICAgICAgICAgICAgICAgIHRleHQ6ICdbQjBdJywNCiAgICAgICAgICAgICAgICAgICAgICAgIGNvbG9yMTogMzAwLA0KICAgICAgICAgICAgICAgICAgICAgICAgY29sb3IzOiAnIzdDNDQ3QycsDQogICAgICAgICAgICAgICAgICAgICAgICBhcmd1bWVudHM6IHsNCiAgICAgICAgICAgICAgICAgICAgICAgICAgICBCMDogew0KICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICB0eXBlOiBTY3JhdGNoLkFyZ3VtZW50VHlwZS5OVUxMLA0KICAgICAgICAgICAgICAgICAgICAgICAgICAgIH0NCiAgICAgICAgICAgICAgICAgICAgICAgIH0sDQogICAgICAgICAgICAgICAgICAgICAgICBicmFuY2hDb3VudDogMQ0KICAgICAgICAgICAgICAgICAgICB9LA0KICAgICAgICAgICAgICAgICAgICB7DQogICAgICAgICAgICAgICAgICAgICAgICBvcGNvZGU6ICdnZW5lcmljJywNCiAgICAgICAgICAgICAgICAgICAgICAgIGJsb2NrVHlwZTogU2NyYXRjaC5CbG9ja1R5cGUuQ09NTUFORCwNCiAgICAgICAgICAgICAgICAgICAgICAgIHRleHQ6ICdbQUREMF0nLA0KICAgICAgICAgICAgICAgICAgICAgICAgY29sb3IxOiAyMzAsDQogICAgICAgICAgICAgICAgICAgICAgICBjb2xvcjM6ICcjNDQ0RDdDJywNCiAgICAgICAgICAgICAgICAgICAgICAgIGFyZ3VtZW50czogew0KICAgICAgICAgICAgICAgICAgICAgICAgICAgIEFERDA6IHsNCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgdHlwZTogU2NyYXRjaC5Bcmd1bWVudFR5cGUuTlVMTCwNCiAgICAgICAgICAgICAgICAgICAgICAgICAgICB9DQogICAgICAgICAgICAgICAgICAgICAgICB9DQogICAgICAgICAgICAgICAgICAgIH0sDQogICAgICAgICAgICAgICAgICAgIHsNCiAgICAgICAgICAgICAgICAgICAgICAgIG9wY29kZTogJ2V4cHInLA0KICAgICAgICAgICAgICAgICAgICAgICAgYmxvY2tUeXBlOiBTY3JhdGNoLkJsb2NrVHlwZS5SRVBPUlRFUiwNCiAgICAgICAgICAgICAgICAgICAgICAgIHRleHQ6ICdbRVhQUl0nLA0KICAgICAgICAgICAgICAgICAgICAgICAgY29sb3IxOiAxMjAsDQogICAgICAgICAgICAgICAgICAgICAgICBhcmd1bWVudHM6IHsNCiAgICAgICAgICAgICAgICAgICAgICAgICAgICBFWFBSOiB7DQogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHR5cGU6IFNjcmF0Y2guQXJndW1lbnRUeXBlLlNUUklORywNCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgZGVmYXVsdFZhbHVlOiAnMSArIDEnDQogICAgICAgICAgICAgICAgICAgICAgICAgICAgfQ0KICAgICAgICAgICAgICAgICAgICAgICAgfQ0KICAgICAgICAgICAgICAgICAgICB9LA0KICAgICAgICAgICAgICAgICAgICB7DQogICAgICAgICAgICAgICAgICAgICAgICBvcGNvZGU6ICdldmFsQ29kZScsDQogICAgICAgICAgICAgICAgICAgICAgICBibG9ja1R5cGU6IFNjcmF0Y2guQmxvY2tUeXBlLkNPTU1BTkQsDQogICAgICAgICAgICAgICAgICAgICAgICB0ZXh0OiAnZXhlYycNCiAgICAgICAgICAgICAgICAgICAgfSwNCiAgICAgICAgICAgICAgICAgICAgIi0tLSIsDQogICAgICAgICAgICAgICAgICAgIHsNCiAgICAgICAgICAgICAgICAgICAgICAgIG9wY29kZTogJ2dldENvZGUnLA0KICAgICAgICAgICAgICAgICAgICAgICAgYmxvY2tUeXBlOiBTY3JhdGNoLkJsb2NrVHlwZS5SRVBPUlRFUiwNCiAgICAgICAgICAgICAgICAgICAgICAgIHRleHQ6ICdjb2RlJw0KICAgICAgICAgICAgICAgICAgICB9LA0KICAgICAgICAgICAgICAgICAgICB7DQogICAgICAgICAgICAgICAgICAgICAgICBvcGNvZGU6ICdjbGVhckNvZGUnLA0KICAgICAgICAgICAgICAgICAgICAgICAgYmxvY2tUeXBlOiBTY3JhdGNoLkJsb2NrVHlwZS5DT01NQU5ELA0KICAgICAgICAgICAgICAgICAgICAgICAgdGV4dDogJ2NsZWFyJw0KICAgICAgICAgICAgICAgICAgICB9DQogICAgICAgICAgICAgICAgXQ0KICAgICAgICAgICAgfTsNCiAgICAgICAgfQ0KDQogICAgICAgIGdlbmVyaWMoYXJncykgew0KICAgICAgICAgICAgaWYgKGFyZ3MuQUREMCkgew0KICAgICAgICAgICAgICAgIHRoaXMuZ2xvYmFsQ29kZUJ1ZmZlciArPSBhcmdzLkFERDAgKyAiXG4iOw0KICAgICAgICAgICAgfQ0KICAgICAgICAgICAgcmV0dXJuIGFyZ3MuQUREMDsNCiAgICAgICAgfQ0KDQogICAgICAgIGV4cHIoYXJncykgew0KICAgICAgICAgICAgcmV0dXJuIGFyZ3MuRVhQUjsNCiAgICAgICAgfQ0KDQogICAgICAgIGNibG9jayhhcmdzLCB1dGlsKSB7DQogICAgICAgICAgICBpZiAoYXJncy5CMCkgew0KICAgICAgICAgICAgICAgIHRoaXMuZ2xvYmFsQ29kZUJ1ZmZlciArPSBhcmdzLkIwICsgIiB7XG4iOw0KICAgICAgICAgICAgfQ0KICAgICAgICAgICAgdXRpbC5zdGFydEJyYW5jaCgxLCB0cnVlKTsNCiAgICAgICAgICAgIHRoaXMuZ2xvYmFsQ29kZUJ1ZmZlciArPSAifVxuIjsNCiAgICAgICAgICAgIHJldHVybiB0cnVlOw0KICAgICAgICB9DQoNCiAgICAgICAgZ2V0Q29kZSgpIHsNCiAgICAgICAgICAgIHJldHVybiB0aGlzLmdsb2JhbENvZGVCdWZmZXI7DQogICAgICAgIH0NCg0KICAgICAgICBldmFsQ29kZShhcmdzLCB1dGlsKSB7DQogICAgICAgICAgICBpZiAoIXRoaXMuZ2xvYmFsQ29kZUJ1ZmZlci50cmltKCkpIHsNCiAgICAgICAgICAgICAgICByZXR1cm47DQogICAgICAgICAgICB9DQoNCiAgICAgICAgICAgIHRyeSB7DQogICAgICAgICAgICAgICAgcmV0dXJuIChmdW5jdGlvbiAoY29udGV4dCwgdXRpbCkgew0KICAgICAgICAgICAgICAgICAgICByZXR1cm4gZXZhbCh0aGlzLmdsb2JhbENvZGVCdWZmZXIpOw0KICAgICAgICAgICAgICAgIH0pLmNhbGwodGhpcywgY29udGV4dCwgdXRpbCk7DQogICAgICAgICAgICB9IGNhdGNoIChlcnIpIHsNCiAgICAgICAgICAgICAgICBjb25zb2xlLmVycm9yKCJFdmFsIEVycm9yOiIsIGVycik7DQogICAgICAgICAgICAgICAgY29uc29sZS5lcnJvcigNCiAgICAgICAgICAgICAgICAgICAgIkdlbmVyYXRlZCBjb2RlOlxuIiArDQogICAgICAgICAgICAgICAgICAgIHRoaXMuZ2xvYmFsQ29kZUJ1ZmZlcg0KICAgICAgICAgICAgICAgICk7DQogICAgICAgICAgICB9DQogICAgICAgIH0NCg0KICAgICAgICBjbGVhckNvZGUoKSB7DQogICAgICAgICAgICB0aGlzLmdsb2JhbENvZGVCdWZmZXIgPSAiIjsNCiAgICAgICAgfQ0KICAgIH0NCg0KICAgIFNjcmF0Y2guZXh0ZW5zaW9ucy5yZWdpc3RlcigNCiAgICAgICAgbmV3IEpTQmxvY2tzRXh0ZW5zaW9uKFNjcmF0Y2gudm0pDQogICAgKTsNCg0KfSkoU2NyYXRjaCk7"
         },
@@ -937,15 +924,29 @@ document.getElementById('menuExportSB3').addEventListener('click', async () => {
     };
 
     /*
-     * Convert a Blockly field/input value into
-     * the Scratch 3 input representation.
+     * Some Blockly input names need to become the names
+     * used by the Scratch project format.
      */
-    const addInput = (scratchBlock, name, type, value) => {
-        scratchBlock.inputs[name] = [type, value];
+    const getScratchInputName = (block, input) => {
+        if (block.type === 'js_cblock') {
+            if (input.name === 'DO0') {
+                return 'SUBSTACK';
+            }
+
+            if (input.name.startsWith('B0_')) {
+                return 'B0';
+            }
+        }
+
+        return input.name;
     };
 
     /*
-     * Register every Blockly block first.
+     * FIRST PASS
+     *
+     * Register absolutely every Blockly block.
+     *
+     * Nothing gets deleted here.
      */
     const registerBlocks = block => {
         if (!block || idMap.has(block.id)) {
@@ -953,6 +954,7 @@ document.getElementById('menuExportSB3').addEventListener('click', async () => {
         }
 
         const scratchId = generateId();
+
         idMap.set(block.id, scratchId);
 
         const isTopLevel = !block.getParent();
@@ -978,15 +980,27 @@ document.getElementById('menuExportSB3').addEventListener('click', async () => {
             fields: {},
             shadow: false,
             topLevel: isTopLevel,
-            x,
-            y
+            ...(isTopLevel ? { x, y } : {})
         };
 
-        block.getChildren(false).forEach(registerBlocks);
+        /*
+         * This is important:
+         * getChildren() includes the blocks nested inside inputs.
+         */
+        block.getChildren(false).forEach(child => {
+            registerBlocks(child);
+        });
     };
 
     /*
-     * Link normal Blockly structure.
+     * Register EVERYTHING before doing any linking.
+     */
+    topBlocks.forEach(registerBlocks);
+
+    /*
+     * SECOND PASS
+     *
+     * Build next/parent/input relationships.
      */
     const linkBlockStructure = block => {
         if (!block) {
@@ -1002,7 +1016,7 @@ document.getElementById('menuExportSB3').addEventListener('click', async () => {
         const scratchBlock = spriteBlocks[scratchId];
 
         /*
-         * Handle next connections.
+         * NEXT CONNECTION
          */
         const nextBlock = block.getNextBlock();
 
@@ -1016,7 +1030,7 @@ document.getElementById('menuExportSB3').addEventListener('click', async () => {
         }
 
         /*
-         * Handle inputs.
+         * INPUTS
          */
         block.inputList.forEach(input => {
             if (!input.connection) {
@@ -1035,50 +1049,49 @@ document.getElementById('menuExportSB3').addEventListener('click', async () => {
                 return;
             }
 
+            const inputName = getScratchInputName(block, input);
+
             spriteBlocks[targetScratchId].parent = scratchId;
 
             /*
-             * Value input.
+             * js_expr is stored as an inline string input.
+             *
+             * Example:
+             *
+             * "EXPR": [
+             *     1,
+             *     [10, "if (true)"]
+             * ]
              */
-            if (input.type === Blockly.INPUT_VALUE) {
-                /*
-                 * js_expr uses:
-                 *
-                 * "EXPR": [
-                 *     1,
-                 *     [10, "text"]
-                 * ]
-                 *
-                 * rather than a normal block reference.
-                 */
-                if (targetBlock.type === 'js_expr') {
-                    let value = '';
+            if (targetBlock.type === 'js_expr') {
+                const field = targetBlock.getField('EXPR');
 
-                    const field = targetBlock.getField('EXPR');
+                const value = field
+                    ? field.getValue()
+                    : '';
 
-                    if (field) {
-                        value = field.getValue();
-                    }
-
-                    scratchBlock.inputs[input.name] = [
-                        1,
-                        [10, value]
-                    ];
-
-                    /*
-                     * The expression block itself is represented
-                     * by the input, so it doesn't need to remain
-                     * as a separate Scratch block.
-                     */
-                    delete spriteBlocks[targetScratchId];
-
-                    idMap.delete(targetBlock.id);
-
-                    return;
-                }
-
-                scratchBlock.inputs[input.name] = [
+                scratchBlock.inputs[inputName] = [
                     1,
+                    [10, value]
+                ];
+
+                return;
+            }
+
+            /*
+             * Statement inputs.
+             *
+             * Your valid project uses 2 for these.
+             */
+            if (
+                input.type === Blockly.NEXT_STATEMENT ||
+                inputName === 'SUBSTACK' ||
+                inputName === 'B0' ||
+                inputName.startsWith('DO') ||
+                inputName.startsWith('ADD')
+            ) {
+                scratchBlock.inputs[inputName] = [
+                    2,
                     targetScratchId
                 ];
 
@@ -1086,32 +1099,32 @@ document.getElementById('menuExportSB3').addEventListener('click', async () => {
             }
 
             /*
-             * Statement input.
+             * Normal value input.
              */
-            if (input.type === Blockly.NEXT_STATEMENT) {
-                scratchBlock.inputs[input.name] = [
-                    2,
+            if (input.type === Blockly.INPUT_VALUE) {
+                scratchBlock.inputs[inputName] = [
+                    1,
                     targetScratchId
                 ];
             }
         });
 
-        block.getChildren(false).forEach(linkBlockStructure);
+        /*
+         * Recurse into ALL children.
+         */
+        block.getChildren(false).forEach(child => {
+            linkBlockStructure(child);
+        });
     };
 
-    /*
-     * Register everything.
-     */
-    topBlocks.forEach(registerBlocks);
-
-    /*
-     * Link everything.
-     */
     topBlocks.forEach(linkBlockStructure);
 
     /*
-     * Find the exported hat.
+     * ---------------------------------------------------------
+     * INSERT clearCode AFTER THE GREEN FLAG
+     * ---------------------------------------------------------
      */
+
     const hat = topBlocks.find(block => block.type === 'js_hat');
 
     if (!hat) {
@@ -1126,25 +1139,13 @@ document.getElementById('menuExportSB3').addEventListener('click', async () => {
         return;
     }
 
-    /*
-     * ---------------------------------------------------------
-     * INSERT clearCode
-     * ---------------------------------------------------------
-     *
-     * The valid project always has:
-     *
-     * event_whenflagclicked
-     *        ↓
-     * clearCode
-     *        ↓
-     * actual blocks
-     */
+    const oldHatNext = spriteBlocks[hatId].next;
 
     const clearId = generateId();
 
     spriteBlocks[clearId] = {
-        opcode: "js_clearCode",
-        next: null,
+        opcode: 'js_clearCode',
+        next: oldHatNext,
         parent: hatId,
         inputs: {},
         fields: {},
@@ -1152,11 +1153,7 @@ document.getElementById('menuExportSB3').addEventListener('click', async () => {
         topLevel: false
     };
 
-    const oldHatNext = spriteBlocks[hatId].next;
-
     spriteBlocks[hatId].next = clearId;
-
-    spriteBlocks[clearId].next = oldHatNext;
 
     if (oldHatNext && spriteBlocks[oldHatNext]) {
         spriteBlocks[oldHatNext].parent = clearId;
@@ -1164,72 +1161,44 @@ document.getElementById('menuExportSB3').addEventListener('click', async () => {
 
     /*
      * ---------------------------------------------------------
-     * INSERT evalCode
+     * INSERT evalCode AT THE VERY END
      * ---------------------------------------------------------
-     *
-     * evalCode goes ONCE at the very end.
      */
+
+    let lastId = hatId;
+
+    while (
+        spriteBlocks[lastId] &&
+        spriteBlocks[lastId].next
+    ) {
+        lastId = spriteBlocks[lastId].next;
+    }
 
     const evalId = generateId();
 
     spriteBlocks[evalId] = {
-        opcode: "js_evalCode",
+        opcode: 'js_evalCode',
         next: null,
-        parent: null,
+        parent: lastId,
         inputs: {},
         fields: {},
         shadow: false,
         topLevel: false
     };
 
-    /*
-     * Find the final block in the hat's chain.
-     */
-    let currentId = hatId;
-
-    while (
-        spriteBlocks[currentId] &&
-        spriteBlocks[currentId].next
-    ) {
-        currentId = spriteBlocks[currentId].next;
-    }
-
-    spriteBlocks[currentId].next = evalId;
-    spriteBlocks[evalId].parent = currentId;
+    spriteBlocks[lastId].next = evalId;
 
     /*
      * ---------------------------------------------------------
-     * Fix topLevel / coordinates
+     * SVGs
      * ---------------------------------------------------------
      */
 
-    Object.values(spriteBlocks).forEach(block => {
-        if (block.parent !== null) {
-            block.topLevel = false;
-            delete block.x;
-            delete block.y;
-        }
-    });
+    const defaultStageSvg =
+        `<svg version="1.1" width="480" height="360" xmlns="http://www.w3.org/2000/svg"></svg>`;
 
-    /*
-     * Default SVGs.
-     */
-
-    const defaultStageSvg = `
-<svg version="1.1"
-     width="480"
-     height="360"
-     xmlns="http://www.w3.org/2000/svg">
-</svg>
-`.trim();
-
-    const defaultSpriteSvg = `
-<svg version="1.1"
-     width="480"
-     height="360"
-     xmlns="http://www.w3.org/2000/svg">
-</svg>
-`.trim();
+    const defaultSpriteSvg =
+        `<svg version="1.1" width="480" height="360" xmlns="http://www.w3.org/2000/svg"></svg>`;
 
     zip.file(
         "project.json",
