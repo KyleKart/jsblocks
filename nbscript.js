@@ -980,92 +980,115 @@ document.getElementById('menuExportSB3').addEventListener('click', async () => {
         block.getChildren(false).forEach(registerBlocks);
     };
 
-    const linkBlockStructure = (block) => {
-        if (!block) {
+const linkBlockStructure = (block) => {
+    if (!block) {
+        return;
+    }
+
+    const scratchId = idMap.get(block.id);
+
+    if (!scratchId) {
+        return;
+    }
+
+    const scratchBlock = spriteBlocks[scratchId];
+
+    /*
+     * Blockly's normal next connection.
+     *
+     * This becomes Scratch's `next`.
+     */
+    const nextBlock = block.getNextBlock();
+
+    if (nextBlock) {
+        const nextScratchId = idMap.get(nextBlock.id);
+
+        if (nextScratchId) {
+            scratchBlock.next = nextScratchId;
+            spriteBlocks[nextScratchId].parent = scratchId;
+        }
+    }
+
+    /*
+     * Process fields and inputs.
+     */
+    block.inputList.forEach(input => {
+
+        /*
+         * Fields
+         */
+        if (input.fieldRow && input.fieldRow.length > 0) {
+            input.fieldRow.forEach(field => {
+                if (!field || !field.name) {
+                    return;
+                }
+
+                let value;
+
+                try {
+                    value = field.getValue();
+                } catch (e) {
+                    value = '';
+                }
+
+                scratchBlock.fields[field.name] = [
+                    value,
+                    null
+                ];
+            });
+        }
+
+        /*
+         * No connection = nothing else to do.
+         */
+        if (!input.connection) {
             return;
         }
 
-        const scratchId = idMap.get(block.id);
+        const targetBlock = input.connection.targetBlock();
 
-        if (!scratchId) {
+        if (!targetBlock) {
             return;
         }
 
-        const scratchBlock = spriteBlocks[scratchId];
+        const targetScratchId = idMap.get(targetBlock.id);
 
-        const nextBlock = block.getNextBlock();
-
-        if (nextBlock) {
-            const nextScratchId = idMap.get(nextBlock.id);
-
-            if (nextScratchId) {
-                scratchBlock.next = nextScratchId;
-                spriteBlocks[nextScratchId].parent = scratchId;
-            }
+        if (!targetScratchId) {
+            return;
         }
 
-        block.inputList.forEach(input => {
-
-            if (input.fieldRow && input.fieldRow.length > 0) {
-                input.fieldRow.forEach(field => {
-                    if (!field || !field.name) {
-                        return;
-                    }
-
-                    let value;
-
-                    try {
-                        value = field.getValue();
-                    } catch (e) {
-                        value = '';
-                    }
-
-                    scratchBlock.fields[field.name] = [
-                        value,
-                        null
-                    ];
-                });
-            }
-
-            if (!input.connection) {
-                return;
-            }
-
-            const targetBlock = input.connection.targetBlock();
-
-            if (!targetBlock) {
-                return;
-            }
-
-            const targetScratchId = idMap.get(targetBlock.id);
-
-            if (!targetScratchId) {
-                return;
-            }
-
-            if (targetBlock === nextBlock) {
-                return;
-            }
-
+        if (
+            block.type === 'js_hat' &&
+            input.name === 'DO'
+        ) {
+            scratchBlock.next = targetScratchId;
             spriteBlocks[targetScratchId].parent = scratchId;
+            return;
+        }
 
-            if (input.type === Blockly.INPUT_VALUE) {
-                scratchBlock.inputs[input.name] = [
-                    1,
-                    targetScratchId
-                ];
-            }
+        if (targetBlock === nextBlock) {
+            return;
+        }
 
-            else if (input.type === Blockly.NEXT_STATEMENT) {
-                scratchBlock.inputs[input.name] = [
-                    2,
-                    targetScratchId
-                ];
-            }
-        });
+        spriteBlocks[targetScratchId].parent = scratchId;
 
-        block.getChildren(false).forEach(linkBlockStructure);
-    };
+        if (input.type === Blockly.INPUT_VALUE) {
+            scratchBlock.inputs[input.name] = [
+                1,
+                targetScratchId
+            ];
+        }
+
+        else if (input.type === Blockly.NEXT_STATEMENT) {
+            scratchBlock.inputs[input.name] = [
+                2,
+                targetScratchId
+            ];
+        }
+    });
+
+    block.getChildren(false).forEach(linkBlockStructure);
+};
 
     topBlocks.forEach(registerBlocks);
 
