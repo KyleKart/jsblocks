@@ -837,12 +837,17 @@ document.getElementById('menuExportSB3').addEventListener('click', async () => {
             {
                 isStage: true,
                 name: "Stage",
+
                 variables: {},
                 lists: {},
+                tables: {},
                 broadcasts: {},
                 blocks: {},
                 comments: {},
+                groups: {},
+
                 currentCostume: 0,
+
                 costumes: [{
                     name: "backdrop1",
                     dataFormat: "svg",
@@ -851,31 +856,48 @@ document.getElementById('menuExportSB3').addEventListener('click', async () => {
                     rotationCenterX: 240,
                     rotationCenterY: 180
                 }],
+
                 sounds: [],
+                assets: [],
+
                 volume: 100,
-                layerOrder: 0
+                layerOrder: 0,
+                tempo: 60,
+                videoTransparency: 50,
+                videoState: "on",
+                textToSpeechLanguage: null
             },
+
             {
                 isStage: false,
                 name: "Sprite1",
+
                 variables: {},
                 lists: {},
+                tables: {},
                 broadcasts: {},
                 blocks: {},
                 comments: {},
+                groups: {},
+
                 currentCostume: 0,
+
                 costumes: [{
                     name: "costume1",
                     bitmapResolution: 1,
                     dataFormat: "svg",
                     assetId: "4d45a484633a5369e85831f9cb9c7a4e",
                     md5ext: "4d45a484633a5369e85831f9cb9c7a4e.svg",
-                    rotationCenterX: 22.61983,
-                    rotationCenterY: 56.691514
+                    rotationCenterX: 22.61982999999998,
+                    rotationCenterY: 56.69151398487931
                 }],
+
                 sounds: [],
+                assets: [],
+
                 volume: 100,
                 layerOrder: 1,
+
                 visible: true,
                 x: 0,
                 y: 0,
@@ -888,11 +910,12 @@ document.getElementById('menuExportSB3').addEventListener('click', async () => {
 
         monitors: [],
 
-        extensions: ["js"],
+        extensions: [
+            "js"
+        ],
 
-        // KEEP YOUR EXISTING extensionURLs HERE
         extensionURLs: {
-            "js": "data:text/javascript;base64,KGZ1bmN0aW9uIChTY3JhdGNoKSB7DQogICAgJ3VzZSBzdHJpY3QnOw0KDQogICAgY29uc3QgY29udGV4dCA9IHt9Ow0KDQogICAgY2xhc3MgSlNCbG9ja3NFeHRlbnNpb24gew0KICAgICAgICBjb25zdHJ1Y3RvcihydW50aW1lKSB7DQogICAgICAgICAgICB0aGlzLnJ1bnRpbWUgPSBydW50aW1lOw0KICAgICAgICAgICAgdGhpcy5nbG9iYWxDb2RlQnVmZmVyID0gIiI7DQogICAgICAgIH0NCg0KICAgICAgICBnZXRJbmZvKCkgew0KICAgICAgICAgICAgcmV0dXJuIHsNCiAgICAgICAgICAgICAgICBpZDogJ2pzJywNCiAgICAgICAgICAgICAgICBuYW1lOiAnSlNCbG9ja3MnLA0KICAgICAgICAgICAgICAgIGJsb2NrczogWw0KICAgICAgICAgICAgICAgICAgICB7DQogICAgICAgICAgICAgICAgICAgICAgICBibG9ja1R5cGU6IFNjcmF0Y2guQmxvY2tUeXBlLlhNTCwNCiAgICAgICAgICAgICAgICAgICAgICAgIHhtbDogYDxibG9jayB0eXBlPSJldmVudF93aGVuZmxhZ2NsaWNrZWQiPjwvYmxvY2s+YA0KICAgICAgICAgICAgICAgICAgICB9LA0KICAgICAgICAgICAgICAgICAgICB7DQogICAgICAgICAgICAgICAgICAgICAgICBvcGNvZGU6ICdjYmxvY2snLA0KICAgICAgICAgICAgICAgICAgICAgICAgYmxvY2tUeXBlOiBTY3JhdGNoLkJsb2NrVHlwZS5DT05ESVRJT05BTCwNCiAgICAgICAgICAgICAgICAgICAgICAgIHRleHQ6ICdbQjBdJywNCiAgICAgICAgICAgICAgICAgICAgICAgIGNvbG9yMTogMzAwLA0KICAgICAgICAgICAgICAgICAgICAgICAgY29sb3IzOiAnIzdDNDQ3QycsDQogICAgICAgICAgICAgICAgICAgICAgICBhcmd1bWVudHM6IHsNCiAgICAgICAgICAgICAgICAgICAgICAgICAgICBCMDogew0KICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICB0eXBlOiBTY3JhdGNoLkFyZ3VtZW50VHlwZS5OVUxMLA0KICAgICAgICAgICAgICAgICAgICAgICAgICAgIH0NCiAgICAgICAgICAgICAgICAgICAgICAgIH0sDQogICAgICAgICAgICAgICAgICAgICAgICBicmFuY2hDb3VudDogMQ0KICAgICAgICAgICAgICAgICAgICB9LA0KICAgICAgICAgICAgICAgICAgICB7DQogICAgICAgICAgICAgICAgICAgICAgICBvcGNvZGU6ICdnZW5lcmljJywNCiAgICAgICAgICAgICAgICAgICAgICAgIGJsb2NrVHlwZTogU2NyYXRjaC5CbG9ja1R5cGUuQ09NTUFORCwNCiAgICAgICAgICAgICAgICAgICAgICAgIHRleHQ6ICdbQUREMF0nLA0KICAgICAgICAgICAgICAgICAgICAgICAgY29sb3IxOiAyMzAsDQogICAgICAgICAgICAgICAgICAgICAgICBjb2xvcjM6ICcjNDQ0RDdDJywNCiAgICAgICAgICAgICAgICAgICAgICAgIGFyZ3VtZW50czogew0KICAgICAgICAgICAgICAgICAgICAgICAgICAgIEFERDA6IHsNCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgdHlwZTogU2NyYXRjaC5Bcmd1bWVudFR5cGUuTlVMTCwNCiAgICAgICAgICAgICAgICAgICAgICAgICAgICB9DQogICAgICAgICAgICAgICAgICAgICAgICB9DQogICAgICAgICAgICAgICAgICAgIH0sDQogICAgICAgICAgICAgICAgICAgIHsNCiAgICAgICAgICAgICAgICAgICAgICAgIG9wY29kZTogJ2V4cHInLA0KICAgICAgICAgICAgICAgICAgICAgICAgYmxvY2tUeXBlOiBTY3JhdGNoLkJsb2NrVHlwZS5SRVBPUlRFUiwNCiAgICAgICAgICAgICAgICAgICAgICAgIHRleHQ6ICdbRVhQUl0nLA0KICAgICAgICAgICAgICAgICAgICAgICAgY29sb3IxOiAxMjAsDQogICAgICAgICAgICAgICAgICAgICAgICBhcmd1bWVudHM6IHsNCiAgICAgICAgICAgICAgICAgICAgICAgICAgICBFWFBSOiB7DQogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHR5cGU6IFNjcmF0Y2guQXJndW1lbnRUeXBlLlNUUklORywNCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgZGVmYXVsdFZhbHVlOiAnMSArIDEnDQogICAgICAgICAgICAgICAgICAgICAgICAgICAgfQ0KICAgICAgICAgICAgICAgICAgICAgICAgfQ0KICAgICAgICAgICAgICAgICAgICB9LA0KICAgICAgICAgICAgICAgICAgICB7DQogICAgICAgICAgICAgICAgICAgICAgICBvcGNvZGU6ICdldmFsQ29kZScsDQogICAgICAgICAgICAgICAgICAgICAgICBibG9ja1R5cGU6IFNjcmF0Y2guQmxvY2tUeXBlLkNPTU1BTkQsDQogICAgICAgICAgICAgICAgICAgICAgICB0ZXh0OiAnZXhlYycNCiAgICAgICAgICAgICAgICAgICAgfSwNCiAgICAgICAgICAgICAgICAgICAgIi0tLSIsDQogICAgICAgICAgICAgICAgICAgIHsNCiAgICAgICAgICAgICAgICAgICAgICAgIG9wY29kZTogJ2dldENvZGUnLA0KICAgICAgICAgICAgICAgICAgICAgICAgYmxvY2tUeXBlOiBTY3JhdGNoLkJsb2NrVHlwZS5SRVBPUlRFUiwNCiAgICAgICAgICAgICAgICAgICAgICAgIHRleHQ6ICdjb2RlJw0KICAgICAgICAgICAgICAgICAgICB9LA0KICAgICAgICAgICAgICAgICAgICB7DQogICAgICAgICAgICAgICAgICAgICAgICBvcGNvZGU6ICdjbGVhckNvZGUnLA0KICAgICAgICAgICAgICAgICAgICAgICAgYmxvY2tUeXBlOiBTY3JhdGNoLkJsb2NrVHlwZS5DT01NQU5ELA0KICAgICAgICAgICAgICAgICAgICAgICAgdGV4dDogJ2NsZWFyJw0KICAgICAgICAgICAgICAgICAgICB9DQogICAgICAgICAgICAgICAgXQ0KICAgICAgICAgICAgfTsNCiAgICAgICAgfQ0KDQogICAgICAgIGdlbmVyaWMoYXJncykgew0KICAgICAgICAgICAgaWYgKGFyZ3MuQUREMCkgew0KICAgICAgICAgICAgICAgIHRoaXMuZ2xvYmFsQ29kZUJ1ZmZlciArPSBhcmdzLkFERDAgKyAiXG4iOw0KICAgICAgICAgICAgfQ0KICAgICAgICAgICAgcmV0dXJuIGFyZ3MuQUREMDsNCiAgICAgICAgfQ0KDQogICAgICAgIGV4cHIoYXJncykgew0KICAgICAgICAgICAgcmV0dXJuIGFyZ3MuRVhQUjsNCiAgICAgICAgfQ0KDQogICAgICAgIGNibG9jayhhcmdzLCB1dGlsKSB7DQogICAgICAgICAgICBpZiAoYXJncy5CMCkgew0KICAgICAgICAgICAgICAgIHRoaXMuZ2xvYmFsQ29kZUJ1ZmZlciArPSBhcmdzLkIwICsgIiB7XG4iOw0KICAgICAgICAgICAgfQ0KICAgICAgICAgICAgdXRpbC5zdGFydEJyYW5jaCgxLCB0cnVlKTsNCiAgICAgICAgICAgIHRoaXMuZ2xvYmFsQ29kZUJ1ZmZlciArPSAifVxuIjsNCiAgICAgICAgICAgIHJldHVybiB0cnVlOw0KICAgICAgICB9DQoNCiAgICAgICAgZ2V0Q29kZSgpIHsNCiAgICAgICAgICAgIHJldHVybiB0aGlzLmdsb2JhbENvZGVCdWZmZXI7DQogICAgICAgIH0NCg0KICAgICAgICBldmFsQ29kZShhcmdzLCB1dGlsKSB7DQogICAgICAgICAgICBpZiAoIXRoaXMuZ2xvYmFsQ29kZUJ1ZmZlci50cmltKCkpIHsNCiAgICAgICAgICAgICAgICByZXR1cm47DQogICAgICAgICAgICB9DQoNCiAgICAgICAgICAgIHRyeSB7DQogICAgICAgICAgICAgICAgcmV0dXJuIChmdW5jdGlvbiAoY29udGV4dCwgdXRpbCkgew0KICAgICAgICAgICAgICAgICAgICByZXR1cm4gZXZhbCh0aGlzLmdsb2JhbENvZGVCdWZmZXIpOw0KICAgICAgICAgICAgICAgIH0pLmNhbGwodGhpcywgY29udGV4dCwgdXRpbCk7DQogICAgICAgICAgICB9IGNhdGNoIChlcnIpIHsNCiAgICAgICAgICAgICAgICBjb25zb2xlLmVycm9yKCJFdmFsIEVycm9yOiIsIGVycik7DQogICAgICAgICAgICAgICAgY29uc29sZS5lcnJvcigNCiAgICAgICAgICAgICAgICAgICAgIkdlbmVyYXRlZCBjb2RlOlxuIiArDQogICAgICAgICAgICAgICAgICAgIHRoaXMuZ2xvYmFsQ29kZUJ1ZmZlcg0KICAgICAgICAgICAgICAgICk7DQogICAgICAgICAgICB9DQogICAgICAgIH0NCg0KICAgICAgICBjbGVhckNvZGUoKSB7DQogICAgICAgICAgICB0aGlzLmdsb2JhbENvZGVCdWZmZXIgPSAiIjsNCiAgICAgICAgfQ0KICAgIH0NCg0KICAgIFNjcmF0Y2guZXh0ZW5zaW9ucy5yZWdpc3RlcigNCiAgICAgICAgbmV3IEpTQmxvY2tzRXh0ZW5zaW9uKFNjcmF0Y2gudm0pDQogICAgKTsNCg0KfSkoU2NyYXRjaCk7"
+            "js": "data:text/javascript;base64,KGZ1bmN0aW9uIChTY3JhdGNoKSB7DQogICAgJ3VzZSBzdHJpY3QnOw0KDQogICAgY29uc3QgY29udGV4dCA9IHt9Ow0KDQogICAgY2xhc3MgSlNCbG9ja3NFeHRlbnNpb24gew0KICAgICAgICBjb25zdHJ1Y3RvcihydW50aW1lKSB7DQogICAgICAgICAgICB0aGlzLnJ1bnRpbWUgPSBydW50aW1lOw0KICAgICAgICAgICAgdGhpcy5nbG9iYWxDb2RlQnVmZmVyID0gIiI7DQogICAgICAgIH0NCg0KICAgICAgICBnZXRJbmZvKCkgew0KICAgICAgICAgICAgcmV0dXJuIHsNCiAgICAgICAgICAgICAgICBpZDogJ2pzJywNCiAgICAgICAgICAgICAgICBuYW1lOiAnSlNCbG9ja3MnLA0KICAgICAgICAgICAgICAgIGJsb2NrczogWw0KICAgICAgICAgICAgICAgICAgICB7DQogICAgICAgICAgICAgICAgICAgICAgICBibG9ja1R5cGU6IFNjcmF0Y2guQmxvY2tUeXBlLlhNTCwNCiAgICAgICAgICAgICAgICAgICAgICAgIHhtbDogYDxibG9jayB0eXBlPSJldmVudF93aGVuZmxhZ2NsaWNrZWQiPjwvYmxvY2s+YA0KICAgICAgICAgICAgICAgICAgICB9LA0KICAgICAgICAgICAgICAgICAgICB7DQogICAgICAgICAgICAgICAgICAgICAgICBvcGNvZGU6ICdjYmxvY2snLA0KICAgICAgICAgICAgICAgICAgICAgICAgYmxvY2tUeXBlOiBTY3JhdGNoLkJsb2NrVHlwZS5DT05ESVRJT05BTCwNCiAgICAgICAgICAgICAgICAgICAgICAgIHRleHQ6ICdbQjBdJywNCiAgICAgICAgICAgICAgICAgICAgICAgIGNvbG9yMTogMzAwLA0KICAgICAgICAgICAgICAgICAgICAgICAgY29sb3IzOiAnIzdDNDQ3QycsDQogICAgICAgICAgICAgICAgICAgICAgICBhcmd1bWVudHM6IHsNCiAgICAgICAgICAgICAgICAgICAgICAgICAgICBCMDogew0KICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICB0eXBlOiBTY3JhdGNoLkFyZ3VtZW50VHlwZS5OVUxMLA0KICAgICAgICAgICAgICAgICAgICAgICAgICAgIH0NCiAgICAgICAgICAgICAgICAgICAgICAgIH0sDQogICAgICAgICAgICAgICAgICAgICAgICBicmFuY2hDb3VudDogMQ0KICAgICAgICAgICAgICAgICAgICB9LA0KICAgICAgICAgICAgICAgICAgICB7DQogICAgICAgICAgICAgICAgICAgICAgICBvcGNvZGU6ICdnZW5lcmljJywNCiAgICAgICAgICAgICAgICAgICAgICAgIGJsb2NrVHlwZTogU2NyYXRjaC5CbG9ja1R5cGUuQ09NTUFORCwNCiAgICAgICAgICAgICAgICAgICAgICAgIHRleHQ6ICdbQUREMF0nLA0KICAgICAgICAgICAgICAgICAgICAgICAgY29sb3IxOiAyMzAsDQogICAgICAgICAgICAgICAgICAgICAgICBjb2xvcjM6ICcjNDQ0RDdDJywNCiAgICAgICAgICAgICAgICAgICAgICAgIGFyZ3VtZW50cyA6IHsNCiAgICAgICAgICAgICAgICAgICAgICAgICAgICBBREQwOiB7DQogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHR5cGU6IFNjcmF0Y2guQXJndW1lbnRUeXBlLk5VTEwsDQogICAgICAgICAgICAgICAgICAgICAgICAgICAgfQ0KICAgICAgICAgICAgICAgICAgICAgICAgfQ0KICAgICAgICAgICAgICAgICAgICAgICAgfQ0KICAgICAgICAgICAgICAgICAgICAgIH0sDQogICAgICAgICAgICAgICAgICAgICAgIHsNCiAgICAgICAgICAgICAgICAgICAgICAgIG9wY29kZTogJ2V4cHInLA0KICAgICAgICAgICAgICAgICAgICAgICAgYmxvY2tUeXBlOiBTY3JhdGNoLkJsb2NrVHlwZS5SRVBPUlRFUiwNCiAgICAgICAgICAgICAgICAgICAgICAgIHRleHQ6ICdbRVhQUl0nLA0KICAgICAgICAgICAgICAgICAgICAgICAgY29sb3IxOiAxMjAsDQogICAgICAgICAgICAgICAgICAgICAgICBhcmd1bWVudHM6IHsNCiAgICAgICAgICAgICAgICAgICAgICAgICAgICBFWFBSOiB7DQogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHR5cGU6IFNjcmF0Y2guQXJndW1lbnRUeXBlLlNUUklORywNCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgZGVmYXVsdFZhbHVlOiAnMSArIDEnDQogICAgICAgICAgICAgICAgICAgICAgICAgICAgfQ0KICAgICAgICAgICAgICAgICAgICAgICAgfQ0KICAgICAgICAgICAgICAgICAgICAgIH0sDQogICAgICAgICAgICAgICAgICAgICAgIHsNCiAgICAgICAgICAgICAgICAgICAgICAgIG9wY29kZTogJ2V2YWxDb2RlJywNCiAgICAgICAgICAgICAgICAgICAgICAgIGJsb2NrVHlwZTogU2NyYXRjaC5CbG9ja1R5cGUuQ09NTUFORCwNCiAgICAgICAgICAgICAgICAgICAgICAgIHRleHQ6ICdleGVjJw0KICAgICAgICAgICAgICAgICAgICAgIH0sDQogICAgICAgICAgICAgICAgICAgICAgIi0tLSIsDQogICAgICAgICAgICAgICAgICAgIHsNCiAgICAgICAgICAgICAgICAgICAgICAgIG9wY29kZTogJ2dldENvZGUnLA0KICAgICAgICAgICAgICAgICAgICAgICAgYmxvY2tUeXBlOiBTY3JhdGNoLkJsb2NrVHlwZS5SRVBPUlRFUiwNCiAgICAgICAgICAgICAgICAgICAgICAgIHRleHQ6ICdjb2RlJw0KICAgICAgICAgICAgICAgICAgICB9LA0KICAgICAgICAgICAgICAgICAgICB7DQogICAgICAgICAgICAgICAgICAgICAgICBvcGNvZGU6ICdjbGVhckNvZGUnLA0KICAgICAgICAgICAgICAgICAgICAgICAgYmxvY2tUeXBlOiBTY3JhdGNoLkJsb2NrVHlwZS5DT01NQU5ELA0KICAgICAgICAgICAgICAgICAgICAgICAgdGV4dDogJ2NsZWFyJw0KICAgICAgICAgICAgICAgICAgICB9DQogICAgICAgICAgICAgICAgXQ0KICAgICAgICAgICAgfTsNCiAgICAgICAgfQ0KDQogICAgICAgIGdlbmVyaWMoYXJncykgew0KICAgICAgICAgICAgaWYgKGFyZ3MuQUREMCkgew0KICAgICAgICAgICAgICAgIHRoaXMuZ2xvYmFsQ29kZUJ1ZmZlciArPSBhcmdzLkFERDAgKyAiXG4iOw0KICAgICAgICAgICAgfQ0KICAgICAgICAgICAgcmV0dXJuIGFyZ3MuQUREMDsNCiAgICAgICAgfQ0KDQogICAgICAgIGV4cHIoYXJncykgew0KICAgICAgICAgICAgcmV0dXJuIGFyZ3MuRVhQUjsNCiAgICAgICAgfQ0KDQogICAgICAgIGNibG9jayhhcmdzLCB1dGlsKSB7DQogICAgICAgICAgICBpZiAoYXJncy5CMCkgew0KICAgICAgICAgICAgICAgIHRoaXMuZ2xvYmFsQ29kZUJ1ZmZlciArPSBhcmdzLkIwICsgIiB7XG4iOw0KICAgICAgICAgICAgfQ0KICAgICAgICAgICAgdXRpbC5zdGFydEJyYW5jaCgxLCB0cnVlKTsNCiAgICAgICAgICAgIHRoaXMuZ2xvYmFsQ29kZUJ1ZmZlciArPSAifVxuIjsNCiAgICAgICAgICAgIHJldHVybiB0cnVlOw0KICAgICAgICB9DQoNCiAgICAgICAgZ2V0Q29kZSgpIHsNCiAgICAgICAgICAgIHJldHVybiB0aGlzLmdsb2JhbENvZGVCdWZmZXI7DQogICAgICAgIH0NCg0KICAgICAgICBldmFsQ29kZShhcmdzLCB1dGlsKSB7DQogICAgICAgICAgICBpZiAoIXRoaXMuZ2xvYmFsQ29kZUJ1ZmZlci50cmltKCkpIHsNCiAgICAgICAgICAgICAgICByZXR1cm47DQogICAgICAgICAgICB9DQoNCiAgICAgICAgICAgIHRyeSB7DQogICAgICAgICAgICAgICAgcmV0dXJuIChmdW5jdGlvbiAoY29udGV4dCwgdXRpbCkgew0KICAgICAgICAgICAgICAgICAgICByZXR1cm4gZXZhbCh0aGlzLmdsb2JhbENvZGVCdWZmZXIpOw0KICAgICAgICAgICAgICAgIH0pLmNhbGwodGhpcywgY29udGV4dCwgdXRpbCk7DQogICAgICAgICAgICB9IGNhdGNoIChlcnIpIHsNCiAgICAgICAgICAgICAgICBjb25zb2xlLmVycm9yKCJFdmFsIEVycm9yOiIsIGVycik7DQogICAgICAgICAgICAgICAgY29uc29sZS5lcnJvcigNCiAgICAgICAgICAgICAgICAgICAgIkdlbmVyYXRlZCBjb2RlOlxuIiArDQogICAgICAgICAgICAgICAgICAgIHRoaXMuZ2xvYmFsQ29kZUJ1ZmZlcg0KICAgICAgICAgICAgICAgICk7DQogICAgICAgICAgICB9DQogICAgICAgIH0NCg0KICAgICAgICBjbGVhckNvZGUoKSB7DQogICAgICAgICAgICB0aGlzLmdsb2JhbENvZGVCdWZmZXIgPSAiIjsNCiAgICAgICAgfQ0KICAgIH0NCg0KICAgIFNjcmF0Y2guZXh0ZW5zaW9ucy5yZWdpc3RlcigNCiAgICAgICAgbmV3IEpTQmxvY2tzRXh0ZW5zaW9uKFNjcmF0Y2gudm0pDQogICAgKTsNCg0KfSkoU2NyYXRjaCk7"
         },
 
         meta: {
@@ -900,20 +923,20 @@ document.getElementById('menuExportSB3').addEventListener('click', async () => {
             vm: "0.2.0",
             agent: "",
             platform: {
-                name: "JSBlocks",
-                url: "https://kylekart.github.io/jsblocks/nb"
+                name: "NitroBolt",
+                url: "https://nitrobolt.org/"
             }
         }
     };
 
     const spriteBlocks = projectJson.targets[1].blocks;
+
     const topBlocks = workspace.getTopBlocks(true);
 
     let idCounter = 0;
+    const idMap = new Map();
 
     const generateId = () => `jsb${idCounter++}`;
-
-    const idMap = new Map();
 
     const getOpcode = block => {
         if (block.type === 'js_hat') {
@@ -924,46 +947,29 @@ document.getElementById('menuExportSB3').addEventListener('click', async () => {
     };
 
     /*
-     * Some Blockly input names need to become the names
-     * used by the Scratch project format.
-     */
-    const getScratchInputName = (block, input) => {
-        if (block.type === 'js_cblock') {
-            if (input.name === 'DO0') {
-                return 'SUBSTACK';
-            }
-
-            if (input.name.startsWith('B0_')) {
-                return 'B0';
-            }
-        }
-
-        return input.name;
-    };
-
-    /*
-     * FIRST PASS
+     * ------------------------------------------------------------
+     * PASS 1
      *
-     * Register absolutely every Blockly block.
-     *
-     * Nothing gets deleted here.
+     * Register every block.
+     * Do NOT establish any parent/next relationships here.
+     * ------------------------------------------------------------
      */
-    const registerBlocks = block => {
+
+    const registerBlock = block => {
         if (!block || idMap.has(block.id)) {
             return;
         }
 
         const scratchId = generateId();
-
         idMap.set(block.id, scratchId);
 
-        const isTopLevel = !block.getParent();
+        const topLevel = !block.getParent();
 
         let x = 0;
         let y = 0;
 
         if (
-            isTopLevel &&
+            topLevel &&
             typeof block.getRelativeToSurfaceXY === 'function'
         ) {
             const pos = block.getRelativeToSurfaceXY();
@@ -979,30 +985,30 @@ document.getElementById('menuExportSB3').addEventListener('click', async () => {
             inputs: {},
             fields: {},
             shadow: false,
-            topLevel: isTopLevel,
-            ...(isTopLevel ? { x, y } : {})
+            topLevel,
+            ...(topLevel ? { x, y } : {})
         };
 
         /*
-         * This is important:
-         * getChildren() includes the blocks nested inside inputs.
+         * Register descendants recursively.
+         *
+         * This is ONLY registration.
+         * It does not decide what their SB3 parent is.
          */
-        block.getChildren(false).forEach(child => {
-            registerBlocks(child);
-        });
+        block.getChildren(false).forEach(registerBlock);
     };
 
-    /*
-     * Register EVERYTHING before doing any linking.
-     */
-    topBlocks.forEach(registerBlocks);
+    topBlocks.forEach(registerBlock);
 
     /*
-     * SECOND PASS
+     * ------------------------------------------------------------
+     * PASS 2
      *
-     * Build next/parent/input relationships.
+     * Convert actual Blockly connections into SB3 relationships.
+     * ------------------------------------------------------------
      */
-    const linkBlockStructure = block => {
+
+    const linkBlock = block => {
         if (!block) {
             return;
         }
@@ -1016,189 +1022,334 @@ document.getElementById('menuExportSB3').addEventListener('click', async () => {
         const scratchBlock = spriteBlocks[scratchId];
 
         /*
-         * NEXT CONNECTION
+         * --------------------------------------------------------
+         * FIELDS
+         * --------------------------------------------------------
          */
+
+        block.inputList.forEach(input => {
+            if (!input.fieldRow) {
+                return;
+            }
+
+            input.fieldRow.forEach(field => {
+                if (!field || !field.name) {
+                    return;
+                }
+
+                let value = '';
+
+                try {
+                    value = field.getValue();
+                } catch {
+                    value = '';
+                }
+
+                /*
+                 * js_expr.EXPR is represented as a Scratch INPUT,
+                 * not a field.
+                 */
+                if (
+                    block.type === 'js_expr' &&
+                    field.name === 'EXPR'
+                ) {
+                    scratchBlock.inputs.EXPR = [
+                        1,
+                        [10, value]
+                    ];
+
+                    return;
+                }
+
+                scratchBlock.fields[field.name] = [
+                    value,
+                    null
+                ];
+            });
+        });
+
+        /*
+         * --------------------------------------------------------
+         * NORMAL NEXT CONNECTION
+         * --------------------------------------------------------
+         */
+
         const nextBlock = block.getNextBlock();
 
         if (nextBlock) {
-            const nextScratchId = idMap.get(nextBlock.id);
+            const nextId = idMap.get(nextBlock.id);
 
-            if (nextScratchId) {
-                scratchBlock.next = nextScratchId;
-                spriteBlocks[nextScratchId].parent = scratchId;
+            if (nextId) {
+                scratchBlock.next = nextId;
+
+                /*
+                 * This is a true stack connection.
+                 */
+                spriteBlocks[nextId].parent = scratchId;
             }
         }
 
         /*
-         * INPUTS
+         * --------------------------------------------------------
+         * INPUT CONNECTIONS
+         * --------------------------------------------------------
          */
+
         block.inputList.forEach(input => {
             if (!input.connection) {
                 return;
             }
 
-            const targetBlock = input.connection.targetBlock();
+            const target = input.connection.targetBlock();
 
-            if (!targetBlock) {
+            if (!target) {
                 return;
             }
 
-            const targetScratchId = idMap.get(targetBlock.id);
+            const targetId = idMap.get(target.id);
 
-            if (!targetScratchId) {
-                return;
-            }
-
-            const inputName = getScratchInputName(block, input);
-
-            spriteBlocks[targetScratchId].parent = scratchId;
-
-            /*
-             * js_expr is stored as an inline string input.
-             *
-             * Example:
-             *
-             * "EXPR": [
-             *     1,
-             *     [10, "if (true)"]
-             * ]
-             */
-            if (targetBlock.type === 'js_expr') {
-                const field = targetBlock.getField('EXPR');
-
-                const value = field
-                    ? field.getValue()
-                    : '';
-
-                scratchBlock.inputs[inputName] = [
-                    1,
-                    [10, value]
-                ];
-
+            if (!targetId) {
                 return;
             }
 
             /*
-             * Statement inputs.
+             * ====================================================
+             * GREEN FLAG
              *
-             * Your valid project uses 2 for these.
+             * Blockly has DO.
+             * Scratch does NOT.
+             *
+             * Therefore DO becomes `next`.
+             * ====================================================
              */
+
             if (
-                input.type === Blockly.NEXT_STATEMENT ||
-                inputName === 'SUBSTACK' ||
-                inputName === 'B0' ||
-                inputName.startsWith('DO') ||
-                inputName.startsWith('ADD')
+                block.type === 'js_hat' &&
+                input.name === 'DO'
             ) {
-                scratchBlock.inputs[inputName] = [
-                    2,
-                    targetScratchId
-                ];
+                scratchBlock.next = targetId;
+
+                spriteBlocks[targetId].parent = scratchId;
 
                 return;
             }
 
             /*
-             * Normal value input.
+             * ====================================================
+             * JS CBLOCK
+             *
+             * B0_ADD0 -> B0
+             * DO0     -> SUBSTACK
+             * ====================================================
              */
-            if (input.type === Blockly.INPUT_VALUE) {
-                scratchBlock.inputs[inputName] = [
-                    1,
-                    targetScratchId
+
+            if (block.type === 'js_cblock') {
+
+                if (input.name === 'B0_ADD0') {
+                    scratchBlock.inputs.B0 = [
+                        2,
+                        targetId
+                    ];
+
+                    spriteBlocks[targetId].parent = scratchId;
+
+                    return;
+                }
+
+                if (input.name === 'DO0') {
+                    scratchBlock.inputs.SUBSTACK = [
+                        2,
+                        targetId
+                    ];
+
+                    spriteBlocks[targetId].parent = scratchId;
+
+                    return;
+                }
+            }
+
+            /*
+             * ====================================================
+             * JS GENERIC
+             *
+             * ADD0 -> ADD0
+             * ====================================================
+             */
+
+            if (
+                block.type === 'js_generic' &&
+                input.name === 'ADD0'
+            ) {
+                scratchBlock.inputs.ADD0 = [
+                    2,
+                    targetId
                 ];
+
+                spriteBlocks[targetId].parent = scratchId;
+
+                return;
+            }
+
+            /*
+             * ====================================================
+             * NORMAL VALUE INPUT
+             * ====================================================
+             */
+
+            if (input.type === Blockly.INPUT_VALUE) {
+                scratchBlock.inputs[input.name] = [
+                    1,
+                    targetId
+                ];
+
+                spriteBlocks[targetId].parent = scratchId;
+
+                return;
+            }
+
+            /*
+             * ====================================================
+             * NORMAL STATEMENT INPUT
+             * ====================================================
+             */
+
+            if (input.type === Blockly.NEXT_STATEMENT) {
+                scratchBlock.inputs[input.name] = [
+                    2,
+                    targetId
+                ];
+
+                spriteBlocks[targetId].parent = scratchId;
+
+                return;
             }
         });
 
         /*
-         * Recurse into ALL children.
+         * Recurse through the actual Blockly tree.
+         *
+         * Again, this only calls linkBlock.
+         * It does not infer parents from getChildren().
          */
-        block.getChildren(false).forEach(child => {
-            linkBlockStructure(child);
-        });
+        block.getChildren(false).forEach(linkBlock);
     };
 
-    topBlocks.forEach(linkBlockStructure);
+    topBlocks.forEach(linkBlock);
 
     /*
-     * ---------------------------------------------------------
-     * INSERT clearCode AFTER THE GREEN FLAG
-     * ---------------------------------------------------------
+     * ------------------------------------------------------------
+     * INSERT clearCode + evalCode
+     * ------------------------------------------------------------
+     *
+     * Desired structure:
+     *
+     *     event_whenflagclicked
+     *              |
+     *          clearCode
+     *              |
+     *           cblock
+     *              |
+     *            ...
+     *              |
+     *          evalCode
      */
 
-    const hat = topBlocks.find(block => block.type === 'js_hat');
+    for (const hat of topBlocks) {
+        if (hat.type !== 'js_hat') {
+            continue;
+        }
 
-    if (!hat) {
-        console.error('No js_hat block found.');
-        return;
-    }
+        const hatId = idMap.get(hat.id);
 
-    const hatId = idMap.get(hat.id);
+        if (!hatId) {
+            continue;
+        }
 
-    if (!hatId) {
-        console.error('Could not find exported hat.');
-        return;
-    }
+        const hatBlock = spriteBlocks[hatId];
 
-    const oldHatNext = spriteBlocks[hatId].next;
+        /*
+         * The first block currently under the hat.
+         */
+        const firstBlockId = hatBlock.next;
 
-    const clearId = generateId();
+        /*
+         * Create clearCode.
+         */
+        const clearId = generateId();
 
-    spriteBlocks[clearId] = {
-        opcode: 'js_clearCode',
-        next: oldHatNext,
-        parent: hatId,
-        inputs: {},
-        fields: {},
-        shadow: false,
-        topLevel: false
-    };
+        spriteBlocks[clearId] = {
+            opcode: 'js_clearCode',
+            next: firstBlockId,
+            parent: hatId,
+            inputs: {},
+            fields: {},
+            shadow: false,
+            topLevel: false
+        };
 
-    spriteBlocks[hatId].next = clearId;
+        /*
+         * Hat -> clearCode
+         */
+        hatBlock.next = clearId;
 
-    if (oldHatNext && spriteBlocks[oldHatNext]) {
-        spriteBlocks[oldHatNext].parent = clearId;
+        /*
+         * clearCode -> first user block
+         */
+        if (firstBlockId) {
+            spriteBlocks[firstBlockId].parent = clearId;
+        }
+
+        /*
+         * Find the final block in the stack.
+         */
+        let lastId = clearId;
+
+        while (spriteBlocks[lastId].next) {
+            lastId = spriteBlocks[lastId].next;
+        }
+
+        /*
+         * Create evalCode.
+         */
+        const evalId = generateId();
+
+        spriteBlocks[evalId] = {
+            opcode: 'js_evalCode',
+            next: null,
+            parent: lastId,
+            inputs: {},
+            fields: {},
+            shadow: false,
+            topLevel: false
+        };
+
+        /*
+         * Last user block -> evalCode
+         */
+        spriteBlocks[lastId].next = evalId;
     }
 
     /*
-     * ---------------------------------------------------------
-     * INSERT evalCode AT THE VERY END
-     * ---------------------------------------------------------
+     * ------------------------------------------------------------
+     * DEFAULT SVG ASSETS
+     * ------------------------------------------------------------
      */
 
-    let lastId = hatId;
+    const defaultStageSvg = `
+<svg version="1.1"
+     width="480"
+     height="360"
+     xmlns="http://www.w3.org/2000/svg">
+</svg>
+`.trim();
 
-    while (
-        spriteBlocks[lastId] &&
-        spriteBlocks[lastId].next
-    ) {
-        lastId = spriteBlocks[lastId].next;
-    }
-
-    const evalId = generateId();
-
-    spriteBlocks[evalId] = {
-        opcode: 'js_evalCode',
-        next: null,
-        parent: lastId,
-        inputs: {},
-        fields: {},
-        shadow: false,
-        topLevel: false
-    };
-
-    spriteBlocks[lastId].next = evalId;
-
-    /*
-     * ---------------------------------------------------------
-     * SVGs
-     * ---------------------------------------------------------
-     */
-
-    const defaultStageSvg =
-        `<svg version="1.1" width="480" height="360" xmlns="http://www.w3.org/2000/svg"></svg>`;
-
-    const defaultSpriteSvg =
-        `<svg version="1.1" width="480" height="360" xmlns="http://www.w3.org/2000/svg"></svg>`;
+    const defaultSpriteSvg = `
+<svg version="1.1"
+     width="480"
+     height="360"
+     xmlns="http://www.w3.org/2000/svg">
+</svg>
+`.trim();
 
     zip.file(
         "project.json",
@@ -1214,6 +1365,12 @@ document.getElementById('menuExportSB3').addEventListener('click', async () => {
         "4d45a484633a5369e85831f9cb9c7a4e.svg",
         defaultSpriteSvg
     );
+
+    /*
+     * ------------------------------------------------------------
+     * GENERATE SB3
+     * ------------------------------------------------------------
+     */
 
     try {
         const content = await zip.generateAsync({
