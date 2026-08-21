@@ -821,3 +821,393 @@ document.getElementById('menuImportJS').addEventListener('click', () => {
     };
     input.click();
 });
+
+document.getElementById('menuExportSB3').addEventListener('click', async () => {
+    const JSZip = window.JSZip;
+
+    if (!JSZip) {
+        console.error('JSZip is not loaded.');
+        return;
+    }
+
+    const zip = new JSZip();
+
+    /*
+     * JSBlocks extension information.
+     *
+     * This is the URL TurboWarp/your loader should use when
+     * loading the extension. The project.json itself only stores
+     * the extension ID.
+     */
+
+    /*
+     * Basic Scratch project structure.
+     */
+    const projectJson = {
+        targets: [
+            {
+                isStage: true,
+                name: "Stage",
+
+                variables: {},
+                lists: {},
+                broadcasts: {},
+                blocks: {},
+                comments: {},
+
+                currentCostume: 0,
+
+                costumes: [{
+                    name: "backdrop1",
+                    dataFormat: "svg",
+                    assetId: "cd21514d0531fdffb22204e0ec5ed84a",
+                    md5ext: "cd21514d0531fdffb22204e0ec5ed84a.svg",
+                    rotationCenterX: 240,
+                    rotationCenterY: 180
+                }],
+
+                sounds: [],
+
+                volume: 100,
+                layerOrder: 0
+            },
+
+            {
+                isStage: false,
+                name: "Sprite1",
+
+                variables: {},
+                lists: {},
+                broadcasts: {},
+                blocks: {},
+                comments: {},
+
+                currentCostume: 0,
+
+                costumes: [{
+                    name: "costume1",
+                    bitmapResolution: 1,
+                    dataFormat: "svg",
+                    assetId: "4d45a484633a5369e85831f9cb9c7a4e",
+                    md5ext: "4d45a484633a5369e85831f9cb9c7a4e.svg",
+                    rotationCenterX: 22.6,
+                    rotationCenterY: 56.7
+                }],
+
+                sounds: [],
+
+                volume: 100,
+                layerOrder: 1,
+
+                visible: true,
+                x: 0,
+                y: 0,
+                size: 100,
+                direction: 90,
+                draggable: false,
+                rotationStyle: "all around"
+            }
+        ],
+
+        monitors: [],
+
+        // Scratch stores extension IDs here.
+    extensions: [
+        "js"
+    ],
+    extensionURLs: {
+        "js": "data:text/javascript;base64,KGZ1bmN0aW9uIChTY3JhdGNoKSB7DQogICAgJ3VzZSBzdHJpY3QnOw0KDQogICAgY29uc3QgY29udGV4dCA9IHt9Ow0KDQogICAgY2xhc3MgSlNCbG9ja3NFeHRlbnNpb24gew0KICAgICAgICBjb25zdHJ1Y3RvcihydW50aW1lKSB7DQogICAgICAgICAgICB0aGlzLnJ1bnRpbWUgPSBydW50aW1lOw0KICAgICAgICAgICAgdGhpcy5nbG9iYWxDb2RlQnVmZmVyID0gIiI7DQogICAgICAgIH0NCg0KICAgICAgICBnZXRJbmZvKCkgew0KICAgICAgICAgICAgcmV0dXJuIHsNCiAgICAgICAgICAgICAgICBpZDogJ2pzJywNCiAgICAgICAgICAgICAgICBuYW1lOiAnSlNCbG9ja3MnLA0KICAgICAgICAgICAgICAgIGJsb2NrczogWw0KICAgICAgICAgICAgICAgICAgICB7DQogICAgICAgICAgICAgICAgICAgICAgICBibG9ja1R5cGU6IFNjcmF0Y2guQmxvY2tUeXBlLlhNTCwNCiAgICAgICAgICAgICAgICAgICAgICAgIHhtbDogYDxibG9jayB0eXBlPSJldmVudF93aGVuZmxhZ2NsaWNrZWQiPjwvYmxvY2s+YA0KICAgICAgICAgICAgICAgICAgICB9LA0KICAgICAgICAgICAgICAgICAgICB7DQogICAgICAgICAgICAgICAgICAgICAgICBvcGNvZGU6ICdjYmxvY2snLA0KICAgICAgICAgICAgICAgICAgICAgICAgYmxvY2tUeXBlOiBTY3JhdGNoLkJsb2NrVHlwZS5DT05ESVRJT05BTCwNCiAgICAgICAgICAgICAgICAgICAgICAgIHRleHQ6ICdbQjBdJywNCiAgICAgICAgICAgICAgICAgICAgICAgIGNvbG9yMTogMzAwLA0KICAgICAgICAgICAgICAgICAgICAgICAgY29sb3IzOiAnIzdDNDQ3QycsDQogICAgICAgICAgICAgICAgICAgICAgICBhcmd1bWVudHM6IHsNCiAgICAgICAgICAgICAgICAgICAgICAgICAgICBCMDogew0KICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICB0eXBlOiBTY3JhdGNoLkFyZ3VtZW50VHlwZS5OVUxMLA0KICAgICAgICAgICAgICAgICAgICAgICAgICAgIH0NCiAgICAgICAgICAgICAgICAgICAgICAgIH0sDQogICAgICAgICAgICAgICAgICAgICAgICBicmFuY2hDb3VudDogMQ0KICAgICAgICAgICAgICAgICAgICB9LA0KICAgICAgICAgICAgICAgICAgICB7DQogICAgICAgICAgICAgICAgICAgICAgICBvcGNvZGU6ICdnZW5lcmljJywNCiAgICAgICAgICAgICAgICAgICAgICAgIGJsb2NrVHlwZTogU2NyYXRjaC5CbG9ja1R5cGUuQ09NTUFORCwNCiAgICAgICAgICAgICAgICAgICAgICAgIHRleHQ6ICdbQUREMF0nLA0KICAgICAgICAgICAgICAgICAgICAgICAgY29sb3IxOiAyMzAsDQogICAgICAgICAgICAgICAgICAgICAgICBjb2xvcjM6ICcjNDQ0RDdDJywNCiAgICAgICAgICAgICAgICAgICAgICAgIGFyZ3VtZW50czogew0KICAgICAgICAgICAgICAgICAgICAgICAgICAgIEFERDA6IHsNCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgdHlwZTogU2NyYXRjaC5Bcmd1bWVudFR5cGUuTlVMTCwNCiAgICAgICAgICAgICAgICAgICAgICAgICAgICB9DQogICAgICAgICAgICAgICAgICAgICAgICB9DQogICAgICAgICAgICAgICAgICAgIH0sDQogICAgICAgICAgICAgICAgICAgIHsNCiAgICAgICAgICAgICAgICAgICAgICAgIG9wY29kZTogJ2V4cHInLA0KICAgICAgICAgICAgICAgICAgICAgICAgYmxvY2tUeXBlOiBTY3JhdGNoLkJsb2NrVHlwZS5SRVBPUlRFUiwNCiAgICAgICAgICAgICAgICAgICAgICAgIHRleHQ6ICdbRVhQUl0nLA0KICAgICAgICAgICAgICAgICAgICAgICAgY29sb3IxOiAxMjAsDQogICAgICAgICAgICAgICAgICAgICAgICBhcmd1bWVudHM6IHsNCiAgICAgICAgICAgICAgICAgICAgICAgICAgICBFWFBSOiB7DQogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHR5cGU6IFNjcmF0Y2guQXJndW1lbnRUeXBlLlNUUklORywNCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgZGVmYXVsdFZhbHVlOiAnMSArIDEnDQogICAgICAgICAgICAgICAgICAgICAgICAgICAgfQ0KICAgICAgICAgICAgICAgICAgICAgICAgfQ0KICAgICAgICAgICAgICAgICAgICB9LA0KICAgICAgICAgICAgICAgICAgICB7DQogICAgICAgICAgICAgICAgICAgICAgICBvcGNvZGU6ICdldmFsQ29kZScsDQogICAgICAgICAgICAgICAgICAgICAgICBibG9ja1R5cGU6IFNjcmF0Y2guQmxvY2tUeXBlLkNPTU1BTkQsDQogICAgICAgICAgICAgICAgICAgICAgICB0ZXh0OiAnZXhlYycNCiAgICAgICAgICAgICAgICAgICAgfSwNCiAgICAgICAgICAgICAgICAgICAgIi0tLSIsDQogICAgICAgICAgICAgICAgICAgIHsNCiAgICAgICAgICAgICAgICAgICAgICAgIG9wY29kZTogJ2dldENvZGUnLA0KICAgICAgICAgICAgICAgICAgICAgICAgYmxvY2tUeXBlOiBTY3JhdGNoLkJsb2NrVHlwZS5SRVBPUlRFUiwNCiAgICAgICAgICAgICAgICAgICAgICAgIHRleHQ6ICdjb2RlJw0KICAgICAgICAgICAgICAgICAgICB9LA0KICAgICAgICAgICAgICAgICAgICB7DQogICAgICAgICAgICAgICAgICAgICAgICBvcGNvZGU6ICdjbGVhckNvZGUnLA0KICAgICAgICAgICAgICAgICAgICAgICAgYmxvY2tUeXBlOiBTY3JhdGNoLkJsb2NrVHlwZS5DT01NQU5ELA0KICAgICAgICAgICAgICAgICAgICAgICAgdGV4dDogJ2NsZWFyJw0KICAgICAgICAgICAgICAgICAgICB9DQogICAgICAgICAgICAgICAgXQ0KICAgICAgICAgICAgfTsNCiAgICAgICAgfQ0KDQogICAgICAgIGdlbmVyaWMoYXJncykgew0KICAgICAgICAgICAgaWYgKGFyZ3MuQUREMCkgew0KICAgICAgICAgICAgICAgIHRoaXMuZ2xvYmFsQ29kZUJ1ZmZlciArPSBhcmdzLkFERDAgKyAiXG4iOw0KICAgICAgICAgICAgfQ0KICAgICAgICAgICAgcmV0dXJuIGFyZ3MuQUREMDsNCiAgICAgICAgfQ0KDQogICAgICAgIGV4cHIoYXJncykgew0KICAgICAgICAgICAgcmV0dXJuIGFyZ3MuRVhQUjsNCiAgICAgICAgfQ0KDQogICAgICAgIGNibG9jayhhcmdzLCB1dGlsKSB7DQogICAgICAgICAgICBpZiAoYXJncy5CMCkgew0KICAgICAgICAgICAgICAgIHRoaXMuZ2xvYmFsQ29kZUJ1ZmZlciArPSBhcmdzLkIwICsgIiB7XG4iOw0KICAgICAgICAgICAgfQ0KICAgICAgICAgICAgdXRpbC5zdGFydEJyYW5jaCgxLCB0cnVlKTsNCiAgICAgICAgICAgIHRoaXMuZ2xvYmFsQ29kZUJ1ZmZlciArPSAifVxuIjsNCiAgICAgICAgICAgIHJldHVybiB0cnVlOw0KICAgICAgICB9DQoNCiAgICAgICAgZ2V0Q29kZSgpIHsNCiAgICAgICAgICAgIHJldHVybiB0aGlzLmdsb2JhbENvZGVCdWZmZXI7DQogICAgICAgIH0NCg0KICAgICAgICBldmFsQ29kZShhcmdzLCB1dGlsKSB7DQogICAgICAgICAgICBpZiAoIXRoaXMuZ2xvYmFsQ29kZUJ1ZmZlci50cmltKCkpIHsNCiAgICAgICAgICAgICAgICByZXR1cm47DQogICAgICAgICAgICB9DQoNCiAgICAgICAgICAgIHRyeSB7DQogICAgICAgICAgICAgICAgcmV0dXJuIChmdW5jdGlvbiAoY29udGV4dCwgdXRpbCkgew0KICAgICAgICAgICAgICAgICAgICByZXR1cm4gZXZhbCh0aGlzLmdsb2JhbENvZGVCdWZmZXIpOw0KICAgICAgICAgICAgICAgIH0pLmNhbGwodGhpcywgY29udGV4dCwgdXRpbCk7DQogICAgICAgICAgICB9IGNhdGNoIChlcnIpIHsNCiAgICAgICAgICAgICAgICBjb25zb2xlLmVycm9yKCJFdmFsIEVycm9yOiIsIGVycik7DQogICAgICAgICAgICAgICAgY29uc29sZS5lcnJvcigNCiAgICAgICAgICAgICAgICAgICAgIkdlbmVyYXRlZCBjb2RlOlxuIiArDQogICAgICAgICAgICAgICAgICAgIHRoaXMuZ2xvYmFsQ29kZUJ1ZmZlcg0KICAgICAgICAgICAgICAgICk7DQogICAgICAgICAgICB9DQogICAgICAgIH0NCg0KICAgICAgICBjbGVhckNvZGUoKSB7DQogICAgICAgICAgICB0aGlzLmdsb2JhbENvZGVCdWZmZXIgPSAiIjsNCiAgICAgICAgfQ0KICAgIH0NCg0KICAgIFNjcmF0Y2guZXh0ZW5zaW9ucy5yZWdpc3RlcigNCiAgICAgICAgbmV3IEpTQmxvY2tzRXh0ZW5zaW9uKFNjcmF0Y2gudm0pDQogICAgKTsNCg0KfSkoU2NyYXRjaCk7"
+    },
+
+        meta: {
+            semver: "3.0.0",
+            vm: "0.2.0",
+            agent: "",
+            platform: {
+                name: "JSBlocks",
+                url: "https://kylekart.github.io/jsblocks/nb"
+            }
+        }
+    };
+
+    const spriteBlocks = projectJson.targets[1].blocks;
+
+    /*
+     * Get all top-level Blockly blocks.
+     */
+    const topBlocks = workspace.getTopBlocks(true);
+
+    /*
+     * Scratch block IDs.
+     */
+    let idCounter = 0;
+
+    const generateId = () => {
+        return `jsb${idCounter++}`;
+    };
+
+    /*
+     * Maps:
+     *
+     * Blockly ID -> Scratch ID
+     */
+    const idMap = new Map();
+
+    /*
+     * Convert Blockly block types to Scratch opcodes.
+     */
+    const OPCODE_MAP = {
+        js_hat: 'event_whenflagclicked'
+    };
+
+    const getOpcode = (block) => {
+        return OPCODE_MAP[block.type] ?? block.type;
+    };
+
+    /*
+     * Register every Blockly block.
+     *
+     * This pass only creates the Scratch blocks.
+     * Connections are handled afterward.
+     */
+    const registerBlocks = (block) => {
+        if (!block) return;
+
+        // Don't register the same Blockly block twice.
+        if (idMap.has(block.id)) return;
+
+        const scratchId = generateId();
+
+        idMap.set(block.id, scratchId);
+
+        const isTopLevel = !block.getParent();
+
+        let x = 0;
+        let y = 0;
+
+        if (isTopLevel && typeof block.getRelativeToSurfaceXY === 'function') {
+            const position = block.getRelativeToSurfaceXY();
+
+            x = Math.round(position.x);
+            y = Math.round(position.y);
+        }
+
+        spriteBlocks[scratchId] = {
+            opcode: getOpcode(block),
+
+            next: null,
+            parent: null,
+
+            inputs: {},
+            fields: {},
+
+            shadow: false,
+
+            topLevel: isTopLevel,
+
+            x,
+            y
+        };
+
+        /*
+         * Register children recursively.
+         */
+        block.getChildren(false).forEach(registerBlocks);
+    };
+
+    /*
+     * Link all Scratch block relationships.
+     */
+    const linkBlockStructure = (block) => {
+        if (!block) return;
+
+        const scratchId = idMap.get(block.id);
+
+        if (!scratchId) {
+            return;
+        }
+
+        const scratchBlock = spriteBlocks[scratchId];
+
+        /*
+         * NEXT connection.
+         */
+        const nextBlock = block.getNextBlock();
+
+        if (nextBlock) {
+            const nextScratchId = idMap.get(nextBlock.id);
+
+            if (nextScratchId) {
+                scratchBlock.next = nextScratchId;
+                spriteBlocks[nextScratchId].parent = scratchId;
+            }
+        }
+
+        /*
+         * Inputs and fields.
+         */
+        block.inputList.forEach(input => {
+
+            /*
+             * Fields.
+             */
+            if (input.fieldRow && input.fieldRow.length > 0) {
+                input.fieldRow.forEach(field => {
+
+                    if (!field || !field.name) {
+                        return;
+                    }
+
+                    let value;
+
+                    try {
+                        value = field.getValue();
+                    } catch (e) {
+                        value = '';
+                    }
+
+                    scratchBlock.fields[field.name] = [
+                        value,
+                        null
+                    ];
+                });
+            }
+
+            /*
+             * Connected blocks.
+             */
+            if (input.connection) {
+                const targetBlock = input.connection.targetBlock();
+
+                if (!targetBlock) {
+                    return;
+                }
+
+                const targetScratchId = idMap.get(targetBlock.id);
+
+                if (!targetScratchId) {
+                    return;
+                }
+
+                /*
+                 * The target block belongs to this block.
+                 */
+                spriteBlocks[targetScratchId].parent = scratchId;
+
+                /*
+                 * Scratch input types:
+                 *
+                 * 1 = value input
+                 * 2 = statement input
+                 */
+                if (input.type === Blockly.INPUT_VALUE) {
+
+                    scratchBlock.inputs[input.name] = [
+                        1,
+                        targetScratchId
+                    ];
+
+                } else if (input.type === Blockly.NEXT_STATEMENT) {
+
+                    scratchBlock.inputs[input.name] = [
+                        2,
+                        targetScratchId
+                    ];
+                }
+            }
+        });
+
+        /*
+         * Continue recursively.
+         */
+        block.getChildren(false).forEach(linkBlockStructure);
+    };
+
+    /*
+     * PASS 1
+     *
+     * Create every Scratch block and its ID.
+     */
+    topBlocks.forEach(registerBlocks);
+
+    /*
+     * PASS 2
+     *
+     * Link next/parent/input/field information.
+     */
+    topBlocks.forEach(linkBlockStructure);
+
+    /*
+     * Default Stage SVG.
+     */
+    const defaultStageSvg = `
+<svg version="1.1"
+     width="480"
+     height="360"
+     xmlns="http://www.w3.org/2000/svg">
+</svg>
+`.trim();
+
+    /*
+     * Default Sprite SVG.
+     */
+    const defaultSpriteSvg = `
+<svg version="1.1"
+     width="480"
+     height="360"
+     xmlns="http://www.w3.org/2000/svg">
+</svg>
+`.trim();
+
+    /*
+     * Add project.json.
+     */
+    zip.file(
+        "project.json",
+        JSON.stringify(projectJson, null, 2)
+    );
+
+    /*
+     * Add assets.
+     */
+    zip.file(
+        "cd21514d0531fdffb22204e0ec5ed84a.svg",
+        defaultStageSvg
+    );
+
+    zip.file(
+        "4d45a484633a5369e85831f9cb9c7a4e.svg",
+        defaultSpriteSvg
+    );
+
+    /*
+     * Generate the SB3.
+     */
+    try {
+        const content = await zip.generateAsync({
+            type: "blob"
+        });
+
+        const url = URL.createObjectURL(content);
+
+        const a = document.createElement('a');
+
+        a.href = url;
+        a.download = 'project.sb3';
+
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+
+        /*
+         * Give the browser a moment before revoking
+         * the object URL.
+         */
+        setTimeout(() => {
+            URL.revokeObjectURL(url);
+        }, 1000);
+
+    } catch (error) {
+        console.error('Failed to generate SB3:', error);
+    }
+});
