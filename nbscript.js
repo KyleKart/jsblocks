@@ -832,17 +832,6 @@ document.getElementById('menuExportSB3').addEventListener('click', async () => {
 
     const zip = new JSZip();
 
-    /*
-     * JSBlocks extension information.
-     *
-     * This is the URL TurboWarp/your loader should use when
-     * loading the extension. The project.json itself only stores
-     * the extension ID.
-     */
-
-    /*
-     * Basic Scratch project structure.
-     */
     const projectJson = {
         targets: [
             {
