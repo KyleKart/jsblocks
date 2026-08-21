@@ -928,21 +928,31 @@ document.getElementById('menuExportSB3').addEventListener('click', async () => {
 
     const idMap = new Map();
 
-    const OPCODE_MAP = {
-        js_hat: 'event_whenflagclicked'
+    const getOpcode = block => {
+        if (block.type === 'js_hat') {
+            return 'event_whenflagclicked';
+        }
+
+        return block.type;
     };
 
-    const getOpcode = (block) => {
-        return OPCODE_MAP[block.type] ?? block.type;
+    /*
+     * Convert a Blockly field/input value into
+     * the Scratch 3 input representation.
+     */
+    const addInput = (scratchBlock, name, type, value) => {
+        scratchBlock.inputs[name] = [type, value];
     };
 
-    const registerBlocks = (block) => {
+    /*
+     * Register every Blockly block first.
+     */
+    const registerBlocks = block => {
         if (!block || idMap.has(block.id)) {
             return;
         }
 
         const scratchId = generateId();
-
         idMap.set(block.id, scratchId);
 
         const isTopLevel = !block.getParent();
@@ -954,25 +964,20 @@ document.getElementById('menuExportSB3').addEventListener('click', async () => {
             isTopLevel &&
             typeof block.getRelativeToSurfaceXY === 'function'
         ) {
-            const position = block.getRelativeToSurfaceXY();
+            const pos = block.getRelativeToSurfaceXY();
 
-            x = Math.round(position.x);
-            y = Math.round(position.y);
+            x = Math.round(pos.x);
+            y = Math.round(pos.y);
         }
 
         spriteBlocks[scratchId] = {
             opcode: getOpcode(block),
-
             next: null,
             parent: null,
-
             inputs: {},
             fields: {},
-
             shadow: false,
-
             topLevel: isTopLevel,
-
             x,
             y
         };
@@ -980,119 +985,235 @@ document.getElementById('menuExportSB3').addEventListener('click', async () => {
         block.getChildren(false).forEach(registerBlocks);
     };
 
-const linkBlockStructure = (block) => {
-    if (!block) {
-        return;
-    }
-
-    const scratchId = idMap.get(block.id);
-
-    if (!scratchId) {
-        return;
-    }
-
-    const scratchBlock = spriteBlocks[scratchId];
-
     /*
-     * Blockly's normal next connection.
-     *
-     * This becomes Scratch's `next`.
+     * Link normal Blockly structure.
      */
-    const nextBlock = block.getNextBlock();
-
-    if (nextBlock) {
-        const nextScratchId = idMap.get(nextBlock.id);
-
-        if (nextScratchId) {
-            scratchBlock.next = nextScratchId;
-            spriteBlocks[nextScratchId].parent = scratchId;
+    const linkBlockStructure = block => {
+        if (!block) {
+            return;
         }
-    }
 
-    /*
-     * Process fields and inputs.
-     */
-    block.inputList.forEach(input => {
+        const scratchId = idMap.get(block.id);
+
+        if (!scratchId) {
+            return;
+        }
+
+        const scratchBlock = spriteBlocks[scratchId];
 
         /*
-         * Fields
+         * Handle next connections.
          */
-        if (input.fieldRow && input.fieldRow.length > 0) {
-            input.fieldRow.forEach(field => {
-                if (!field || !field.name) {
+        const nextBlock = block.getNextBlock();
+
+        if (nextBlock) {
+            const nextScratchId = idMap.get(nextBlock.id);
+
+            if (nextScratchId) {
+                scratchBlock.next = nextScratchId;
+                spriteBlocks[nextScratchId].parent = scratchId;
+            }
+        }
+
+        /*
+         * Handle inputs.
+         */
+        block.inputList.forEach(input => {
+            if (!input.connection) {
+                return;
+            }
+
+            const targetBlock = input.connection.targetBlock();
+
+            if (!targetBlock) {
+                return;
+            }
+
+            const targetScratchId = idMap.get(targetBlock.id);
+
+            if (!targetScratchId) {
+                return;
+            }
+
+            spriteBlocks[targetScratchId].parent = scratchId;
+
+            /*
+             * Value input.
+             */
+            if (input.type === Blockly.INPUT_VALUE) {
+                /*
+                 * js_expr uses:
+                 *
+                 * "EXPR": [
+                 *     1,
+                 *     [10, "text"]
+                 * ]
+                 *
+                 * rather than a normal block reference.
+                 */
+                if (targetBlock.type === 'js_expr') {
+                    let value = '';
+
+                    const field = targetBlock.getField('EXPR');
+
+                    if (field) {
+                        value = field.getValue();
+                    }
+
+                    scratchBlock.inputs[input.name] = [
+                        1,
+                        [10, value]
+                    ];
+
+                    /*
+                     * The expression block itself is represented
+                     * by the input, so it doesn't need to remain
+                     * as a separate Scratch block.
+                     */
+                    delete spriteBlocks[targetScratchId];
+
+                    idMap.delete(targetBlock.id);
+
                     return;
                 }
 
-                let value;
-
-                try {
-                    value = field.getValue();
-                } catch (e) {
-                    value = '';
-                }
-
-                scratchBlock.fields[field.name] = [
-                    value,
-                    null
+                scratchBlock.inputs[input.name] = [
+                    1,
+                    targetScratchId
                 ];
-            });
-        }
 
-        /*
-         * No connection = nothing else to do.
-         */
-        if (!input.connection) {
-            return;
-        }
+                return;
+            }
 
-        const targetBlock = input.connection.targetBlock();
+            /*
+             * Statement input.
+             */
+            if (input.type === Blockly.NEXT_STATEMENT) {
+                scratchBlock.inputs[input.name] = [
+                    2,
+                    targetScratchId
+                ];
+            }
+        });
 
-        if (!targetBlock) {
-            return;
-        }
+        block.getChildren(false).forEach(linkBlockStructure);
+    };
 
-        const targetScratchId = idMap.get(targetBlock.id);
+    /*
+     * Register everything.
+     */
+    topBlocks.forEach(registerBlocks);
 
-        if (!targetScratchId) {
-            return;
-        }
+    /*
+     * Link everything.
+     */
+    topBlocks.forEach(linkBlockStructure);
 
-        if (
-            block.type === 'js_hat' &&
-            input.name === 'DO'
-        ) {
-            scratchBlock.next = targetScratchId;
-            spriteBlocks[targetScratchId].parent = scratchId;
-            return;
-        }
+    /*
+     * Find the exported hat.
+     */
+    const hat = topBlocks.find(block => block.type === 'js_hat');
 
-        if (targetBlock === nextBlock) {
-            return;
-        }
+    if (!hat) {
+        console.error('No js_hat block found.');
+        return;
+    }
 
-        spriteBlocks[targetScratchId].parent = scratchId;
+    const hatId = idMap.get(hat.id);
 
-        if (input.type === Blockly.INPUT_VALUE) {
-            scratchBlock.inputs[input.name] = [
-                1,
-                targetScratchId
-            ];
-        }
+    if (!hatId) {
+        console.error('Could not find exported hat.');
+        return;
+    }
 
-        else if (input.type === Blockly.NEXT_STATEMENT) {
-            scratchBlock.inputs[input.name] = [
-                2,
-                targetScratchId
-            ];
+    /*
+     * ---------------------------------------------------------
+     * INSERT clearCode
+     * ---------------------------------------------------------
+     *
+     * The valid project always has:
+     *
+     * event_whenflagclicked
+     *        ↓
+     * clearCode
+     *        ↓
+     * actual blocks
+     */
+
+    const clearId = generateId();
+
+    spriteBlocks[clearId] = {
+        opcode: "js_clearCode",
+        next: null,
+        parent: hatId,
+        inputs: {},
+        fields: {},
+        shadow: false,
+        topLevel: false
+    };
+
+    const oldHatNext = spriteBlocks[hatId].next;
+
+    spriteBlocks[hatId].next = clearId;
+
+    spriteBlocks[clearId].next = oldHatNext;
+
+    if (oldHatNext && spriteBlocks[oldHatNext]) {
+        spriteBlocks[oldHatNext].parent = clearId;
+    }
+
+    /*
+     * ---------------------------------------------------------
+     * INSERT evalCode
+     * ---------------------------------------------------------
+     *
+     * evalCode goes ONCE at the very end.
+     */
+
+    const evalId = generateId();
+
+    spriteBlocks[evalId] = {
+        opcode: "js_evalCode",
+        next: null,
+        parent: null,
+        inputs: {},
+        fields: {},
+        shadow: false,
+        topLevel: false
+    };
+
+    /*
+     * Find the final block in the hat's chain.
+     */
+    let currentId = hatId;
+
+    while (
+        spriteBlocks[currentId] &&
+        spriteBlocks[currentId].next
+    ) {
+        currentId = spriteBlocks[currentId].next;
+    }
+
+    spriteBlocks[currentId].next = evalId;
+    spriteBlocks[evalId].parent = currentId;
+
+    /*
+     * ---------------------------------------------------------
+     * Fix topLevel / coordinates
+     * ---------------------------------------------------------
+     */
+
+    Object.values(spriteBlocks).forEach(block => {
+        if (block.parent !== null) {
+            block.topLevel = false;
+            delete block.x;
+            delete block.y;
         }
     });
 
-    block.getChildren(false).forEach(linkBlockStructure);
-};
-
-    topBlocks.forEach(registerBlocks);
-
-    topBlocks.forEach(linkBlockStructure);
+    /*
+     * Default SVGs.
+     */
 
     const defaultStageSvg = `
 <svg version="1.1"
