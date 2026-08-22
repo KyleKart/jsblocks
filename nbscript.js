@@ -946,15 +946,6 @@ document.getElementById('menuExportSB3').addEventListener('click', async () => {
         return block.type;
     };
 
-    /*
-     * ------------------------------------------------------------
-     * PASS 1
-     *
-     * Register every block.
-     * Do NOT establish any parent/next relationships here.
-     * ------------------------------------------------------------
-     */
-
     const registerBlock = block => {
         if (!block || idMap.has(block.id)) {
             return;
@@ -989,24 +980,10 @@ document.getElementById('menuExportSB3').addEventListener('click', async () => {
             ...(topLevel ? { x, y } : {})
         };
 
-        /*
-         * Register descendants recursively.
-         *
-         * This is ONLY registration.
-         * It does not decide what their SB3 parent is.
-         */
         block.getChildren(false).forEach(registerBlock);
     };
 
     topBlocks.forEach(registerBlock);
-
-    /*
-     * ------------------------------------------------------------
-     * PASS 2
-     *
-     * Convert actual Blockly connections into SB3 relationships.
-     * ------------------------------------------------------------
-     */
 
     const linkBlock = block => {
         if (!block) {
@@ -1021,11 +998,6 @@ document.getElementById('menuExportSB3').addEventListener('click', async () => {
 
         const scratchBlock = spriteBlocks[scratchId];
 
-        /*
-         * --------------------------------------------------------
-         * FIELDS
-         * --------------------------------------------------------
-         */
 
         block.inputList.forEach(input => {
             if (!input.fieldRow) {
@@ -1045,10 +1017,6 @@ document.getElementById('menuExportSB3').addEventListener('click', async () => {
                     value = '';
                 }
 
-                /*
-                 * js_expr.EXPR is represented as a Scratch INPUT,
-                 * not a field.
-                 */
                 if (
                     block.type === 'js_expr' &&
                     field.name === 'EXPR'
@@ -1068,12 +1036,6 @@ document.getElementById('menuExportSB3').addEventListener('click', async () => {
             });
         });
 
-        /*
-         * --------------------------------------------------------
-         * NORMAL NEXT CONNECTION
-         * --------------------------------------------------------
-         */
-
         const nextBlock = block.getNextBlock();
 
         if (nextBlock) {
@@ -1082,18 +1044,9 @@ document.getElementById('menuExportSB3').addEventListener('click', async () => {
             if (nextId) {
                 scratchBlock.next = nextId;
 
-                /*
-                 * This is a true stack connection.
-                 */
                 spriteBlocks[nextId].parent = scratchId;
             }
         }
-
-        /*
-         * --------------------------------------------------------
-         * INPUT CONNECTIONS
-         * --------------------------------------------------------
-         */
 
         block.inputList.forEach(input => {
             if (!input.connection) {
@@ -1112,17 +1065,6 @@ document.getElementById('menuExportSB3').addEventListener('click', async () => {
                 return;
             }
 
-            /*
-             * ====================================================
-             * GREEN FLAG
-             *
-             * Blockly has DO.
-             * Scratch does NOT.
-             *
-             * Therefore DO becomes `next`.
-             * ====================================================
-             */
-
             if (
                 block.type === 'js_hat' &&
                 input.name === 'DO'
@@ -1133,15 +1075,6 @@ document.getElementById('menuExportSB3').addEventListener('click', async () => {
 
                 return;
             }
-
-            /*
-             * ====================================================
-             * JS CBLOCK
-             *
-             * B0_ADD0 -> B0
-             * DO0     -> SUBSTACK
-             * ====================================================
-             */
 
             if (block.type === 'js_cblock') {
 
@@ -1168,14 +1101,6 @@ document.getElementById('menuExportSB3').addEventListener('click', async () => {
                 }
             }
 
-            /*
-             * ====================================================
-             * JS GENERIC
-             *
-             * ADD0 -> ADD0
-             * ====================================================
-             */
-
             if (
                 block.type === 'js_generic' &&
                 input.name === 'ADD0'
@@ -1190,12 +1115,6 @@ document.getElementById('menuExportSB3').addEventListener('click', async () => {
                 return;
             }
 
-            /*
-             * ====================================================
-             * NORMAL VALUE INPUT
-             * ====================================================
-             */
-
             if (input.type === Blockly.INPUT_VALUE) {
                 scratchBlock.inputs[input.name] = [
                     1,
@@ -1206,12 +1125,6 @@ document.getElementById('menuExportSB3').addEventListener('click', async () => {
 
                 return;
             }
-
-            /*
-             * ====================================================
-             * NORMAL STATEMENT INPUT
-             * ====================================================
-             */
 
             if (input.type === Blockly.NEXT_STATEMENT) {
                 scratchBlock.inputs[input.name] = [
@@ -1225,34 +1138,10 @@ document.getElementById('menuExportSB3').addEventListener('click', async () => {
             }
         });
 
-        /*
-         * Recurse through the actual Blockly tree.
-         *
-         * Again, this only calls linkBlock.
-         * It does not infer parents from getChildren().
-         */
         block.getChildren(false).forEach(linkBlock);
     };
 
     topBlocks.forEach(linkBlock);
-
-    /*
-     * ------------------------------------------------------------
-     * INSERT clearCode + evalCode
-     * ------------------------------------------------------------
-     *
-     * Desired structure:
-     *
-     *     event_whenflagclicked
-     *              |
-     *          clearCode
-     *              |
-     *           cblock
-     *              |
-     *            ...
-     *              |
-     *          evalCode
-     */
 
     for (const hat of topBlocks) {
         if (hat.type !== 'js_hat') {
@@ -1267,14 +1156,8 @@ document.getElementById('menuExportSB3').addEventListener('click', async () => {
 
         const hatBlock = spriteBlocks[hatId];
 
-        /*
-         * The first block currently under the hat.
-         */
         const firstBlockId = hatBlock.next;
 
-        /*
-         * Create clearCode.
-         */
         const clearId = generateId();
 
         spriteBlocks[clearId] = {
@@ -1287,30 +1170,18 @@ document.getElementById('menuExportSB3').addEventListener('click', async () => {
             topLevel: false
         };
 
-        /*
-         * Hat -> clearCode
-         */
         hatBlock.next = clearId;
 
-        /*
-         * clearCode -> first user block
-         */
         if (firstBlockId) {
             spriteBlocks[firstBlockId].parent = clearId;
         }
 
-        /*
-         * Find the final block in the stack.
-         */
         let lastId = clearId;
 
         while (spriteBlocks[lastId].next) {
             lastId = spriteBlocks[lastId].next;
         }
 
-        /*
-         * Create evalCode.
-         */
         const evalId = generateId();
 
         spriteBlocks[evalId] = {
@@ -1323,17 +1194,8 @@ document.getElementById('menuExportSB3').addEventListener('click', async () => {
             topLevel: false
         };
 
-        /*
-         * Last user block -> evalCode
-         */
         spriteBlocks[lastId].next = evalId;
     }
-
-    /*
-     * ------------------------------------------------------------
-     * DEFAULT SVG ASSETS
-     * ------------------------------------------------------------
-     */
 
     const defaultStageSvg = `
 <svg version="1.1"
@@ -1365,12 +1227,6 @@ document.getElementById('menuExportSB3').addEventListener('click', async () => {
         "4d45a484633a5369e85831f9cb9c7a4e.svg",
         defaultSpriteSvg
     );
-
-    /*
-     * ------------------------------------------------------------
-     * GENERATE SB3
-     * ------------------------------------------------------------
-     */
 
     try {
         const content = await zip.generateAsync({
