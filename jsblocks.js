@@ -270,12 +270,7 @@ function createClone(CLONE_OPTION) {
 function deleteClone() {
     return run.ext_scratch3_control.deleteClone({}, {target});
 }
-
-try {
     ${this.globalCodeBuffer}
-} catch (error) {
-    console.error("User Code Execution Error:", error);
-}
         `;
 
             try {
